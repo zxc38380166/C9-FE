@@ -1,0 +1,10 @@
+{
+  "common": {
+    "confirm": "確認",
+    "cancel": "取消"
+  },
+  "login": {
+    "title": "登入",
+    "submit": "登入"
+  }
+}

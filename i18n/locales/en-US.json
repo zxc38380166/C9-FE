@@ -1,0 +1,10 @@
+{
+  "common": {
+    "confirm": "Confirm",
+    "cancel": "Cancel"
+  },
+  "login": {
+    "title": "Login",
+    "submit": "Login"
+  }
+}
