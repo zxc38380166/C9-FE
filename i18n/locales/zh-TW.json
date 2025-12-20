@@ -1,4 +1,18 @@
 {
+  "menu": {
+    "games": "遊戲",
+    "favorite": "收藏夾",
+    "recent": "近期遊戲記錄",
+    "challenge": "挑戰",
+    "bet": "我的投注",
+    "new": "新遊戲",
+    "slot": "老虎機",
+    "c9Original": "C9 原創遊戲",
+    "c9Exclusive": "C9 獨家",
+    "live": "真人娛樂場",
+    "fish": "捕魚",
+    "chess": "棋牌"
+  },
   "common": {
     "confirm": "確認",
     "cancel": "取消"
