@@ -13,6 +13,73 @@
     "fish": "捕魚",
     "chess": "棋牌"
   },
+  "footer": {
+    "allRightsReserved": "版权所有",
+    "license": "Stake 由 Medium Rare N.V. 运营，如需协助请联系",
+    "responsibleGambling": "Stake 致力于负责任博彩，了解更多请访问",
+    "casino": {
+      "title": "娱乐城",
+      "slots": "老虎机",
+      "live": "真人赌场",
+      "roulette": "轮盘",
+      "blackjack": "二十一点",
+      "providers": "游戏厂商",
+      "promotions": "优惠与比赛",
+      "originals": "Stake Originals",
+      "suppliers": "Stake 供应商"
+    },
+
+    "sports": {
+      "title": "体育",
+      "sportsbook": "体育投注",
+      "live": "滚球赛事",
+      "football": "足球",
+      "basketball": "篮球",
+      "esports": "电子竞技",
+      "bonuses": "投注奖金",
+      "rules": "赛事规则"
+    },
+
+    "support": {
+      "title": "支持",
+      "help": "帮助中心",
+      "fairness": "公平性",
+      "responsible": "责任博彩",
+      "gamblingHelp": "博彩帮助",
+      "online": "在线支持",
+      "selfExclude": "自我排除",
+      "law": "执法请求"
+    },
+
+    "about": {
+      "title": "关于我们",
+      "vip": "VIP 俱乐部",
+      "affiliate": "联盟计划",
+      "privacy": "隐私政策",
+      "aml": "反洗钱政策",
+      "terms": "服务条款"
+    },
+
+    "payments": {
+      "title": "付款信息",
+      "deposit": "存款",
+      "withdraw": "取款",
+      "currency": "货币指南",
+      "crypto": "支持的加密货币",
+      "vault": "保险库",
+      "bet": "下注多少"
+    },
+
+    "faq": {
+      "title": "常见问题",
+      "guide": "操作指南",
+      "liveCasino": "在线赌场指南",
+      "sportsGuide": "体育博彩指南",
+      "stream": "如何直播赛事",
+      "vipGuide": "VIP 指南",
+      "houseEdge": "庄家优势"
+    }
+  },
   "common": {
     "confirm": "確認",
     "cancel": "取消"
