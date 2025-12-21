@@ -1,18 +1,24 @@
 <template>
   <div class="w-full">
     <!-- Header -->
-    <div class="flex items-center justify-between mb-4">
-      <div class="flex items-center gap-2 text-white text-lg font-semibold">
+    <div class="mb-4 flex items-center justify-between">
+      <div class="flex items-center gap-2 text-lg font-semibold text-white">
         <i v-if="titleIcon" :class="titleIcon" />
         <span>{{ title }}</span>
       </div>
 
       <!-- Arrows -->
       <div class="flex gap-2">
-        <button class="nav-btn" :disabled="currentIndex === 0" @click="prev">
+        <button
+          class="nav-btn size-[36px] bg-white/10 border border-white/15 rounded-[9999px] text-[white] flex justify-center items-center disabled:opacity-35 disabled:cursor-not-allowed"
+          :disabled="currentIndex === 0"
+          @click="prev">
           <i class="mdi mdi-chevron-left" />
         </button>
-        <button class="nav-btn" :disabled="isEnd" @click="next">
+        <button
+          class="nav-btn size-[36px] bg-white/10 border border-white/15 rounded-[9999px] text-[white] flex justify-center items-center disabled:opacity-35 disabled:cursor-not-allowed"
+          :disabled="isEnd"
+          @click="next">
           <i class="mdi mdi-chevron-right" />
         </button>
       </div>
@@ -25,47 +31,51 @@
         <div
           v-for="(item, index) in items"
           :key="item.id"
-          :class="[index % 2 ? 'px-3' : '']"
           class="shrink-0"
+          :class="index % 2 ? 'px-3' : ''"
           :style="{ width: cardWidthPx }">
-          <div class="bg-[#1f3642] rounded-xl p-5 h-full flex items-center">
+          <div class="flex h-full items-center rounded-xl bg-[#1f3642] p-5">
             <!-- Text Left -->
             <div v-if="textPosition === 'left'" class="flex-1 pr-4 text-white">
-              <span class="inline-block mb-2 px-2 py-1 text-xs rounded bg-white text-black">
+              <!-- Promo Tag -->
+              <el-tag
+                class="mb-2 inline-flex items-center rounded-md border !border-[#3f7a8f] !bg-[#2e5d6f]/90 px-2 py-[2px] text-xs font-semibold !text-white">
                 促销活动
-              </span>
+              </el-tag>
 
-              <h3 class="text-xl font-semibold mb-2">
+              <h3 class="mb-2 text-xl font-semibold">
                 {{ item.title }}
               </h3>
 
-              <p v-if="item.description" class="text-white/70 mb-2">
+              <p v-if="item.description" class="mb-2 text-white/70">
                 {{ item.description }}
               </p>
 
-              <span class="text-sm font-semibold cursor-pointer"> 阅读更多 </span>
+              <span class="cursor-pointer text-sm font-semibold hover:underline"> 阅读更多 </span>
             </div>
 
             <!-- Image -->
-            <div class="w-[120px] h-[120px] shrink-0">
-              <img :src="item.image" class="w-full h-full object-cover rounded-xl" />
+            <div class="h-[120px] w-[120px] shrink-0">
+              <img :src="item.image" class="h-full w-full rounded-xl object-cover" />
             </div>
 
             <!-- Text Right -->
             <div v-if="textPosition === 'right'" class="flex-1 pl-4 text-white">
-              <span class="inline-block mb-2 px-2 py-1 text-xs rounded bg-white text-black">
+              <!-- Promo Tag -->
+              <el-tag
+                class="mb-2 inline-flex items-center rounded-md border border-[#3f7a8f] bg-[#2e5d6f]/90 px-2 py-[2px] text-xs font-semibold text-white">
                 促销活动
-              </span>
+              </el-tag>
 
-              <h3 class="text-xl font-semibold mb-2">
+              <h3 class="mb-2 text-xl font-semibold">
                 {{ item.title }}
               </h3>
 
-              <p v-if="item.description" class="text-white/70 mb-2">
+              <p v-if="item.description" class="mb-2 text-white/70">
                 {{ item.description }}
               </p>
 
-              <span class="text-sm font-semibold cursor-pointer"> 阅读更多 </span>
+              <span class="cursor-pointer text-sm font-semibold hover:underline"> 阅读更多 </span>
             </div>
           </div>
         </div>
@@ -73,12 +83,10 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
   import { computed, ref } from 'vue';
 
   /* ---------- Types ---------- */
-
   interface PromoItem {
     id: string | number;
     image: string;
@@ -87,29 +95,19 @@
   }
 
   /* ---------- Props ---------- */
-
   const props = defineProps<{
     title: string;
     titleIcon?: string;
-
     items: PromoItem[];
-
-    /** 每頁顯示幾張（預設 3） */
     perPage?: number;
-
-    /** 每次滑動幾張（預設等於 perPage） */
     step?: number;
-
-    /** 文字位置 */
     textPosition?: 'left' | 'right';
   }>();
 
   /* ---------- State ---------- */
-
   const currentIndex = ref(0);
 
   /* ---------- Computed ---------- */
-
   const perPage = computed(() => props.perPage ?? 3);
   const step = computed(() => props.step ?? perPage.value);
 
@@ -124,7 +122,6 @@
   }));
 
   /* ---------- Methods ---------- */
-
   const prev = () => {
     currentIndex.value = Math.max(currentIndex.value - step.value, 0);
   };
@@ -133,22 +130,3 @@
     currentIndex.value = Math.min(currentIndex.value + step.value, maxIndex.value);
   };
 </script>
-
-<style scoped>
-  .nav-btn {
-    width: 36px;
-    height: 36px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.08);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .nav-btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-  }
-</style>

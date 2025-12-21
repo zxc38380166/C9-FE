@@ -1,18 +1,27 @@
 <template>
   <div ref="rootRef" class="w-full">
     <!-- Header -->
-    <div class="flex items-center justify-between mb-3">
-      <div class="flex items-center gap-2 text-white text-lg font-semibold">
+    <div class="mb-3 flex items-center justify-between">
+      <div class="flex items-center gap-2 text-lg font-semibold text-white">
         <i v-if="titleIcon" :class="titleIcon" />
         <span>{{ title }}</span>
       </div>
 
       <!-- Arrow -->
       <div v-if="showArrow" class="flex gap-2">
-        <button class="arrow-btn" :disabled="currentIndex === 0" @click="prev">
+        <button
+          type="button"
+          :disabled="currentIndex === 0"
+          @click="prev"
+          class="flex h-8 w-8 items-center justify-center rounded-full text-white border border-white/15 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] transition-all duration-200 ease-out enabled:hover:bg-white/10 enabled:hover:border-white/35 enabled:hover:shadow-[0_6px_18px_rgba(0,0,0,0.35)] enabled:hover:-translate-y-[1px] enabled:active:translate-y-0 enabled:active:shadow-[0_3px_10px_rgba(0,0,0,0.25)] disabled:opacity-35 disabled:cursor-not-allowed disabled:grayscale-[0.4]">
           <i class="mdi mdi-chevron-left" />
         </button>
-        <button class="arrow-btn" :disabled="isEnd" @click="next">
+
+        <button
+          type="button"
+          :disabled="isEnd"
+          @click="next"
+          class="flex h-8 w-8 items-center justify-center rounded-full text-white border border-white/15 bg-[linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] transition-all duration-200 ease-out enabled:hover:bg-white/10 enabled:hover:border-white/35 enabled:hover:shadow-[0_6px_18px_rgba(0,0,0,0.35)] enabled:hover:-translate-y-[1px] enabled:active:translate-y-0 enabled:active:shadow-[0_3px_10px_rgba(0,0,0,0.25)] disabled:opacity-35 disabled:cursor-not-allowed disabled:grayscale-[0.4]">
           <i class="mdi mdi-chevron-right" />
         </button>
       </div>
@@ -25,19 +34,24 @@
         <div
           v-for="item in items"
           :key="item.id"
-          class="shrink-0 game-card-wrapper"
-          :class="{ 'hover-effect': hoverEffect }"
-          :style="cardWrapperStyle">
+          :style="cardWrapperStyle"
+          :class="[
+            // 原本 .game-card-wrapper
+            'relative z-0 shrink-0 [will-change:transform] transition-transform duration-300 ease-out',
+            // hoverEffect 開關：原本 .hover-effect + 陰影
+            hoverEffect ? 'group hover:z-20  hover:scale-[1.025]' : '',
+          ]">
           <!-- Card Inner（負責裁切） -->
           <div
-            class="bg-[#1b2d38] overflow-hidden cursor-pointer game-card-inner"
+            class="cursor-pointer overflow-hidden bg-[#1b2d38]"
+            :class="[hoverEffect ? 'transition-shadow duration-300 ' : '']"
             :style="cardStyle">
-            <img :src="item.image" class="w-full h-full object-cover" />
+            <img :src="item.image" class="h-full w-full object-cover" />
           </div>
 
           <!-- Bottom text -->
-          <div class="flex items-center gap-2 mt-2 text-sm text-white">
-            <span class="w-2 h-2 rounded-full bg-green-500" />
+          <div class="mt-2 flex items-center gap-2 text-sm text-white">
+            <span class="h-2 w-2 rounded-full bg-green-500" />
             <span v-if="bottomTextKey">
               {{ item[bottomTextKey] }}
             </span>
@@ -47,12 +61,8 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
-  import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
-
   /* ---------- Types ---------- */
-
   interface GridItem {
     id: string | number;
     image: string;
@@ -60,7 +70,6 @@
   }
 
   /* ---------- Props ---------- */
-
   const props = defineProps<{
     title: string;
     titleIcon?: string;
@@ -78,13 +87,11 @@
   }>();
 
   /* ---------- Refs ---------- */
-
   const rootRef = ref<HTMLElement | null>(null);
   const currentIndex = ref(0);
   const autoColumns = ref(1);
 
   /* ---------- Computed ---------- */
-
   const gap = computed(() => props.gap ?? 16);
   const cardWidth = computed(() => props.cardWidth ?? 160);
 
@@ -96,7 +103,6 @@
   const columns = computed(() => props.columns ?? autoColumns.value);
 
   const maxIndex = computed(() => Math.max(props.items.length - columns.value, 0));
-
   const isEnd = computed(() => currentIndex.value >= maxIndex.value);
 
   const trackStyle = computed(() => ({
@@ -109,12 +115,11 @@
   }));
 
   const cardStyle = computed(() => ({
-    height: '220px',
+    height: 'auto',
     borderRadius: `${props.cardRadius ?? 12}px`,
   }));
 
   /* ---------- Methods ---------- */
-
   const calcAutoColumns = () => {
     if (props.columns) return;
 
@@ -136,7 +141,6 @@
   };
 
   /* ---------- Lifecycle ---------- */
-
   onMounted(() => {
     calcAutoColumns();
     window.addEventListener('resize', calcAutoColumns);
@@ -147,7 +151,6 @@
   });
 
   /* ---------- Watch ---------- */
-
   watch(
     () => [props.cardWidth, props.gap, props.columns],
     () => {
@@ -156,90 +159,3 @@
     },
   );
 </script>
-
-<style scoped>
-  /* ---------- Arrow Button ---------- */
-
-  .arrow-btn {
-    width: 32px;
-    height: 32px;
-    border-radius: 999px;
-
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
-
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    color: #ffffff;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    transition:
-      background-color 0.25s ease,
-      transform 0.2s ease,
-      box-shadow 0.25s ease,
-      border-color 0.25s ease;
-  }
-
-  .arrow-btn:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.12);
-    border-color: rgba(255, 255, 255, 0.35);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
-    transform: translateY(-1px);
-  }
-
-  .arrow-btn:active:not(:disabled) {
-    transform: translateY(0);
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.25);
-  }
-
-  .arrow-btn:disabled {
-    opacity: 0.35;
-    cursor: not-allowed;
-    filter: grayscale(0.4);
-  }
-
-  /* ---------- Card Hover Effect（外框放大） ---------- */
-
-  .game-card-wrapper {
-    position: relative;
-    z-index: 1;
-    transition:
-      transform 0.35s ease,
-      box-shadow 0.35s ease;
-    will-change: transform;
-  }
-
-  .hover-effect:hover {
-    transform: scale(1.05);
-    z-index: 5;
-  }
-
-  /* 內層陰影 */
-  .hover-effect:hover .game-card-inner {
-    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
-  }
-
-  /* 輕微搖晃 */
-  .hover-effect:hover {
-    animation: subtle-wiggle 0.35s ease-in-out;
-  }
-
-  @keyframes subtle-wiggle {
-    0% {
-      transform: scale(1.05) rotate(0deg);
-    }
-    25% {
-      transform: scale(1.05) rotate(-0.5deg);
-    }
-    50% {
-      transform: scale(1.05) rotate(0.5deg);
-    }
-    75% {
-      transform: scale(1.05) rotate(-0.3deg);
-    }
-    100% {
-      transform: scale(1.05) rotate(0deg);
-    }
-  }
-</style>

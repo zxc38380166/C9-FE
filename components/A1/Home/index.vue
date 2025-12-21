@@ -1,30 +1,32 @@
 <template>
-  <div class="min-h-[700px] space-y-10 lg:px-5 xl:px-10 2xl:px-20 py-10">
+  <div class="min-h-[700px] space-y-10 lg:px-5 xl:px-10 2xl:px-28 py-10">
     <A1LayoutBanner />
-    <A1GameSearchBar />
+    <div class="flex flex-col space-y-5">
+      <A1GameSearchBar />
+      <CommonTab
+        v-model="active"
+        :items="tabs"
+        bg="#0F2633"
+        border="#FFFFFF1F"
+        text="#FFFFFFDB"
+        hover-bg="#FFFFFF0F"
+        active-bg="#5B6A74"
+        active-text="#FFFFFF"
+        active-border="#FFFFFF00"
+        padding="6px"
+        gap="6px"
+        item-px="14px"
+        item-py="10px"
+        font-size="14px"
+        icon-size="18px"
+        icon-gap="8px"
+        @change="onChange" />
+    </div>
     <CommonGrid
       title="熱門遊戲"
       titleIcon="mdi mdi-fire"
       :items="games"
-      :cardWidth="152"
-      :gap="20"
-      bottomTextKey="online"
-      hoverEffect
-      showArrow />
-    <CommonGrid
-      title="熱門遊戲"
-      titleIcon="mdi mdi-fire"
-      :items="games"
-      :cardWidth="152"
-      :gap="20"
-      bottomTextKey="online"
-      hoverEffect
-      showArrow />
-    <CommonGrid
-      title="熱門遊戲"
-      titleIcon="mdi mdi-fire"
-      :items="games"
-      :cardWidth="152"
+      :cardWidth="140"
       :gap="20"
       bottomTextKey="online"
       hoverEffect
@@ -37,9 +39,24 @@
       :perPage="3"
       :step="3" />
     <CommonRankList :items="rankingList" :interval="2000" />
+    <CommonDropdown
+      v-model="open"
+      :items="faqItems"
+      :accordion="true"
+      :default-open-first="true"
+      item-bg="#233B47"
+      item-border="#FFFFFF14"
+      header-hover-bg="#FFFFFF08"
+      divider-color="#FFFFFF14"
+      title-color="#FFFFFF"
+      body-color="#FFFFFFB3"
+      chevron-color="#FFFFFFCC"
+      item-shadow="0 10px 20px #00000026"
+      expand-max-height="560px"
+      :expand-duration-ms="320" />
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
   const games = [
     {
       id: 1,
@@ -487,4 +504,33 @@
       payoutPositive: true,
     },
   ];
+
+  const active = ref<string | number>('lobby');
+
+  const tabs = [
+    { label: '大厅', value: 'lobby', icon: 'mdi mdi-view-grid' },
+    { label: '新游戏', value: 'new', icon: 'mdi mdi-sparkles' },
+    { label: 'Stake 原创游戏', value: 'stake', icon: 'mdi mdi-fire' },
+    { label: '老虎机', value: 'slots', icon: 'mdi mdi-slot-machine' },
+    { label: '真人娱乐场', value: 'live', icon: 'mdi mdi-account' },
+    { label: 'Stake 独家', value: 'exclusive33', icon: 'mdi mdi-currency-usd' },
+  ];
+
+  const onChange = (val: string | number) => {
+    console.log('change =>', val);
+  };
+
+  const open = ref<string | number>('q1');
+
+  const faqItems = reactive([
+    {
+      value: 'q1',
+      title: 'Stake 是什么？',
+      content:
+        'Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。',
+    },
+    { value: 'q2', title: 'Stake 是否拿到许可？', content: '这里放答案内容...' },
+    { value: 'q3', title: '投注 Stake 是否安全？', content: '这里放答案内容...' },
+    { value: 'q4', title: '我可以投注哪些货币？', content: '这里放答案内容...' },
+  ]);
 </script>
