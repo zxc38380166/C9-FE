@@ -6,7 +6,12 @@ export const LAYOUT_ENUM = {
 export const domainConfig = {
   localhost: {
     name: 'a1',
-    baseUrl: 'https://api.gofun.games',
+    baseUrl: 'https://c9-system.zeabur.app',
+    layout: LAYOUT_ENUM.a1,
+  },
+  'c9-system.zeabur.app': {
+    name: 'a1',
+    baseUrl: 'https://c9-system.zeabur.app',
     layout: LAYOUT_ENUM.a1,
   },
 };

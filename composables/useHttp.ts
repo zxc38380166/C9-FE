@@ -1,6 +1,5 @@
-// ~/composables/useHttp.ts
 import { defu } from 'defu';
-
+import config from '../site.config';
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 
 export interface HttpMiddlewareContext {
@@ -60,7 +59,9 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     auth = true, // 👈 預設開啟
   } = options;
 
-  const baseUrl = 'http://localhost:8080';
+  const req = useRequestURL();
+  const hostname = import.meta.client ? window.location.hostname : req.hostname;
+  const baseUrl = config(hostname).baseUrl || 'http://localhost:8080';
   const fullUrl = baseUrl + url + buildQuery(params);
 
   /* ---------- default headers ---------- */
