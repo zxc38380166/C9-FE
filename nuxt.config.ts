@@ -29,6 +29,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/scripts',
     '@nuxt/test-utils',
+    '@nuxtjs/tailwindcss',
     '@nuxtjs/i18n',
     '@element-plus/nuxt',
     '@pinia/nuxt',
