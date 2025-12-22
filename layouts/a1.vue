@@ -48,7 +48,7 @@
 
   const doms = reactive({
     dialogLang: {
-      open: true,
+      open: false,
       select: 'zh-TW',
       applyLang() {},
       options: [
@@ -80,7 +80,9 @@
     },
   });
 
-  onMounted(() => {
+  onMounted(async () => {
     store.setDoms(doms);
+    const user = await fetchMe();
+    console.log('✅ 已登入', user);
   });
 </script>

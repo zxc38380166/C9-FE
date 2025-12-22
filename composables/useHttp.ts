@@ -9,26 +9,22 @@ export interface HttpMiddlewareContext {
 }
 
 export interface HttpMiddlewares {
-  /** 請求前（可改 options） */
   before?: (ctx: HttpMiddlewareContext) => void | Promise<void>;
-  /** 回傳後（可改 response data） */
   after?: (data: any, ctx: HttpMiddlewareContext) => any;
-  /** 錯誤處理 */
   onError?: (error: any, ctx: HttpMiddlewareContext) => any;
 }
 
 export interface UseHttpOptions<T = any> {
   method?: HttpMethod;
-  /** query string */
   params?: Record<string, any>;
-  /** request body */
   body?: any;
   headers?: HeadersInit;
   middlewares?: HttpMiddlewares;
-  /** 是否自動 stringify body */
   json?: boolean;
-  /** fetch 原生 options 補充 */
   fetchOptions?: RequestInit;
+
+  /** 🔐 是否自動帶 token（預設 true） */
+  auth?: boolean;
 }
 
 /* ----------------------------- utils ----------------------------- */
@@ -44,20 +40,46 @@ function buildQuery(params?: Record<string, any>) {
   return q ? `?${q}` : '';
 }
 
+function getToken(): string | null {
+  // SSR-safe
+  if (typeof window === 'undefined') return null;
+  return localStorage.getItem('token');
+}
+
 /* ----------------------------- main ----------------------------- */
 
 export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> = {}): Promise<T> {
-  const { method = 'GET', params, body, headers, middlewares, json = true, fetchOptions } = options;
+  const {
+    method = 'GET',
+    params,
+    body,
+    headers,
+    middlewares,
+    json = true,
+    fetchOptions,
+    auth = true, // 👈 預設開啟
+  } = options;
 
   const fullUrl = url + buildQuery(params);
+
+  /* ---------- default headers ---------- */
+  const defaultHeaders: HeadersInit = {
+    ...(json ? { 'Content-Type': 'application/json' } : {}),
+    ...headers,
+  };
+
+  /* ---------- auto attach token ---------- */
+  if (auth) {
+    const token = getToken();
+    if (token) {
+      (defaultHeaders as Record<string, string>).Authorization = `Bearer ${token}`;
+    }
+  }
 
   const requestOptions: RequestInit = defu(
     {
       method,
-      headers: {
-        ...(json ? { 'Content-Type': 'application/json' } : {}),
-        ...headers,
-      },
+      headers: defaultHeaders,
       body: body && method !== 'GET' ? (json ? JSON.stringify(body) : body) : undefined,
     },
     fetchOptions,

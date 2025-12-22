@@ -362,7 +362,7 @@
         const result = await useHttp<{
           code: number;
           data: { token: string; user: { id: number; name: string } };
-        }>('/api/auth/login', {
+        }>('http://localhost:8080/api/auth/login', {
           method: 'POST',
           /* body */
           body: { account: payload.account, password: payload.password },
