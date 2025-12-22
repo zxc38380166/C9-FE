@@ -359,55 +359,18 @@
       loading.value = true;
 
       try {
-        const result = await useHttp<{
-          code: number;
-          data: { token: string; user: { id: number; name: string } };
-        }>('http://localhost:8080/api/auth/login', {
+        const res = await useHttp(useApi().login, {
           method: 'POST',
-          /* body */
           body: { account: payload.account, password: payload.password },
-          /* query params */
           params: { lang: 'zh-TW', device: 'web' },
-          /* headers */
-          headers: { 'X-App': 'C9' },
-          /* middleware */
-          middlewares: {
-            before({ options }) {
-              const token = localStorage.getItem('token');
-              if (token) {
-                options.headers = {
-                  ...options.headers,
-                  Authorization: `Bearer ${token}`,
-                };
-              }
-            },
-
-            after(response) {
-              if (response.code !== 0) {
-                throw response;
-              }
-
-              // 存 token
-              localStorage.setItem('token', response.data.token);
-
-              // 只回傳 data
-              return response.data;
-            },
-
-            onError(error) {
-              console.error('[login] error', error);
-              if (error?.status === 401) {
-                store.getDoms.dialogLogin.open = true;
-              }
-
-              alert(error?.message || '登入失敗');
-              throw error;
-            },
-          },
         });
 
-        console.log('登入成功', result);
-        store.getDoms.dialogLogin.open = false;
+        if (res.code === 200) {
+          useMsg().success('登入成功');
+          store.getDoms.dialogLogin.open = false;
+        } else {
+          useMsg().error(res.message);
+        }
       } catch (e) {
         console.error('login failed');
       } finally {

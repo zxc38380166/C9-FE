@@ -1,6 +1,10 @@
 <template>
   <div class="flex h-screen bg-[#1a2c38] overflow-hidden">
     <!-- Aside -->
+    <A1DialogRegister
+      v-model="doms.dialogRegister.open"
+      @change-lang="(lang) => (doms.dialogLang.select = lang)"
+      @login="doms.dialogLogin.open = true" />
     <A1DialogLogin
       v-model="doms.dialogLogin.open"
       @login="doms.dialogLogin.handleLogin"
@@ -56,7 +60,6 @@
         { label: '中文(繁體)', value: 'zh-TW', icon: '/common/flags/TWD.png' },
       ],
     },
-
     dialogLogin: {
       open: false,
       handleLogin: ({ account, password }: { account: string; password: string }) => {
@@ -78,11 +81,17 @@
         doms.dialogLogin.open = false;
       },
     },
+    dialogRegister: {
+      open: false,
+    },
   });
 
   onMounted(async () => {
     store.setDoms(doms);
-    const user = await fetchMe();
-    console.log('✅ 已登入', user);
   });
 </script>
+<style>
+  .el-notification__content {
+    color: white;
+  }
+</style>

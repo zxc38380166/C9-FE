@@ -12,7 +12,7 @@
     <!-- Select 顯示區 -->
     <div
       class="relative w-full px-3 cursor-pointer select-none flex items-center gap-2"
-      :class="selectRadiusClass"
+      :class="selectClass"
       :style="selectStyle"
       @click="toggle">
       <!-- 單選 icon -->
@@ -97,7 +97,7 @@
     maxHeight?: number | string;
     optionGap?: number | string;
 
-    selectRadiusClass?: string;
+    selectClass?: string;
     optionRadiusClass?: string;
 
     label?: string;

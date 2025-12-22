@@ -60,12 +60,14 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     auth = true, // 👈 預設開啟
   } = options;
 
-  const fullUrl = url + buildQuery(params);
+  const baseUrl = 'http://localhost:8080';
+  const fullUrl = baseUrl + url + buildQuery(params);
 
   /* ---------- default headers ---------- */
   const defaultHeaders: HeadersInit = {
     ...(json ? { 'Content-Type': 'application/json' } : {}),
     ...headers,
+    'X-App': 'C9',
   };
 
   /* ---------- auto attach token ---------- */

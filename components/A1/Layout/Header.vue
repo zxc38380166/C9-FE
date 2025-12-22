@@ -13,6 +13,7 @@
           登錄
         </button>
         <button
+          @click="store.getDoms.dialogRegister.open = true"
           class="rounded-md bg-[#1a7af8] px-4 py-2 text-sm font-semibold text-white hover:bg-[#1566d8]">
           註冊
         </button>
