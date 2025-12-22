@@ -86,13 +86,10 @@
     </template>
   </el-dialog>
 </template>
-
 <script setup lang="ts">
-  import { computed, ref } from 'vue';
-
   type LangValue = string | number;
 
-  export interface LanguageItem {
+  interface LanguageItem {
     label: string;
     value: LangValue;
     icon?: string;
@@ -251,10 +248,3 @@
     } as Record<string, string>;
   };
 </script>
-
-<style scoped>
-  /* ✅ 只做「Element Plus 預設 padding/背景」可能干擾的部分：清掉 header 的 close icon 區塊影響 */
-  :deep(.lang-dialog .el-dialog__headerbtn) {
-    display: none;
-  }
-</style>

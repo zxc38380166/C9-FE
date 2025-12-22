@@ -1,19 +1,17 @@
 export const useMainStore = defineStore('main', () => {
   // State
-  const userDetail = ref({
-    test: '1234123',
-  });
+  const doms: any = ref({});
 
   // Actions
   const actions = {
-    setUserDetail(params) {
-      userDetail.value = params;
+    setDoms(params: any) {
+      doms.value = params;
     },
   };
 
   // Getters
   const getters = {
-    getUserDetail: computed(() => userDetail.value),
+    getDoms: computed(() => doms.value),
   };
 
   return {

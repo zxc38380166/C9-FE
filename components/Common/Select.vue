@@ -40,6 +40,7 @@
     <!-- Options -->
     <div
       v-if="open"
+      ref="optionsRef"
       class="absolute left-0 right-0 z-50 overflow-hidden"
       :class="optionRadiusClass"
       :style="optionWrapperStyle">
@@ -66,10 +67,10 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
-  import { ref, computed, onMounted, onUnmounted } from 'vue';
+  import { ref, computed } from 'vue';
   import type { CSSProperties } from 'vue';
+  import { onClickOutside } from '@vueuse/core';
 
   /* ---------- 型別 ---------- */
 
@@ -123,6 +124,7 @@
   /* ---------- State ---------- */
 
   const rootRef = ref<HTMLElement | null>(null);
+  const optionsRef = ref<HTMLElement | null>(null);
   const open = ref(false);
 
   /* ---------- Utils ---------- */
@@ -198,29 +200,20 @@
     }
 
     const current = Array.isArray(props.modelValue) ? [...props.modelValue] : [];
-
     const index = current.indexOf(value);
+
     index > -1 ? current.splice(index, 1) : current.push(value);
 
     emit('update:modelValue', current);
     emit('change', current);
   };
 
-  /* ---------- Click Outside ---------- */
+  /* ---------- Click Outside（VueUse） ---------- */
 
-  const onClickOutside = (e: MouseEvent) => {
-    if (!rootRef.value?.contains(e.target as Node)) {
-      open.value = false;
-      emit('blur');
-    }
-  };
-
-  onMounted(() => {
-    document.addEventListener('click', onClickOutside);
-  });
-
-  onUnmounted(() => {
-    document.removeEventListener('click', onClickOutside);
+  onClickOutside(rootRef, () => {
+    if (!open.value) return;
+    open.value = false;
+    emit('blur');
   });
 
   /* ---------- Expose ---------- */

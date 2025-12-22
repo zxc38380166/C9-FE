@@ -11,12 +11,13 @@
     "c9Exclusive": "C9 獨家",
     "live": "真人娛樂場",
     "fish": "捕魚",
-    "chess": "棋牌"
+    "chess": "棋牌",
+    "lang": "語言"
   },
   "footer": {
     "allRightsReserved": "版权所有",
-    "license": "Stake 由 Medium Rare N.V. 运营，如需协助请联系",
-    "responsibleGambling": "Stake 致力于负责任博彩，了解更多请访问",
+    "license": "C9 由 Medium Rare N.V. 运营，如需协助请联系",
+    "responsibleGambling": "C9 致力于负责任博彩，了解更多请访问",
     "casino": {
       "title": "娱乐城",
       "slots": "老虎机",
@@ -25,8 +26,8 @@
       "blackjack": "二十一点",
       "providers": "游戏厂商",
       "promotions": "优惠与比赛",
-      "originals": "Stake Originals",
-      "suppliers": "Stake 供应商"
+      "originals": "C9 Originals",
+      "suppliers": "C9 供应商"
     },
 
     "sports": {

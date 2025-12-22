@@ -1,6 +1,5 @@
 <template>
   <div
-    ref="rootRef"
     class="relative inline-flex"
     :style="wrapperStyle"
     :class="{ 'opacity-50 pointer-events-none': disabled }">
@@ -73,7 +72,6 @@
 
   /* ---------- Refs ---------- */
 
-  const rootRef = ref<HTMLElement | null>(null);
   const inputRef = ref<HTMLInputElement | null>(null);
   const innerValue = ref<string | number>('');
 
@@ -132,22 +130,6 @@
   const onBlur = () => {
     emit('blur');
   };
-
-  /* ---------- Click Outside ---------- */
-
-  const onClickOutside = (e: MouseEvent) => {
-    if (!rootRef.value?.contains(e.target as Node)) {
-      inputRef.value?.blur();
-    }
-  };
-
-  onMounted(() => {
-    document.addEventListener('click', onClickOutside);
-  });
-
-  onUnmounted(() => {
-    document.removeEventListener('click', onClickOutside);
-  });
 
   /* ---------- Expose ---------- */
 

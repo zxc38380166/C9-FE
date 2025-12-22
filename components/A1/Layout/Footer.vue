@@ -44,13 +44,11 @@
     <!-- 法律文字 -->
     <div
       class="mx-auto max-w-[1440px] px-4 py-8 text-center text-xs leading-relaxed text-white/60 space-y-4">
-      <p>© 2025 Stake.com | {{ $t('footer.allRightsReserved') }}</p>
+      <p>© 2025 C9.com | {{ $t('footer.allRightsReserved') }}</p>
 
       <p>
         {{ $t('footer.license') }}
-        <a href="mailto:support@stake.com" class="underline hover:text-white">
-          support@stake.com
-        </a>
+        <a href="mailto:support@C9.com" class="underline hover:text-white"> support@C9.com </a>
       </p>
 
       <p>
@@ -95,8 +93,8 @@
         { key: 'blackjack', label: 'footer.casino.blackjack' },
         { key: 'providers', label: 'footer.casino.providers' },
         { key: 'promotions', label: 'footer.casino.promotions' },
-        { key: 'stakeOriginals', label: 'footer.casino.originals', external: true },
-        { key: 'stakeSuppliers', label: 'footer.casino.suppliers', external: true },
+        { key: 'C9Originals', label: 'footer.casino.originals', external: true },
+        { key: 'C9Suppliers', label: 'footer.casino.suppliers', external: true },
       ],
     },
     {

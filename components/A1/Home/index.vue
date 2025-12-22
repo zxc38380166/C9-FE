@@ -185,35 +185,35 @@
     {
       id: 1,
       image:
-        'https://cdn.sanity.io/images/tdrhge4k/stake-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
+        'https://cdn.sanity.io/images/tdrhge4k/C9-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
       title: '英超联赛',
       description: '领先2球赔付活动',
     },
     {
       id: 2,
       image:
-        'https://cdn.sanity.io/images/tdrhge4k/stake-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
+        'https://cdn.sanity.io/images/tdrhge4k/C9-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
       title: '200x Olympus Fortune',
       description: '$40,000 奖金池',
     },
     {
       id: 3,
       image:
-        'https://cdn.sanity.io/images/tdrhge4k/stake-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
+        'https://cdn.sanity.io/images/tdrhge4k/C9-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
       title: 'NFL',
       description: '第三节赔付活动',
     },
     {
       id: 4,
       image:
-        'https://cdn.sanity.io/images/tdrhge4k/stake-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
+        'https://cdn.sanity.io/images/tdrhge4k/C9-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
       title: 'NFL',
       description: '第三节赔付活动',
     },
     {
       id: 5,
       image:
-        'https://cdn.sanity.io/images/tdrhge4k/stake-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
+        'https://cdn.sanity.io/images/tdrhge4k/C9-com-production/592265f316cfa0c04544dc6f28b8ef7902b43478-1080x1080.jpg?w=220&h=220&fit=min&auto=format',
       title: 'NFL',
       description: '第三节赔付活动',
     },
@@ -510,10 +510,10 @@
   const tabs = [
     { label: '大厅', value: 'lobby', icon: 'mdi mdi-view-grid' },
     { label: '新游戏', value: 'new', icon: 'mdi mdi-sparkles' },
-    { label: 'Stake 原创游戏', value: 'stake', icon: 'mdi mdi-fire' },
+    { label: 'C9 原创游戏', value: 'C9', icon: 'mdi mdi-fire' },
     { label: '老虎机', value: 'slots', icon: 'mdi mdi-slot-machine' },
     { label: '真人娱乐场', value: 'live', icon: 'mdi mdi-account' },
-    { label: 'Stake 独家', value: 'exclusive33', icon: 'mdi mdi-currency-usd' },
+    { label: 'C9 独家', value: 'exclusive33', icon: 'mdi mdi-currency-usd' },
   ];
 
   const onChange = (val: string | number) => {
@@ -525,12 +525,12 @@
   const faqItems = reactive([
     {
       value: 'q1',
-      title: 'Stake 是什么？',
+      title: 'C9 是什么？',
       content:
-        'Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。Stake.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。',
+        'C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。C9.com 从 2017 年开始就领导了线上博彩行业，提供各类线上赌场和体育投注项目，在全球范围内以 15 种不同的语言运营。',
     },
-    { value: 'q2', title: 'Stake 是否拿到许可？', content: '这里放答案内容...' },
-    { value: 'q3', title: '投注 Stake 是否安全？', content: '这里放答案内容...' },
+    { value: 'q2', title: 'C9 是否拿到许可？', content: '这里放答案内容...' },
+    { value: 'q3', title: '投注 C9 是否安全？', content: '这里放答案内容...' },
     { value: 'q4', title: '我可以投注哪些货币？', content: '这里放答案内容...' },
   ]);
 </script>

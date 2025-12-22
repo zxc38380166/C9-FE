@@ -15,15 +15,10 @@ export default defineNuxtPlugin(({ provide }) => {
   provide('hostname', hostname);
   globalThis.vueVersion = (layoutMap) => {
     const config = getConfig(hostname);
-    console.log(config, 'config');
-
     const defaultVersion = LAYOUT_ENUM.a1.toLocaleUpperCase();
     const currentVersion = config.layout;
-    console.log(currentVersion, 'currentVersion');
-
     const layout = currentVersion?.toUpperCase() || defaultVersion;
     const loader = layoutMap[layout] ?? layoutMap[defaultVersion];
-    console.log(layoutMap, 'layoutMap');
 
     if (!loader) throw new Error(`[vueVersion] Layout "${layout}" not found`);
     const is = defineAsyncComponent(loader);

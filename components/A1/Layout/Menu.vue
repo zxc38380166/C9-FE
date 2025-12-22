@@ -15,7 +15,6 @@
             @click.stop="toggleCollapse"
             :class="collapse ? 'mdi-menu-close' : 'mdi-menu-open'"
             class="mdi text-white text-[22px] mr-3 cursor-pointer" />
-
           <template #title>
             <el-radio-group
               v-if="!collapse"
@@ -28,7 +27,6 @@
             </el-radio-group>
           </template>
         </el-menu-item>
-
         <template v-for="item in menuList" :key="item.key">
           <!-- 分隔線 -->
           <el-menu-item
@@ -38,24 +36,25 @@
             class="!cursor-default !opacity-100 !h-[10px]">
             <div class="w-full h-px bg-white/10 my-2"></div>
           </el-menu-item>
-
           <!-- 子選單 -->
           <el-sub-menu v-else-if="item.children" :index="item.key">
             <template #title>
               <i v-if="item.icon" :class="item.icon" class="mdi text-[18px] mr-3" />
               <span>{{ item.i18nKey ? $t(item.i18nKey) : item.key }}</span>
             </template>
-
-            <el-menu-item v-for="child in item.children" :key="child.key" :index="child.key">
+            <el-menu-item
+              v-for="child in item.children"
+              :key="child.key"
+              :index="child.key"
+              @click="child.onClick?.()">
               <i v-if="child.icon" :class="child.icon" class="mdi text-[16px] mr-3" />
               <template #title>
                 {{ child.i18nKey ? $t(child.i18nKey) : child.key }}
               </template>
             </el-menu-item>
           </el-sub-menu>
-
           <!-- 一般選單 -->
-          <el-menu-item v-else :index="item.key">
+          <el-menu-item v-else :index="item.key" @click="item.onClick?.()">
             <i v-if="item.icon" :class="item.icon" class="mdi text-[18px] mr-3" />
             <template #title>
               {{ item.i18nKey ? $t(item.i18nKey) : item.key }}
@@ -66,10 +65,8 @@
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
-  import { computed, ref } from 'vue';
-
+  const store = useStore();
   const props = defineProps<{
     collapse: boolean;
     asideWidth: string;
@@ -93,52 +90,57 @@
     i18nKey?: string;
     divider?: boolean;
     children?: MenuItem[];
+    onClick?: () => void;
   }
 
   const casinoMenu: MenuItem[] = [
-    { key: 'favorite', icon: 'mdi-star-outline', i18nKey: 'menu.favorite' },
-    { key: 'recent', icon: 'mdi-history', i18nKey: 'menu.recent' },
-    { key: 'challenge', icon: 'mdi-trophy-outline', i18nKey: 'menu.challenge' },
-    { key: 'bet', icon: 'mdi-clipboard-check-outline', i18nKey: 'menu.bet' },
-    { key: 'divider-1', divider: true },
     {
-      key: 'games',
-      icon: 'mdi-gamepad-variant-outline',
-      i18nKey: 'menu.games',
-      children: [
-        { key: 'live', icon: 'mdi-account-group-outline', i18nKey: 'menu.live' },
-        { key: 'slot', icon: 'mdi-slot-machine', i18nKey: 'menu.slot' },
-        { key: 'chess', icon: 'mdi-cards', i18nKey: 'menu.chess' },
-        { key: 'fish', icon: 'mdi-fish', i18nKey: 'menu.fish' },
-        { key: 'c9Original', icon: 'mdi-fire', i18nKey: 'menu.c9Original' },
-        { key: 'c9Exclusive', icon: 'mdi-alpha-c-circle-outline', i18nKey: 'menu.c9Exclusive' },
-      ],
+      key: 'favorite',
+      icon: 'mdi-star-outline',
+      i18nKey: 'menu.favorite',
+      onClick: () => {},
+    },
+    {
+      key: 'recent',
+      icon: 'mdi-history',
+      i18nKey: 'menu.recent',
+      onClick: () => {},
     },
     {
       key: 'games',
       icon: 'mdi-gamepad-variant-outline',
       i18nKey: 'menu.games',
       children: [
-        { key: 'live', icon: 'mdi-account-group-outline', i18nKey: 'menu.live' },
-        { key: 'slot', icon: 'mdi-slot-machine', i18nKey: 'menu.slot' },
-        { key: 'chess', icon: 'mdi-cards', i18nKey: 'menu.chess' },
-        { key: 'fish', icon: 'mdi-fish', i18nKey: 'menu.fish' },
-        { key: 'c9Original', icon: 'mdi-fire', i18nKey: 'menu.c9Original' },
-        { key: 'c9Exclusive', icon: 'mdi-alpha-c-circle-outline', i18nKey: 'menu.c9Exclusive' },
+        { key: 'live', icon: 'mdi-account-group-outline', i18nKey: 'menu.live', onClick: () => {} },
+        { key: 'slot', icon: 'mdi-slot-machine', i18nKey: 'menu.slot', onClick: () => {} },
+        { key: 'chess', icon: 'mdi-cards', i18nKey: 'menu.chess', onClick: () => {} },
+        { key: 'fish', icon: 'mdi-fish', i18nKey: 'menu.fish', onClick: () => {} },
+        { key: 'c9Original', icon: 'mdi-fire', i18nKey: 'menu.c9Original', onClick: () => {} },
+        {
+          key: 'c9Exclusive',
+          icon: 'mdi-alpha-c-circle-outline',
+          i18nKey: 'menu.c9Exclusive',
+          onClick: () => {},
+        },
       ],
+    },
+
+    {
+      key: 'lang',
+      icon: 'mdi-translate',
+      i18nKey: 'menu.lang',
+      onClick: () => {
+        store.getDoms.dialogLang.open = true;
+      },
     },
   ];
 
-  const sportMenu: MenuItem[] = [
-    { key: 'sportHome', icon: 'mdi-soccer', i18nKey: 'menu.sportHome' },
-    { key: 'sportLive', icon: 'mdi-access-point', i18nKey: 'menu.sportLive' },
-  ];
+  const sportMenu: MenuItem[] = [];
 
   const menuList = computed(() => {
     return gameMode.value === 'casino' ? casinoMenu : sportMenu;
   });
 </script>
-
 <style scoped lang="scss">
   .a1-layout-menu {
     /* 由外層 layout 控制 width，但這裡也可保底 */

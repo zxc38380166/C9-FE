@@ -7,7 +7,9 @@
 
       <!-- Actions -->
       <div class="flex items-center gap-3">
-        <button class="rounded-md bg-[#2f4553] px-4 py-2 text-sm text-white hover:bg-[#3b5668]">
+        <button
+          @click="store.getDoms.dialogLogin.open = true"
+          class="rounded-md bg-[#2f4553] px-4 py-2 text-sm text-white hover:bg-[#3b5668]">
           登錄
         </button>
         <button
@@ -19,5 +21,6 @@
   </header>
 </template>
 <script setup lang="ts">
+  const store = useStore();
   // 之後可接登入狀態、router、modal
 </script>

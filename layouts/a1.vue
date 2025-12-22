@@ -1,11 +1,17 @@
 <template>
   <div class="flex h-screen bg-[#1a2c38] overflow-hidden">
     <!-- Aside -->
+    <A1DialogLogin
+      v-model="doms.dialogLogin.open"
+      @login="doms.dialogLogin.handleLogin"
+      @forgot="doms.dialogLogin.toForgot"
+      @google="doms.dialogLogin.loginWithGoogle"
+      @register="doms.dialogLogin.toRegister" />
     <A1DialogLang
-      v-model="open"
-      v-model:selected="selectedLang"
+      v-model="doms.dialogLang.open"
+      v-model:selected="doms.dialogLang.select"
       title="语言"
-      :langs="langs"
+      :langs="doms.dialogLang.options"
       :show-cancel="true"
       confirm-text-label="确认"
       dialog-bg="#071d2a"
@@ -16,14 +22,11 @@
       active-row-border="#5fae8e"
       active-dot="#5fae8e"
       active-radio-border="#5fae8e"
-      @confirm="applyLang as any" />
-
+      @confirm="doms.dialogLang.applyLang" />
     <aside class="fixed left-0 top-0 h-screen z-40">
       <A1LayoutMenu v-model:collapse="isCollapse" :asideWidth />
     </aside>
-    <!-- Main -->
     <div class="flex flex-col flex-1 overflow-hidden" :style="{ marginLeft: asideWidth }">
-      <!-- Sticky Header -->
       <header class="sticky top-0 z-30 bg-gradient-to-b from-[#1a2c38] to-[#0f212e]">
         <A1LayoutHeader />
       </header>
@@ -38,24 +41,46 @@
   </div>
 </template>
 <script setup lang="ts">
+  const store = useStore();
+
   const isCollapse = ref(false);
   const asideWidth = computed(() => (isCollapse.value ? '64px' : '250px'));
 
-  const open = ref(false);
-  const selectedLang = ref('zh-TW');
+  const doms = reactive({
+    dialogLang: {
+      open: true,
+      select: 'zh-TW',
+      applyLang() {},
+      options: [
+        { label: '中文(简体)', value: 'zh-CN', icon: '/common/flags/CNY.png' },
+        { label: '中文(繁體)', value: 'zh-TW', icon: '/common/flags/TWD.png' },
+      ],
+    },
 
-  const langs = [
-    { label: '中文(简体)', value: 'zh-CN', icon: '/flags/cn.png' },
-    { label: '日本語', value: 'ja', icon: '/flags/jp.png' },
-    { label: '한국어', value: 'ko', icon: '/flags/kr.png' },
-    { label: 'แบบไทย', value: 'th', icon: '/flags/th.png' },
-    { label: '中文(繁體)', value: 'zh-TW', icon: '/flags/hk.png' },
-    { label: 'English', value: 'en', icon: '/flags/us.png' },
-    { label: 'Tiếng Việt', value: 'vi', icon: '/flags/vn.png' },
-  ];
+    dialogLogin: {
+      open: false,
+      handleLogin: ({ account, password }: { account: string; password: string }) => {
+        console.log('login', account, password);
+      },
+      toForgot: () => {
+        console.log('forgot');
+      },
+      loginWithGoogle: () => {
+        console.log('google');
+      },
+      toRegister: () => {
+        console.log('register');
+      },
+      openDialog: () => {
+        doms.dialogLogin.open = true;
+      },
+      closeDialog: () => {
+        doms.dialogLogin.open = false;
+      },
+    },
+  });
 
-  const applyLang = (lang: string) => {
-    // 你這裡接 nuxt-i18n / vue-i18n 切語系即可
-    console.log('apply lang =>', lang);
-  };
+  onMounted(() => {
+    store.setDoms(doms);
+  });
 </script>
