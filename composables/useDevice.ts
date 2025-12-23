@@ -1,4 +1,3 @@
-// ~/composables/useDeviceInfo.ts
 import { computed } from 'vue';
 import { useMediaQuery, useWindowSize } from '@vueuse/core';
 import { useRequestHeaders } from '#app';
@@ -61,7 +60,7 @@ function detectBrand(ua: string): Brand {
   return 'unknown';
 }
 
-export function useDeviceInfo(options?: { desktopMinWidth?: number }) {
+export default function (options?: { desktopMinWidth?: number }) {
   const desktopMinWidth = options?.desktopMinWidth ?? 768;
 
   // ✅ UA：SSR 用 headers，CSR 用 navigator.userAgent

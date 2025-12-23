@@ -1,79 +1,104 @@
 <template>
-  <footer class="bg-[#071d2a] text-white/80 px-4">
-    <!-- 上方連結區 -->
-    <div class="mx-auto max-w-[1440px] px-4 py-12">
-      <div class="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
-        <div v-for="group in footerLinks" :key="group.key">
-          <h4 class="mb-4 text-sm font-semibold text-white">
-            {{ $t(group.title) }}
-          </h4>
+  <div>
+    <div v-if="isDesktop" class="bg-[#071d2a] text-white/80 px-4">
+      <!-- 上方連結區 -->
+      <div class="mx-auto max-w-[1440px] px-4 py-12">
+        <div class="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+          <div v-for="group in footerLinks" :key="group.key">
+            <h4 class="mb-4 text-sm font-semibold text-white">
+              {{ $t(group.title) }}
+            </h4>
 
-          <ul class="space-y-3 text-sm">
-            <li v-for="item in group.items" :key="item.key">
-              <a
-                :href="item.href || '#'"
-                target="_blank"
-                rel="noopener"
-                class="hover:text-white transition">
-                {{ $t(item.label) }}
-                <span v-if="item.external" class="ml-1 opacity-60">↗</span>
-              </a>
-            </li>
-          </ul>
+            <ul class="space-y-3 text-sm">
+              <li v-for="item in group.items" :key="item.key">
+                <a
+                  :href="item.href || '#'"
+                  target="_blank"
+                  rel="noopener"
+                  class="hover:text-white transition">
+                  {{ $t(item.label) }}
+                  <span v-if="item.external" class="ml-1 opacity-60">↗</span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
-    </div>
 
-    <!-- 社群 -->
-    <div class="flex justify-center gap-6 py-6">
-      <a
-        v-for="icon in socialIcons"
-        :key="icon.key"
-        :href="icon.href"
-        target="_blank"
-        class="text-white/70 hover:text-white transition text-lg">
-        <i :class="icon.icon" />
-      </a>
-    </div>
-
-    <!-- 分隔線 -->
-    <div class="mx-auto max-w-[1440px] px-4">
-      <div class="h-px w-full bg-white/10" />
-    </div>
-
-    <!-- 法律文字 -->
-    <div
-      class="mx-auto max-w-[1440px] px-4 py-8 text-center text-xs leading-relaxed text-white/60 space-y-4">
-      <p>© 2025 C9.com | {{ $t('footer.allRightsReserved') }}</p>
-
-      <p>
-        {{ $t('footer.license') }}
-        <a href="mailto:support@C9.com" class="underline hover:text-white"> support@C9.com </a>
-      </p>
-
-      <p>
-        {{ $t('footer.responsibleGambling') }}
+      <!-- 社群 -->
+      <div class="flex justify-center gap-6 py-6">
         <a
-          href="https://www.gamblingtherapy.org"
+          v-for="icon in socialIcons"
+          :key="icon.key"
+          :href="icon.href"
           target="_blank"
-          class="underline hover:text-white">
-          Gamblingtherapy.org
+          class="text-white/70 hover:text-white transition text-lg">
+          <i :class="icon.icon" />
         </a>
-      </p>
+      </div>
 
-      <p class="pt-2 text-white/50">1 BTC = $88,105.73</p>
+      <!-- 分隔線 -->
+      <div class="mx-auto max-w-[1440px] px-4">
+        <div class="h-px w-full bg-white/10" />
+      </div>
+
+      <!-- 法律文字 -->
+      <div
+        class="mx-auto max-w-[1440px] px-4 py-8 text-center text-xs leading-relaxed text-white/60 space-y-4">
+        <p>© 2025 C9.com | {{ $t('footer.allRightsReserved') }}</p>
+
+        <p>
+          {{ $t('footer.license') }}
+          <a href="mailto:support@C9.com" class="underline hover:text-white"> support@C9.com </a>
+        </p>
+
+        <p>
+          {{ $t('footer.responsibleGambling') }}
+          <a
+            href="https://www.gamblingtherapy.org"
+            target="_blank"
+            class="underline hover:text-white">
+            Gamblingtherapy.org
+          </a>
+        </p>
+
+        <p class="pt-2 text-white/50">1 BTC = $88,105.73</p>
+      </div>
     </div>
-  </footer>
+    <nav
+      v-else
+      class="fixed left-0 right-0 bottom-0 z-40 h-[64px] bg-[#0f212e] border-t border-white/10">
+      <div class="mx-auto flex h-full max-w-[1440px] items-center justify-around px-2">
+        <button
+          v-for="item in mobileTabs"
+          :key="item.key"
+          type="button"
+          class="flex flex-col items-center justify-center gap-1 px-2 leading-[18px]"
+          @click="goTab(item)">
+          <i
+            :class="item.icon"
+            class="text-[20px]"
+            :style="{ color: activeTab === item.key ? '#ffffff' : 'rgba(255,255,255,0.6)' }" />
+          <span
+            class="text-[11px]"
+            :style="{ color: activeTab === item.key ? '#ffffff' : 'rgba(255,255,255,0.6)' }">
+            {{ item.label }}
+          </span>
+        </button>
+      </div>
+    </nav>
+  </div>
 </template>
-
 <script setup lang="ts">
-  /* ---------- footer link data ---------- */
+  const router = useRouter();
+  const route = useRoute();
+  const { isDesktop, isMobile, isTablet } = useDevice();
 
   interface FooterItem {
     key: string;
     label: string;
-    href?: string; // ✅ 明確宣告可選
-    external?: boolean; // ✅ 明確宣告可選
+    href?: string;
+    external?: boolean;
   }
 
   interface FooterGroup {
@@ -169,4 +194,26 @@
     { key: 'instagram', icon: 'mdi mdi-instagram', href: '#' },
     { key: 'youtube', icon: 'mdi mdi-youtube', href: '#' },
   ];
+
+  const mobileTabs = [
+    { key: 'browse', label: '浏览', icon: 'mdi mdi-compass-outline', to: '/' },
+    { key: 'casino', label: '娱乐城', icon: 'mdi mdi-cards-playing-outline', to: '/casino' },
+    { key: 'bet', label: '投注', icon: 'mdi mdi-receipt-text-outline', to: '/bet' },
+    { key: 'sports', label: '体育', icon: 'mdi mdi-basketball', to: '/sports' },
+    { key: 'chat', label: '聊天室', icon: 'mdi mdi-chat-outline', to: '/chat' },
+  ] as const;
+
+  const activeTab = computed(() => {
+    const p = route.path || '/';
+    if (p.startsWith('/casino')) return 'casino';
+    if (p.startsWith('/bet')) return 'bet';
+    if (p.startsWith('/sports')) return 'sports';
+    if (p.startsWith('/chat')) return 'chat';
+    return 'browse';
+  });
+
+  const goTab = (item: (typeof mobileTabs)[number]) => {
+    if (!item.to) return;
+    router.push(item.to);
+  };
 </script>

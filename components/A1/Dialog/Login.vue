@@ -118,7 +118,7 @@
         <!-- Primary -->
         <button
           type="button"
-          class="h-11 w-full rounded-xl font-bold tracking-wide transition disabled:opacity-70 disabled:cursor-not-allowed bg-[#5fae8e] text-white hover:brightness-110 active:brightness-95"
+          class="h-11 w-full rounded-xl font-bold tracking-wide transition disabled:opacity-70 disabled:cursor-not-allowed bg-gradient-to-b from-[#77cbac] to-[#1a6b52] text-white hover:brightness-110 active:brightness-95"
           :disabled="disabled || loading"
           @click="submit">
           <span v-if="!loading">{{ loginText }}</span>
@@ -288,7 +288,6 @@
       clearOnOpen: false,
     },
   );
-
   const emit = defineEmits<{
     (e: 'update:modelValue', v: boolean): void;
     (e: 'login', payload: LoginPayload): void;
@@ -299,6 +298,23 @@
     (e: 'register'): void;
     (e: 'close'): void;
   }>();
+  const { isLogin, setToken } = useAuth();
+
+  const initialValues: LoginPayload = { account: '', password: '' };
+  const validationSchema = yup.object({
+    account: yup.string().trim().required('请输入账号'),
+    password: yup.string().required('请输入密码'),
+  });
+  const { handleSubmit, resetForm, values, errors, setFieldValue } = useForm<LoginPayload>({
+    validationSchema,
+    initialValues,
+  });
+
+  const { value: accountValue, handleBlur: accountBlur } = useField<string>('account');
+  const { value: passwordValue, handleBlur: passwordBlur } = useField<string>('password');
+
+  const loading = ref(false);
+  const showPassword = ref(false);
 
   const visibleProxy = computed({
     get: () => props.modelValue,
@@ -316,24 +332,6 @@
     boxShadow: props.dialogShadow,
     overflow: 'hidden',
   }));
-
-  const initialValues: LoginPayload = { account: '', password: '' };
-
-  const validationSchema = yup.object({
-    account: yup.string().trim().required('请输入账号'),
-    password: yup.string().required('请输入密码'),
-  });
-
-  const { handleSubmit, resetForm, values, errors, setFieldValue } = useForm<LoginPayload>({
-    validationSchema,
-    initialValues,
-  });
-
-  const { value: accountValue, handleBlur: accountBlur } = useField<string>('account');
-  const { value: passwordValue, handleBlur: passwordBlur } = useField<string>('password');
-
-  const loading = ref(false);
-  const showPassword = ref(false);
 
   watch(
     () => props.modelValue,
@@ -367,6 +365,7 @@
 
         if (res.code === 200) {
           useMsg().success('登入成功');
+          setToken(res.data.token);
           store.getDoms.dialogLogin.open = false;
         } else {
           useMsg().error(res.message);

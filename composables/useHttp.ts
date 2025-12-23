@@ -56,7 +56,7 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     middlewares,
     json = true,
     fetchOptions,
-    auth = true, // 👈 預設開啟
+    auth = true,
   } = options;
 
   const req = useRequestURL();

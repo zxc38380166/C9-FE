@@ -1,4 +1,3 @@
-// composables/useMsg.ts
 import { ElNotification } from 'element-plus';
 import type { NotificationOptions, NotificationParams, NotificationHandle } from 'element-plus';
 

@@ -1,6 +1,6 @@
 <template>
-  <div class="flex h-screen bg-[#1a2c38] overflow-hidden">
-    <!-- Aside -->
+  <div class="min-h-[100dvh] bg-[#1a2c38] overflow-hidden">
+    <!-- Dialogs（保持不動） -->
     <A1DialogRegister
       v-model="doms.dialogRegister.open"
       @change-lang="(lang) => (doms.dialogLang.select = lang)"
@@ -27,25 +27,42 @@
       active-dot="#5fae8e"
       active-radio-border="#5fae8e"
       @confirm="doms.dialogLang.applyLang" />
-    <aside class="fixed left-0 top-0 h-screen z-40">
-      <A1LayoutMenu v-model:collapse="isCollapse" :asideWidth />
-    </aside>
-    <div class="flex flex-col flex-1 overflow-hidden" :style="{ marginLeft: asideWidth }">
+    <!-- ========== Desktop Layout ========== -->
+    <div v-if="isDesktop" class="flex h-[100dvh] overflow-hidden">
+      <aside class="fixed left-0 top-0 h-[100dvh] z-40">
+        <A1LayoutMenu v-model:collapse="isCollapse" :asideWidth />
+      </aside>
+      <div class="flex flex-col flex-1 overflow-hidden" :style="{ marginLeft: asideWidth }">
+        <header class="sticky top-0 z-30 bg-gradient-to-b from-[#1a2c38] to-[#0f212e]">
+          <A1LayoutHeader />
+        </header>
+        <!-- 真正捲動區 -->
+        <main class="flex-1 scrollable-hidden overflow-y-auto overscroll-contain bg-[#1a2c38]">
+          <slot />
+          <footer>
+            <A1LayoutFooter />
+          </footer>
+        </main>
+      </div>
+    </div>
+    <!-- ========== Mobile Layout ========== -->
+    <div v-else class="relative h-[100dvh] overflow-hidden">
       <header class="sticky top-0 z-30 bg-gradient-to-b from-[#1a2c38] to-[#0f212e]">
         <A1LayoutHeader />
       </header>
-      <!-- 真正捲動區 -->
-      <main class="flex-1 scrollable-hidden overflow-y-auto overscroll-contain bg-[#1a2c38]">
+      <main
+        class="absolute pt-[59px] pb-[63px] px-[20px] inset-0 overflow-y-auto overscroll-contain bg-[#1a2c38]">
         <slot />
-        <footer>
-          <A1LayoutFooter />
-        </footer>
       </main>
+      <footer>
+        <A1LayoutFooter />
+      </footer>
     </div>
   </div>
 </template>
 <script setup lang="ts">
   const store = useStore();
+  const { isDesktop } = useDevice();
 
   const isCollapse = ref(false);
   const asideWidth = computed(() => (isCollapse.value ? '64px' : '250px'));
@@ -65,25 +82,13 @@
       handleLogin: ({ account, password }: { account: string; password: string }) => {
         console.log('login', account, password);
       },
-      toForgot: () => {
-        console.log('forgot');
-      },
-      loginWithGoogle: () => {
-        console.log('google');
-      },
-      toRegister: () => {
-        console.log('register');
-      },
-      openDialog: () => {
-        doms.dialogLogin.open = true;
-      },
-      closeDialog: () => {
-        doms.dialogLogin.open = false;
-      },
+      toForgot: () => console.log('forgot'),
+      loginWithGoogle: () => console.log('google'),
+      toRegister: () => console.log('register'),
+      openDialog: () => (doms.dialogLogin.open = true),
+      closeDialog: () => (doms.dialogLogin.open = false),
     },
-    dialogRegister: {
-      open: false,
-    },
+    dialogRegister: { open: false },
   });
 
   onMounted(async () => {

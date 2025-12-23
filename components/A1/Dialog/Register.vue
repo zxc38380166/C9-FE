@@ -79,7 +79,7 @@
 
         <button
           type="button"
-          class="h-11 w-full rounded-xl font-bold tracking-wide transition disabled:opacity-70 disabled:cursor-not-allowed bg-[#2d7ef7] text-white hover:brightness-110 active:brightness-95"
+          class="h-11 w-full rounded-xl font-bold tracking-wide transition disabled:opacity-70 disabled:cursor-not-allowed bg-gradient-to-b from-[#77cbac] to-[#1a6b52] text-white hover:brightness-110 active:brightness-95"
           :disabled="loading || disabled || !selectedLang"
           @click="goNextFromLang">
           {{ confirmLangText }}
