@@ -7,13 +7,18 @@
     :lock-scroll="lockScroll"
     :width="width"
     :append-to-body="appendToBody"
+    :align-center="true"
     class="login-dialog"
     :style="dialogInlineStyle"
-    :header-class="headerClass"
+    :header-class="'absolute top-[-9999]'"
     :body-class="bodyClass"
     :footer-class="footerClass">
     <!-- Header -->
     <template #header>
+      <div />
+    </template>
+    <!-- Content -->
+    <div class="space-y-4 text-white h-[calc(100vh-250px)] overflow-auto scrollable-hidden">
       <div class="flex items-center justify-between">
         <div class="select-none text-white text-[34px] font-extrabold leading-none tracking-wide">
           {{ logoText }}
@@ -26,15 +31,10 @@
           <i class="mdi mdi-close text-xl" />
         </button>
       </div>
-    </template>
-
-    <!-- Content -->
-    <div class="space-y-4 text-white">
       <div class="space-y-3">
         <!-- Account -->
         <div>
           <div class="pb-[5px] text-white/85">{{ accountLabel }}</div>
-
           <div class="relative">
             <input
               :value="accountValue"
@@ -249,7 +249,7 @@
       clearOnOpen?: boolean;
     }>(),
     {
-      width: 350,
+      width: 520,
       closeOnMask: true,
       closeOnEsc: true,
       lockScroll: true,

@@ -4,12 +4,14 @@
     <A1DialogRegister
       v-model="doms.dialogRegister.open"
       @change-lang="(lang) => (doms.dialogLang.select = lang)"
-      @login="doms.dialogLogin.open = true" />
+      @login="doms.dialogLogin.open = true"
+      :width="isDesktop ? 520 : 360" />
     <A1DialogLogin
       v-model="doms.dialogLogin.open"
       @login="doms.dialogLogin.handleLogin"
       @forgot="doms.dialogLogin.toForgot"
       @google="doms.dialogLogin.loginWithGoogle"
+      :width="isDesktop ? 520 : 360"
       @register="doms.dialogLogin.toRegister" />
     <A1DialogLang
       v-model="doms.dialogLang.open"
@@ -51,7 +53,7 @@
         <A1LayoutHeader />
       </header>
       <main
-        class="absolute pt-[59px] pb-[63px] px-[20px] inset-0 overflow-y-auto overscroll-contain bg-[#1a2c38]">
+        class="absolute pt-[59px] pb-[63px] px-[20px] inset-0 scrollable-hidden overflow-y-auto overscroll-contain bg-[#1a2c38]">
         <slot />
       </main>
       <footer>

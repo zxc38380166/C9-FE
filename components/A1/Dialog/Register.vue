@@ -14,13 +14,11 @@
     :header-class="headerClass"
     :body-class="bodyClass"
     :footer-class="footerClass">
-    <!-- Header -->
     <template #header>
       <div class="flex items-center justify-between">
         <div class="select-none text-white text-[34px] font-extrabold leading-none tracking-wide">
           {{ logoText }}
         </div>
-
         <button
           type="button"
           class="flex h-9 w-9 items-center justify-center rounded-full border border-white/10 bg-white/5 text-white/80 hover:bg-white/10 transition"
@@ -28,8 +26,6 @@
           <i class="mdi mdi-close text-xl" />
         </button>
       </div>
-
-      <!-- Top progress bar (Element Steps) -->
       <div class="mt-3 flex items-center justify-between gap-3">
         <el-steps
           :active="activeStep"
@@ -38,14 +34,13 @@
           :align-center="true">
           <el-step v-for="i in totalSteps" :key="i" :title="''" />
         </el-steps>
-
         <div class="text-xs text-white/65 whitespace-nowrap">
           {{ stepText }} {{ activeStep + 1 }} / {{ totalSteps }}
         </div>
       </div>
     </template>
     <!-- Body -->
-    <div class="text-white overflow-auto h-[calc(100vh-250px)] scrollable-hidden">
+    <div class="text-white overflow-auto h-[calc(100vh-350px)] scrollable-hidden">
       <!-- Step 1: language -->
       <div v-show="activeStep === 0" class="space-y-4">
         <div class="space-y-2">
@@ -59,7 +54,6 @@
 
         <div class="space-y-2">
           <div class="text-sm text-white/80">{{ languageLabel }}</div>
-
           <CommonSelect
             v-model="selectedLang"
             selectClass="!border-[white]/10 rounded-xl !border"

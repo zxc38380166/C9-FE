@@ -10,8 +10,6 @@ declare global {
 
 export default defineNuxtPlugin(({ provide }) => {
   const hostname = import.meta.client ? window.location.hostname : useRequestURL().hostname;
-  console.log(hostname, 'hostname');
-
   provide('hostname', hostname);
   globalThis.vueVersion = (layoutMap) => {
     const config = getConfig(hostname);

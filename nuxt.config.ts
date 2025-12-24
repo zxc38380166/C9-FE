@@ -19,6 +19,22 @@ console.log('✨ 記憶體使用量:', `${(memoryUsage().rss / 1024 / 1024).toFi
 console.log(FooterColor, '==================================================', Reset);
 
 export default defineNuxtConfig({
+  app: {
+    head: {
+      title: '',
+      meta: [
+        {
+          name: 'viewport',
+          content:
+            'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, viewport-fit=cover',
+        },
+      ],
+      script: [{ src: 'https://static.geetest.com/v4/gt4.js', async: true }],
+    },
+  },
+  devServer: {
+    host: '0.0.0.0',
+  },
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
   modules: [

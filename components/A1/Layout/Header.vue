@@ -37,7 +37,7 @@
           <el-button v-if="isDesktop" text class="!p-0 !border-0 hover:!bg-transparent">
             <i class="mdi mdi-magnify text-[white] text-[25px]" />
           </el-button>
-          <el-dropdown placement="bottom" :teleported="false">
+          <el-dropdown placement="bottom">
             <el-button text class="!p-0 !border-0 hover:!bg-transparent">
               <i class="mdi mdi-account-outline text-white text-[25px]" />
             </el-button>
