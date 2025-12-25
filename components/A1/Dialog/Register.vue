@@ -666,17 +666,14 @@
     try {
       loading.value = true;
 
-      const res = await useHttp(useApi().register, {
-        method: 'POST',
-        body: {
-          account: values.email,
-          name: values.username,
-          password: values.password,
-          birthday: values.birthday,
-          phone: showPhone.value ? values.phone || '' : '',
-          referralCode: showReferral.value ? values.referralCode || '' : '',
-          lang: values.lang,
-        },
+      const res = await useApi().register({
+        account: values.email,
+        name: values.username,
+        password: values.password,
+        birthday: values.birthday,
+        phone: showPhone.value ? values.phone || '' : '',
+        referralCode: showReferral.value ? values.referralCode || '' : '',
+        lang: values.lang,
       });
 
       if (res.code === 200) {

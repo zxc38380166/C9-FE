@@ -1,5 +1,6 @@
 <template>
-  <div class="min-h-[100dvh] bg-[#1a2c38] overflow-hidden">
+  <!-- ✅ 等三支都回來才顯示 -->
+  <div v-if="isReady" class="min-h-[100dvh] bg-[#1a2c38] overflow-hidden">
     <!-- Dialogs（保持不動） -->
     <A1DialogRegister
       v-model="doms.dialogRegister.open"
@@ -24,11 +25,12 @@
       dialog-border="#FFFFFF14"
       row-bg="#0000001F"
       row-border="#FFFFFF14"
-      row-hover-bg="#FFFFFF0A"
+      row-hover-bg="#FFFFFF14"
       active-row-border="#5fae8e"
       active-dot="#5fae8e"
       active-radio-border="#5fae8e"
       @confirm="doms.dialogLang.applyLang" />
+
     <!-- ========== Desktop Layout ========== -->
     <div v-if="isDesktop" class="flex h-[100dvh] overflow-hidden">
       <aside class="fixed left-0 top-0 h-[100dvh] z-40">
@@ -38,15 +40,13 @@
         <header class="sticky top-0 z-30 bg-gradient-to-b from-[#1a2c38] to-[#0f212e]">
           <A1LayoutHeader />
         </header>
-        <!-- 真正捲動區 -->
         <main class="flex-1 scrollable-hidden overflow-y-auto overscroll-contain bg-[#1a2c38]">
           <slot />
-          <footer>
-            <A1LayoutFooter />
-          </footer>
+          <footer><A1LayoutFooter /></footer>
         </main>
       </div>
     </div>
+
     <!-- ========== Mobile Layout ========== -->
     <div v-else class="relative h-[100dvh] overflow-hidden">
       <header class="sticky top-0 z-30 bg-gradient-to-b from-[#1a2c38] to-[#0f212e]">
@@ -56,13 +56,17 @@
         class="absolute pt-[59px] pb-[63px] px-[20px] inset-0 scrollable-hidden overflow-y-auto overscroll-contain bg-[#1a2c38]">
         <slot />
       </main>
-      <footer>
-        <A1LayoutFooter />
-      </footer>
+      <footer><A1LayoutFooter /></footer>
     </div>
+  </div>
+  <!-- ✅ loading（你也可以換成骨架屏） -->
+  <div v-else class="min-h-[100dvh] bg-[#1a2c38] flex items-center justify-center text-white/80">
+    Loading...
   </div>
 </template>
 <script setup lang="ts">
+  const api = useApi();
+
   const store = useStore();
   const { isDesktop } = useDevice();
 
@@ -82,7 +86,7 @@
     dialogLogin: {
       open: false,
       handleLogin: ({ account, password }: { account: string; password: string }) => {
-        console.log('login', account, password);
+        console.log('logisn', account, password);
       },
       toForgot: () => console.log('forgot'),
       loginWithGoogle: () => console.log('google'),
@@ -93,7 +97,34 @@
     dialogRegister: { open: false },
   });
 
-  onMounted(async () => {
+  const isReady = ref(false);
+
+  /** ✅ 需要的話把結果存起來 */
+  const res1 = shallowRef<any>(null);
+  const res2 = shallowRef<any>(null);
+  const res3 = shallowRef<any>(null);
+
+  try {
+    // ✅ 並行發送：等 1/2/3 全回來才往下走（SSR 也會等）
+    const [r1, r2, r3] = await Promise.all([
+      api.getGameProvider({ test: 'asdf' }),
+      api.getGameProvider({ test: 'asdf' }),
+      api.getGameProvider({ test: 'asdf' }),
+    ]);
+
+    console.log(r1.data.value, r2.data.value, r3.data.value, 'r1, r2, r3');
+
+    res1.value = r1;
+    res2.value = r2;
+    res3.value = r3;
+
+    isReady.value = true;
+  } catch (err) {
+    console.error('[prefetch] failed', err);
+    isReady.value = true;
+  }
+
+  onMounted(() => {
     store.setDoms(doms);
   });
 </script>

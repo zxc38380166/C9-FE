@@ -357,10 +357,9 @@
       loading.value = true;
 
       try {
-        const res = await useHttp(useApi().login, {
-          method: 'POST',
-          body: { account: payload.account, password: payload.password },
-          params: { lang: 'zh-TW', device: 'web' },
+        const res = await useApi().login({
+          account: payload.account,
+          password: payload.password,
         });
 
         if (res.code === 200) {
