@@ -1,6 +1,6 @@
 <template>
   <!-- ✅ 等三支都回來才顯示 -->
-  <div v-if="isReady" class="min-h-[100dvh] bg-[#1a2c38] overflow-hidden">
+  <div v-if="store.getIsReady" class="min-h-[100dvh] bg-[#1a2c38] overflow-hidden">
     <!-- Dialogs（保持不動） -->
     <A1DialogRegister
       v-model="doms.dialogRegister.open"
@@ -96,33 +96,6 @@
     },
     dialogRegister: { open: false },
   });
-
-  const isReady = ref(false);
-
-  /** ✅ 需要的話把結果存起來 */
-  const res1 = shallowRef<any>(null);
-  const res2 = shallowRef<any>(null);
-  const res3 = shallowRef<any>(null);
-
-  try {
-    // ✅ 並行發送：等 1/2/3 全回來才往下走（SSR 也會等）
-    const [r1, r2, r3] = await Promise.all([
-      api.getGameProvider({ test: 'asdf' }),
-      api.getGameProvider({ test: 'asdf' }),
-      api.getGameProvider({ test: 'asdf' }),
-    ]);
-
-    // console.log(r1.data.value, r2.data.value, r3.data.value, 'r1, r2, r3');
-
-    res1.value = r1;
-    res2.value = r2;
-    res3.value = r3;
-
-    isReady.value = true;
-  } catch (err) {
-    console.error('[prefetch] failed', err);
-    isReady.value = true;
-  }
 
   onMounted(() => {
     store.setDoms(doms);

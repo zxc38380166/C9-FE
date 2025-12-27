@@ -75,5 +75,9 @@ export default defineNuxtConfig({
     importStyle: 'css', // 預設 'css'，你也可以改成 'sass'
     // themes: ['dark'], // 可以加 dark/light 主題
   },
-  css: ['@mdi/font/css/materialdesignicons.css', 'assets/css/global.scss'],
+  css: [
+    '@mdi/font/css/materialdesignicons.css',
+    'assets/css/global.scss',
+    '@splidejs/vue-splide/css',
+  ],
 });

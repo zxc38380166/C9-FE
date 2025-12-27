@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-[700px] space-y-8 lg:px-5 xl:px-10 2xl:px-28 py-8">
+  <div class="min-h-[700px] space-y-4 md:space-y-8 lg:px-5 xl:px-10 2xl:px-28 py-6 md:py-8">
     <!-- <A1LayoutBanner /> -->
     <div class="flex flex-col md:flex-row justify-between items-center gap-6">
       <A1HomeUserCard class="w-full md:w-1/3" />
@@ -34,14 +34,18 @@
       :gap="20"
       bottomTextKey="online"
       hoverEffect
-      showArrow />
+      :showArrow="isDesktop" />
     <CommonGridCard
       title="促销活动"
-      titleIcon="mdi mdi-gift-outline"
-      :items="promoItems"
-      textPosition="left"
-      :perPage="3"
-      :step="3" />
+      title-icon="mdi mdi-calendar-blank-outline"
+      :items="promoList"
+      text-position="left"
+      :desktop-per-page="2"
+      :mobile-per-page="1"
+      :per-move="1"
+      :gap="16"
+      :mobile-padding="0"
+      @select="onSelect" />
     <CommonRankList :items="rankingList" :interval="2000" />
     <CommonDropdown
       v-model="open"
@@ -61,6 +65,8 @@
   </div>
 </template>
 <script setup lang="ts">
+  const { isDesktop } = useDevice();
+
   const games = [
     {
       id: 1,
@@ -537,4 +543,29 @@
     { value: 'q3', title: '投注 C9 是否安全？', content: '这里放答案内容...' },
     { value: 'q4', title: '我可以投注哪些货币？', content: '这里放答案内容...' },
   ]);
+
+  const promoList = [
+    {
+      id: 1,
+      title: 'NFL',
+      description: '第三节赔付活动',
+      image: '/img/demo/promo-1.png',
+    },
+    {
+      id: 2,
+      title: 'NBA',
+      description: '赛事加码送彩金',
+      image: '/img/demo/promo-2.png',
+    },
+    {
+      id: 3,
+      title: '电竞',
+      description: '连赢奖励加倍送',
+      image: '/img/demo/promo-3.png',
+    },
+  ];
+
+  const onSelect = (item: any) => {
+    console.log('select promo:', item);
+  };
 </script>

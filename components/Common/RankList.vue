@@ -9,12 +9,15 @@
     @pointerleave="onPointerUp">
     <!-- Header -->
     <div
-      class="grid grid-cols-[1.3fr_1fr_1fr_1fr_1fr_1fr] px-4 py-3 mb-1 text-sm font-medium text-white/80 rounded-xl bg-gradient-to-b from-white/5 to-white/0 border border-white/10 backdrop-blur">
+      class="mb-1 grid items-center px-4 py-3 text-sm font-medium text-white/80 rounded-xl bg-gradient-to-b from-white/5 to-white/0 border border-white/10 backdrop-blur grid-cols-[1fr_auto] md:grid-cols-[1.3fr_1fr_1fr_1fr_1fr_1fr]">
       <div class="tracking-wider">游戏</div>
-      <div class="tracking-wider">玩家</div>
-      <div class="tracking-wider">时间</div>
-      <div class="tracking-wider">投注额</div>
-      <div class="tracking-wider">乘数</div>
+
+      <!-- 只有桌機顯示 -->
+      <div class="hidden md:block tracking-wider">玩家</div>
+      <div class="hidden md:block tracking-wider">时间</div>
+      <div class="hidden md:block tracking-wider">投注额</div>
+      <div class="hidden md:block tracking-wider">乘数</div>
+
       <div class="tracking-wider text-right">支付额</div>
     </div>
 
@@ -28,35 +31,36 @@
         @transitionend.self="onTrackTransitionEnd">
         <div
           v-for="item in renderList"
-          class="grid grid-cols-[1.3fr_1fr_1fr_1fr_1fr_1fr] items-center bg-[#223a45] rounded-xl px-4 py-4 text-white"
+          :key="item.__loopKey"
           :ref="setRowRef as VNodeRef"
-          :key="item.__loopKey">
+          class="grid items-center bg-[#223a45] rounded-xl px-4 py-4 text-white grid-cols-[1fr_auto] md:grid-cols-[1.3fr_1fr_1fr_1fr_1fr_1fr]">
+          <!-- Game (always) -->
           <div class="flex items-center gap-3 font-semibold min-w-0">
             <i :class="item.gameIcon" class="text-xl shrink-0" />
             <span class="truncate">{{ item.gameName }}</span>
           </div>
 
-          <!-- Player -->
-          <div class="flex items-center gap-2 text-white/80 min-w-0">
+          <!-- Player (desktop only) -->
+          <div class="hidden md:flex items-center gap-2 text-white/80 min-w-0">
             <i :class="item.playerIcon" class="shrink-0" />
             <span class="truncate">{{ item.playerName }}</span>
           </div>
 
-          <!-- Time -->
-          <div class="text-white/60 truncate">{{ item.time }}</div>
+          <!-- Time (desktop only) -->
+          <div class="hidden md:block text-white/60 truncate">{{ item.time }}</div>
 
-          <!-- Bet -->
-          <div class="flex items-center gap-2 min-w-0">
+          <!-- Bet (desktop only) -->
+          <div class="hidden md:flex items-center gap-2 min-w-0">
             <span class="truncate">{{ item.betAmount }}</span>
             <i v-if="item.betCurrencyIcon" :class="item.betCurrencyIcon" class="shrink-0" />
           </div>
 
-          <!-- Multiplier -->
-          <div class="text-white/80 truncate">{{ item.multiplier }}</div>
+          <!-- Multiplier (desktop only) -->
+          <div class="hidden md:block text-white/80 truncate">{{ item.multiplier }}</div>
 
-          <!-- Payout -->
+          <!-- Payout (always) -->
           <div
-            class="flex items-center justify-end gap-2 font-semibold min-w-0"
+            class="flex items-center justify-end gap-2 font-semibold min-w-0 text-right"
             :class="item.payoutPositive ? 'text-green-400' : 'text-red-400'">
             <span class="truncate">{{ item.payout }}</span>
             <i v-if="item.payoutCurrencyIcon" :class="item.payoutCurrencyIcon" class="shrink-0" />

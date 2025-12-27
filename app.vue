@@ -17,7 +17,7 @@
     ]);
 
     store.setUserDetail(userDetailRes.data.value.data);
-    console.log(userDetailRes.data.value.data, 'r1');
+    store.setIsReady(true);
   } catch (err) {
     console.error('[prefetch] failed', err);
   }
