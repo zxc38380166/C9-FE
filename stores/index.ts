@@ -4,6 +4,7 @@ export const useMainStore = defineStore('main', () => {
   const isLoading: Ref<boolean> = ref(false);
   const doms: any = ref({});
   const userDetail: any = ref({});
+  const enums: any = ref({});
 
   // Actions
   const actions = {
@@ -19,6 +20,9 @@ export const useMainStore = defineStore('main', () => {
     setIsRoading(params: boolean) {
       isLoading.value = params;
     },
+    setEnums(params: any) {
+      enums.value = params;
+    },
   };
 
   // Getters
@@ -27,6 +31,7 @@ export const useMainStore = defineStore('main', () => {
     getUserDetail: computed(() => userDetail.value),
     getIsReady: computed(() => isReady.value),
     getIsRoading: computed(() => isLoading.value),
+    getEnums: computed(() => enums.value),
   };
 
   return {
