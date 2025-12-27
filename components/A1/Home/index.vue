@@ -1,6 +1,10 @@
 <template>
-  <div class="min-h-[700px] space-y-10 lg:px-5 xl:px-10 2xl:px-28 py-10">
-    <A1LayoutBanner />
+  <div class="min-h-[700px] space-y-8 lg:px-5 xl:px-10 2xl:px-28 py-8">
+    <!-- <A1LayoutBanner /> -->
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+      <A1HomeUserCard class="w-full md:w-1/3" />
+      <A1HomeGameBanner class="w-full md:w-2/3 md:h-[200px]" />
+    </div>
     <div class="flex flex-col space-y-5">
       <A1GameSearchBar />
       <CommonTab

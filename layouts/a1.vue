@@ -112,7 +112,7 @@
       api.getGameProvider({ test: 'asdf' }),
     ]);
 
-    console.log(r1.data.value, r2.data.value, r3.data.value, 'r1, r2, r3');
+    // console.log(r1.data.value, r2.data.value, r3.data.value, 'r1, r2, r3');
 
     res1.value = r1;
     res2.value = r2;
