@@ -132,6 +132,8 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     },
   );
 
+  console.log(requestOptions, 'requestOptions');
+
   const ctx: HttpMiddlewareContext = { url: fullUrl, options: requestOptions };
 
   try {
