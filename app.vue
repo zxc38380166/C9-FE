@@ -17,9 +17,9 @@
       useApi().getEnums({}),
     ]);
 
-    console.log(userDetailRes.data.value, 'userDetailRes.data.value.data');
-    console.log(gameProviderRes.data.value, 'gameProviderRes.data.value.data');
-    console.log(enumsRes.data.value, 'enumsRes.data.value.data');
+    console.log(userDetailRes.data, 'userDetailRes.data.value.data');
+    // console.log(gameProviderRes.data.value, 'gameProviderRes.data.value.data');
+    // console.log(enumsRes.data.value, 'enumsRes.data.value.data');
 
     store.setUserDetail(userDetailRes.data.value.data);
     store.setEnums(enumsRes.data.value.data);
