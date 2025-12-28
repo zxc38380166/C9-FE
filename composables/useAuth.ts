@@ -3,7 +3,7 @@ export function useAuth() {
   const token = useCookie<string | null>('token', {
     sameSite: 'lax',
     secure: import.meta.env.PROD,
-    maxAge: 60 * 60 * 48, // 48 小時（秒）
+    maxAge: 60 * 60 * 24, // 48 小時（秒）
   });
 
   const isLogin = computed(() => !!token.value);

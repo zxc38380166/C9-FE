@@ -1,8 +1,9 @@
 import { defu } from 'defu';
 import config from '../site.config';
 import type { AsyncDataOptions } from '#app';
-
+import { getRequestHost } from 'h3';
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+import { useRequestEvent } from '#app';
 
 export interface HttpMiddlewareContext {
   url: string;
@@ -84,24 +85,19 @@ function getForwardHeadersObj(): Record<string, string> {
   return out;
 }
 
-function getHostnameSSRSafe(): string {
-  // client 直接用瀏覽器
+function getHostnameSsrSafe(): string {
+  // client
   if (import.meta.client) return window.location.hostname;
 
-  // server：優先取代理轉發的 host
-  const h = useRequestHeaders(['x-forwarded-host', 'x-forwarded-proto', 'host']);
+  const event = useRequestEvent();
+  if (!event) return ''; // prerender/build-time
 
-  // 可能是 "example.com, proxy.local" 或 "example.com:443"
-  const raw = String(h['x-forwarded-host'] ?? h.host ?? '');
+  const hostRaw = getRequestHost(event, { xForwardedHost: true }) ?? '';
+  console.log(hostRaw, 'hostRaw');
 
-  const first = raw.split(',')[0]?.trim() ?? '';
-  const hostname = first.split(':')[0] ?? '';
+  const host = hostRaw.split(',')[0]?.trim()?.split(':')[0] ?? '';
 
-  // ✅ fallback：先拿到 requestURL 再 optional chaining
-  const reqUrl = useRequestURL?.(); // 保險寫法：避免型別推斷成可能不存在
-  const urlHostname = reqUrl?.hostname ?? '';
-
-  return hostname || urlHostname || 'localhost';
+  return host;
 }
 
 /* ----------------------------- main (promise) ----------------------------- */
@@ -119,7 +115,7 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     tokenCookieKey = 'token',
   } = options;
 
-  const hostname = getHostnameSSRSafe();
+  const hostname = getHostnameSsrSafe();
   console.log(hostname, 'hostname');
   const baseUrl = config(hostname).baseUrl || 'http://localhost:8080';
 
