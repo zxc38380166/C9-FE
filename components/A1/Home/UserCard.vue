@@ -52,8 +52,6 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { computed } from 'vue';
-
   const store = useStore();
 
   // 你可以改成 store 裡的值，例如 store.vipProgress

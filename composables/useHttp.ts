@@ -84,6 +84,26 @@ function getForwardHeadersObj(): Record<string, string> {
   return out;
 }
 
+function getHostnameSSRSafe(): string {
+  // client 直接用瀏覽器
+  if (import.meta.client) return window.location.hostname;
+
+  // server：優先取代理轉發的 host
+  const h = useRequestHeaders(['x-forwarded-host', 'x-forwarded-proto', 'host']);
+
+  // 可能是 "example.com, proxy.local" 或 "example.com:443"
+  const raw = String(h['x-forwarded-host'] ?? h.host ?? '');
+
+  const first = raw.split(',')[0]?.trim() ?? '';
+  const hostname = first.split(':')[0] ?? '';
+
+  // ✅ fallback：先拿到 requestURL 再 optional chaining
+  const reqUrl = useRequestURL?.(); // 保險寫法：避免型別推斷成可能不存在
+  const urlHostname = reqUrl?.hostname ?? '';
+
+  return hostname || urlHostname || 'localhost';
+}
+
 /* ----------------------------- main (promise) ----------------------------- */
 
 export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> = {}): Promise<T> {
@@ -99,8 +119,8 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     tokenCookieKey = 'token',
   } = options;
 
-  const req = useRequestURL();
-  const hostname = import.meta.client ? window.location.hostname : req.hostname;
+  const hostname = getHostnameSSRSafe();
+  console.log(hostname, 'hostname');
   const baseUrl = config(hostname).baseUrl || 'http://localhost:8080';
 
   const fullUrl = baseUrl + url + buildQuery(params);
@@ -131,8 +151,6 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
       headers: undefined, // 已經手動合併過 headers，避免 defu 再碰一次
     },
   );
-
-  console.log(requestOptions, 'requestOptions');
 
   const ctx: HttpMiddlewareContext = { url: fullUrl, options: requestOptions };
 
