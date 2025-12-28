@@ -86,15 +86,12 @@ function getForwardHeadersObj(): Record<string, string> {
 }
 
 function getHostnameSsrSafe(): string {
-  // client
   if (import.meta.client) return window.location.hostname;
 
   const event = useRequestEvent();
-  if (!event) return ''; // prerender/build-time
+  if (!event) return '';
 
   const hostRaw = getRequestHost(event, { xForwardedHost: true }) ?? '';
-  console.log(hostRaw, 'hostRaw');
-
   const host = hostRaw.split(',')[0]?.trim()?.split(':')[0] ?? '';
 
   return host;
@@ -116,7 +113,6 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
   } = options;
 
   const hostname = getHostnameSsrSafe();
-  console.log(hostname, 'hostname');
   const baseUrl = config(hostname).baseUrl || 'http://localhost:8080';
 
   const fullUrl = baseUrl + url + buildQuery(params);

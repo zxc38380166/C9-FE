@@ -10,7 +10,7 @@ export const domainConfig = {
     baseUrl: 'http://localhost:8080',
     layout: LAYOUT_ENUM.a1,
   },
-  'c9-system.zeabur.app': {
+  'c9-casino.zeabur.app': {
     template: 'a1',
     site: 'C9-a1',
     baseUrl: 'https://c9-system.zeabur.app',
