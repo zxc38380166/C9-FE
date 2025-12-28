@@ -3,7 +3,7 @@
     <!-- Top: 使用者 + 收藏 -->
     <div class="flex justify-between text-white text-[22px]">
       <div class="font-bold truncate pr-3">
-        {{ store.getUserDetail.name }}
+        {{ store?.getUserDetail?.name || '' }}
       </div>
       <button type="button" class="shrink-0">
         <i class="mdi mdi-star-outline text-[#829bae] text-[24px]"></i>

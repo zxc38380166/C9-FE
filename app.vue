@@ -11,16 +11,13 @@
   const store = useStore();
 
   try {
-    const headers = useRequestHeaders();
-    const hostname = headers.host;
-
     const [userDetailRes, gameProviderRes, enumsRes] = await Promise.all([
       useApi().getUserDetail({}),
       useApi().getGameProvider({}),
       useApi().getEnums({}),
     ]);
 
-    // console.log(userDetailRes, 'userDetailRes.data.value.data');
+    console.log(userDetailRes, 'userDetailRes.data.value.data');
     // console.log(gameProviderRes.data.value, 'gameProviderRes.data.value.data');
     // console.log(enumsRes.data.value, 'enumsRes.data.value.data');
 
