@@ -2,7 +2,7 @@
   <div>
     <div v-if="isDesktop" class="bg-[#071d2a] text-white/80 px-4">
       <!-- 上方連結區 -->
-      <div class="mx-auto max-w-[1440px] px-4 py-12">
+      <div class="lg:px-5 xl:px-10 2xl:px-[220px] py-12">
         <div class="grid grid-cols-2 gap-y-10 gap-x-6 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
           <div v-for="group in footerLinks" :key="group.key">
             <h4 class="mb-4 text-sm font-semibold text-white">

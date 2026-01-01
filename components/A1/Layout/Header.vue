@@ -1,8 +1,7 @@
 <template>
   <header
     class="h-[60px] w-full bg-gradient-to-b from-[#1a2c38] to-[#0f212e] border-b border-white/5 shadow-[0_6px_10px_-2px_rgba(0,0,0,0.6)]">
-    <div
-      class="mx-auto flex h-full max-w-[1440px] items-center justify-between pl-0 sm:pl-3 md:pl-2 pr-4 md:pr-10">
+    <div class="mx-auto flex h-full items-center justify-between lg:px-5 xl:px-10 2xl:px-[220px]">
       <NuxtImg src="/a1/logo.png" class="h-[95px] w-auto pr-2" />
       <div class="flex items-center gap-3">
         <!-- ========== 未登入 ========== -->

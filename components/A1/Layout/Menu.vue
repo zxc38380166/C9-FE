@@ -40,7 +40,7 @@
           <el-sub-menu v-else-if="item.children" :index="item.key">
             <template #title>
               <i v-if="item.icon" :class="item.icon" class="mdi text-[18px] mr-3" />
-              <span>{{ item.i18nKey ? $t(item.i18nKey) : item.key }}</span>
+              <span class="font-bold">{{ item.i18nKey ? $t(item.i18nKey) : item.key }}</span>
             </template>
             <el-menu-item
               v-for="child in item.children"
@@ -49,7 +49,9 @@
               @click="child.onClick?.()">
               <i v-if="child.icon" :class="child.icon" class="mdi text-[16px] mr-3" />
               <template #title>
-                {{ child.i18nKey ? $t(child.i18nKey) : child.key }}
+                <span class="fond-bold">
+                  {{ child.i18nKey ? $t(child.i18nKey) : child.key }}
+                </span>
               </template>
             </el-menu-item>
           </el-sub-menu>
@@ -57,7 +59,9 @@
           <el-menu-item v-else :index="item.key" @click="item.onClick?.()">
             <i v-if="item.icon" :class="item.icon" class="mdi text-[18px] mr-3" />
             <template #title>
-              {{ item.i18nKey ? $t(item.i18nKey) : item.key }}
+              <span class="fond-bold">
+                {{ item.i18nKey ? $t(item.i18nKey) : item.key }}
+              </span>
             </template>
           </el-menu-item>
         </template>

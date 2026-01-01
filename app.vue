@@ -17,11 +17,14 @@
       useApi().getEnums({}),
     ]);
 
-    console.log(userDetailRes, 'userDetailRes.data.value.data');
+    console.log(useGame().test, 'asdf');
+
+    console.log(gameProviderRes.data.value, 'userDetailRes.data.value.data');
     // console.log(gameProviderRes.data.value, 'gameProviderRes.data.value.data');
     // console.log(enumsRes.data.value, 'enumsRes.data.value.data');
 
     store.setUserDetail(userDetailRes.data.value.data);
+    store.setEnums(enumsRes.data.value.data);
     store.setEnums(enumsRes.data.value.data);
     store.setIsReady(true);
   } catch (err) {

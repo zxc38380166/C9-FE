@@ -15,6 +15,7 @@
       active-text-color="#ffffff"
       option-bg-color="#152733"
       option-text-color="#ffffff"
+      select-class="rounded-l-lg"
       option-hover-class="hover:bg-[#2f4553]"
       arrow-icon="mdi mdi-chevron-down text-[20px] text-white" />
     <CommonInput

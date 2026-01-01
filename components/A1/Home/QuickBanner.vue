@@ -1,4 +1,3 @@
-<!-- components/CategoryCards.vue -->
 <template>
   <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
     <button
@@ -8,7 +7,7 @@
       class="group text-left"
       @click="$emit('select', item)">
       <div
-        class="relative overflow-hidden rounded-2xl bg-[#253844]/90 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-200 group-hover:-translate-y-[2px]">
+        class="relative overflow-hidden h-full rounded-2xl bg-[#253844]/90 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-200 group-hover:-translate-y-[2px]">
         <!-- 只框圖片區（不含底部資訊列） -->
         <div
           class="pointer-events-none absolute inset-x-0 top-0 z-10 rounded-t-2xl border-2"
@@ -26,7 +25,7 @@
 
           <!-- 圖片底部一點暗遮罩（更像示意圖的層次） -->
           <div
-            class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-black/35 to-transparent" />
+            class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/35 to-transparent" />
         </div>
 
         <!-- 底部資訊列 -->
@@ -64,7 +63,6 @@
     </button>
   </div>
 </template>
-
 <script setup lang="ts">
   type CategoryItem = {
     key: string;
@@ -101,7 +99,7 @@
           accentColor: '#22C55E', // 綠框
         },
       ],
-      imageHeight: 140,
+      imageHeight: 245,
     },
   );
 

@@ -1,9 +1,10 @@
 <template>
-  <div class="min-h-[700px] space-y-4 md:space-y-8 lg:px-5 xl:px-10 2xl:px-28 py-6 md:py-8">
+  <div class="min-h-[700px] space-y-4 md:space-y-8 lg:px-5 xl:px-10 2xl:px-[220px] py-6 md:py-8">
     <!-- <A1LayoutBanner /> -->
-    <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-      <A1HomeUserCard v-if="isLogin" class="w-full md:w-1/3" />
-      <A1HomeGameBanner class="w-full md:w-2/3 md:h-[200px]" />
+    <div class="flex flex-col md:flex-row justify-between items-center gap-6 !w-full">
+      <A1HomeUserCard v-if="isLogin" :class="[isLogin ? 'md:w-1/3' : 'md:w-2/3']" class="w-full" />
+      <A1HomeQuickRegister v-else :class="[isLogin ? 'md:w-1/3' : 'md:w-2/3']" class="w-full" />
+      <A1HomeQuickBanner class="w-full md:w-2/3" />
     </div>
     <div class="flex flex-col space-y-5">
       <A1GameSearchBar />
