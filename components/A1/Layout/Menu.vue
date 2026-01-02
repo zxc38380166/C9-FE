@@ -14,17 +14,19 @@
           <i
             @click.stop="toggleCollapse"
             :class="collapse ? 'mdi-menu-close' : 'mdi-menu-open'"
-            class="mdi text-white text-[22px] mr-3 cursor-pointer" />
+            class="mdi !text-white text-[22px] mr-3 cursor-pointer" />
           <template #title>
-            <el-radio-group
-              v-if="!collapse"
-              v-model="gameMode"
-              class="pl-3"
-              fill="#5faf8e"
-              text-color="#fff">
-              <el-radio-button value="casino">娛樂城</el-radio-button>
-              <el-radio-button value="sport">體育</el-radio-button>
-            </el-radio-group>
+            <div class="px-[10px] grid grid-cols-2 h-full items-center gap-4">
+              <button
+                v-for="btn in modeButtons"
+                :key="btn.value"
+                type="button"
+                @click="gameMode = btn.value"
+                :class="[gameMode === btn.value ? btn.activeBg : btn.defaultBg]"
+                class="text-white scale-110 px-[16px] justify-center bg-cover bg-no-repeat flex items-center h-[35px] rounded-lg overflow-hidden">
+                {{ btn.label }}
+              </button>
+            </div>
           </template>
         </el-menu-item>
         <template v-for="item in menuList" :key="item.key">
@@ -84,6 +86,20 @@
     emit('update:collapse', !props.collapse);
   };
 
+  const modeButtons = reactive([
+    {
+      label: '娛樂城',
+      value: 'casino' as const,
+      activeBg: 'bg-[url(/a1/menu/quick-btn-casino.svg)]',
+      defaultBg: 'bg-[url(/a1/menu/quick-btn-default-1.svg)]',
+    },
+    {
+      label: '體育',
+      value: 'sport' as const,
+      activeBg: 'bg-[url(/a1/menu/quick-btn-sport.svg)]',
+      defaultBg: 'bg-[url(/a1/menu/quick-btn-default-2.svg)]',
+    },
+  ]);
   const gameMode = ref<'casino' | 'sport'>('casino');
   const defaultOpeneds = ref<string[]>(['games']);
   const activeKey = ref('favorite');
