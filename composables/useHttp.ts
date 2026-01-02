@@ -68,10 +68,8 @@ function normalizeHeaders(h?: HeadersInit): Record<string, string> {
 
 /** SSR-safe：cookie 優先，client 才 fallback localStorage */
 function getTokenSSRSafe(cookieKey = 'token'): string | null {
-  const tokenCookie = useCookie<string | null>(cookieKey);
+  const tokenCookie = useCookie<string | null>(cookieKey, { path: '/' });
   if (tokenCookie.value) return tokenCookie.value;
-
-  if (import.meta.client) return localStorage.getItem('token');
   return null;
 }
 
@@ -128,6 +126,8 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
 
   if (auth) {
     const token = getTokenSSRSafe(tokenCookieKey);
+    console.log(token, '打api時拿的');
+
     if (token) baseHeaders.Authorization = `Bearer ${token}`;
   }
 

@@ -1,4 +1,6 @@
 export function useAuth() {
+  const store = useStore();
+
   // SSR + CSR 都可用
   const token = useCookie<string | null>('token', {
     sameSite: 'lax',
@@ -8,7 +10,14 @@ export function useAuth() {
 
   const isLogin = computed(() => !!token.value);
 
-  const setToken = (v: string | null) => {
+  const refreshUserData = async () => {
+    await nextTick();
+    if (!isLogin.value) return;
+    const userDetailRes = await useApi().getUserDetail({});
+    store.setUserDetail(userDetailRes.data.value.data);
+  };
+
+  const setToken = async (v: string | null) => {
     token.value = v; // 自動 set / clear cookie
   };
 
@@ -16,5 +25,6 @@ export function useAuth() {
     token,
     isLogin,
     setToken,
+    refreshUserData,
   };
 }

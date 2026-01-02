@@ -95,7 +95,7 @@
           count: 9402,
           icon: 'mdi mdi-basketball',
           imageUrl:
-            'https://mediumrare.imgix.net/stake-casino-home-18-jul-25-en.png?w=700&h=460&fit=min&auto=format',
+            'https://mediumrare.imgix.net/stake-sports-home-18-jul-25-zh.png?w=350&h=230&fit=min&auto=format',
           accentColor: '#22C55E', // 綠框
         },
       ],

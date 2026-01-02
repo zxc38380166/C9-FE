@@ -35,7 +35,7 @@
         <!-- Card -->
         <div
           v-for="(item, idx) in items"
-          :key="item.id"
+          :key="idKey ? item?.[idKey] || '' : idx"
           :data-index="idx"
           :style="cardWrapperStyle"
           :class="[
@@ -45,29 +45,25 @@
             hoverEffect ? 'group hover:z-20 hover:scale-[1.025]' : '',
           ]">
           <!-- Card Inner（負責裁切） -->
-          <div
-            class="cursor-pointer overflow-hidden bg-[#1b2d38]"
-            :class="[hoverEffect ? 'transition-shadow duration-300' : '']"
-            :style="cardStyle">
-            <img :src="item.image" class="h-full w-full object-cover" />
-          </div>
-
-          <!-- Bottom text -->
-          <div class="mt-2 flex items-center gap-2 text-sm text-white">
-            <span class="h-2 w-2 rounded-full bg-green-500" />
-            <span v-if="bottomTextKey">
-              {{ item[bottomTextKey] }}
-            </span>
-          </div>
+          <ClientOnly>
+            <div
+              class="cursor-pointer overflow-hidden bg-[#1b2d38]"
+              :class="[hoverEffect ? 'transition-shadow duration-300' : '']"
+              :style="cardStyle">
+              <img :src="getImg(item, idx)" class="h-full w-full object-cover" />
+            </div>
+            <!-- Bottom text -->
+            <div class="mt-2 flex items-center gap-2 text-sm text-white">
+              <span class="h-2 w-2 rounded-full bg-green-500" />
+              {{ getBottomText(item, idx) }}
+            </div>
+          </ClientOnly>
         </div>
       </div>
     </div>
   </div>
 </template>
-
 <script setup lang="ts">
-  import { computed, onMounted, onUnmounted, ref, watch, nextTick } from 'vue';
-
   /* ---------- Types ---------- */
   interface GridItem {
     id: string | number;
@@ -80,17 +76,33 @@
     title: string;
     titleIcon?: string;
 
-    items: GridItem[];
+    items: any;
 
     columns?: number; // 手動指定顯示數
     gap?: number;
     cardWidth?: number;
     cardRadius?: number;
 
+    idKey?: string;
     bottomTextKey?: string;
+    bottomTextValue?: (item: any, idx: number) => string;
+    imgKey?: string;
+    imgValue?: (item: any, idx: number) => string;
     showArrow?: boolean;
     hoverEffect?: boolean;
   }>();
+
+  const getBottomText = (item: any, idx: number) => {
+    if (props.bottomTextKey) return item?.[props.bottomTextKey] ?? '';
+    if (typeof props.bottomTextValue === 'function') return props.bottomTextValue(item, idx) ?? '';
+    return '';
+  };
+
+  const getImg = (item: any, idx: number) => {
+    if (props.imgKey) return item?.[props.imgKey] ?? '';
+    if (typeof props.imgValue === 'function') return props.imgValue(item, idx) ?? '';
+    return '';
+  };
 
   /* ---------- Refs ---------- */
   const rootRef = ref<HTMLElement | null>(null);

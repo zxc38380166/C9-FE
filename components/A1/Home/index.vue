@@ -30,10 +30,11 @@
     <CommonGrid
       title="熱門遊戲"
       titleIcon="mdi mdi-fire"
-      :items="games"
+      :items="Object.values(hotGame).flat()"
       :cardWidth="140"
       :gap="20"
-      bottomTextKey="online"
+      :imgValue="(it) => getGameMappingImg(it)"
+      :bottomTextValue="(it, idx) => `${getRandomNumber(1, 200, idx)} 再玩`"
       hoverEffect
       :showArrow="isDesktop" />
     <CommonGridCard
@@ -68,130 +69,7 @@
 <script setup lang="ts">
   const { isLogin } = useAuth();
   const { isDesktop } = useDevice();
-
-  const games = [
-    {
-      id: 1,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '211 在玩',
-    },
-    {
-      id: 2,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '356 在玩',
-    },
-    {
-      id: 3,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '482 在玩',
-    },
-    {
-      id: 4,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '129 在玩',
-    },
-    {
-      id: 5,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '764 在玩',
-    },
-    {
-      id: 6,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '98 在玩',
-    },
-    {
-      id: 7,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '543 在玩',
-    },
-    {
-      id: 8,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '621 在玩',
-    },
-    {
-      id: 9,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '274 在玩',
-    },
-    {
-      id: 10,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '899 在玩',
-    },
-
-    {
-      id: 11,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '312 在玩',
-    },
-    {
-      id: 12,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '457 在玩',
-    },
-    {
-      id: 13,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '183 在玩',
-    },
-    {
-      id: 14,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '768 在玩',
-    },
-    {
-      id: 15,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '534 在玩',
-    },
-    {
-      id: 16,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '245 在玩',
-    },
-    {
-      id: 17,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '690 在玩',
-    },
-    {
-      id: 18,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '421 在玩',
-    },
-    {
-      id: 19,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '158 在玩',
-    },
-    {
-      id: 20,
-      image:
-        'https://mediumrare.imgix.net/de5fa4623b55122f86f474cf82d7fa4c8d05229ffd7c1b6c4d32ba3a18cf629c?w=180&h=236&fit=min&auto=format',
-      online: '802 在玩',
-    },
-  ];
+  const { hotGame, getGameMappingImg } = useGame();
 
   const promoItems = [
     {

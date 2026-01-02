@@ -298,7 +298,7 @@
     (e: 'register'): void;
     (e: 'close'): void;
   }>();
-  const { isLogin, setToken } = useAuth();
+  const { isLogin, setToken, refreshUserData } = useAuth();
 
   const initialValues: LoginPayload = { account: '', password: '' };
   const validationSchema = yup.object({
@@ -321,7 +321,6 @@
     set: (v) => emit('update:modelValue', v),
   });
 
-  const headerClass = 'px-4 py-3 !mr-0';
   const bodyClass = 'px-4 py-4';
   const footerClass = 'px-4 py-4';
 
@@ -364,7 +363,8 @@
 
         if (res.code === 200) {
           useMsg().success('登入成功');
-          setToken(res.data.token);
+          await setToken(res.data.token);
+          await refreshUserData();
           store.getDoms.dialogLogin.open = false;
         } else {
           useMsg().error(res.message);
