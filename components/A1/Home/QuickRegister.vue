@@ -1,8 +1,6 @@
-<!-- components/QuickRegisterPanel.vue -->
 <template>
   <section
     class="relative w-full overflow-hidden rounded-2xl bg-[#0b1e2b] px-7 py-8 text-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
-    <!-- 背景圓弧層（做出截圖那種深色弧形） -->
     <div class="pointer-events-none absolute inset-0">
       <div
         class="absolute -left-24 -top-24 h-[420px] w-[420px] rounded-full bg-white/8 blur-[2px]" />
@@ -18,24 +16,17 @@
             radial-gradient(circle at 70% 75%, rgba(0, 0, 0, 0.35), transparent 55%);
         " />
     </div>
-
     <div class="relative">
-      <!-- Title -->
       <h2 class="text-[30px] leading-[1.15] font-extrabold tracking-wide">
         世界上最大的在线赌场和体<br />育博彩
       </h2>
-
-      <!-- CTA -->
       <button
         type="button"
         class="mt-6 inline-flex items-center justify-center rounded-xl bg-gradient-to-b from-[#77cbac] to-[#1a6b52] px-6 py-3 text-sm font-bold shadow-sm hover:brightness-110 active:brightness-95 transition"
         @click="onRegister">
         注册
       </button>
-
-      <!-- Other methods -->
       <div class="mt-8 text-sm font-semibold text-white/70">通过其他方式注册</div>
-
       <div class="mt-3 flex items-center gap-3">
         <button
           v-for="p in providers"
@@ -53,9 +44,9 @@
     </div>
   </section>
 </template>
-
 <script setup>
-  // 不從父層傳、行為都在組件內
+  const store = useStore();
+
   const providers = ref([
     { key: 'google', icon: 'mdi mdi-google', bg: 'transparent', color: '#fff' },
     { key: 'facebook', icon: 'mdi mdi-facebook', bg: 'transparent', color: '#fff' },
@@ -64,14 +55,11 @@
   ]);
 
   const onRegister = () => {
-    // 你可改成開啟註冊 dialog / 導頁 / 觸發 store
-    // navigateTo('/register')
+    store.getDoms.dialogRegister.open = true;
     console.log('[QuickRegisterPanel] register');
   };
 
   const onProvider = (key) => {
-    // 你可改成第三方 OAuth
-    // location.href = `/api/auth/${key}`
     console.log('[QuickRegisterPanel] provider:', key);
   };
 </script>
