@@ -1,18 +1,11 @@
 <template>
   <div class="grid grid-cols-2 gap-6">
     <section
-      class="relative w-full overflow-hidden rounded-2xl bg-[#0b1e2b] px-7 py-8 text-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]"
-    >
+      class="relative w-full overflow-hidden rounded-2xl bg-[#0b1e2b] px-7 py-8 text-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
       <div class="pointer-events-none absolute inset-0">
-        <div
-          class="absolute -left-24 -top-24 h-[420px] w-[420px] rounded-full bg-white/8 blur-[2px]"
-        />
-        <div
-          class="absolute left-10 top-10 h-[520px] w-[520px] rounded-full bg-white/6 blur-[1px]"
-        />
-        <div
-          class="absolute -right-40 -bottom-40 h-[620px] w-[620px] rounded-full bg-black/25 blur-[2px]"
-        />
+        <div class="absolute -left-24 -top-24 size-105 rounded-full bg-white/8 blur-[2px]" />
+        <div class="absolute left-10 top-10 size-130 rounded-full bg-white/6 blur-[1px]" />
+        <div class="absolute -right-40 -bottom-40 size-155 rounded-full bg-black/25 blur-[2px]" />
         <div
           class="absolute inset-0"
           style="
@@ -21,18 +14,9 @@
                 rgba(255, 255, 255, 0.06),
                 transparent 55%
               ),
-              radial-gradient(
-                circle at 55% 10%,
-                rgba(255, 255, 255, 0.05),
-                transparent 60%
-              ),
-              radial-gradient(
-                circle at 70% 75%,
-                rgba(0, 0, 0, 0.35),
-                transparent 55%
-              );
-          "
-        />
+              radial-gradient(circle at 55% 10%, rgba(255, 255, 255, 0.05), transparent 60%),
+              radial-gradient(circle at 70% 75%, rgba(0, 0, 0, 0.35), transparent 55%);
+          " />
       </div>
       <div class="relative">
         <h2 class="text-[30px] leading-[1.15] font-extrabold tracking-wide">
@@ -40,31 +24,22 @@
         </h2>
         <button
           type="button"
-          class="mt-6 inline-flex items-center justify-center rounded-xl bg-gradient-to-b from-[#77cbac] to-[#1a6b52] px-6 py-3 text-sm font-bold shadow-sm hover:brightness-110 active:brightness-95 transition"
-          @click="onRegister"
-        >
+          class="mt-6 inline-flex items-center justify-center rounded-xl bg-linear-to-b from-[#77cbac] to-[#1a6b52] px-6 py-3 text-sm font-bold shadow-sm hover:brightness-110 active:brightness-95 transition"
+          @click="onRegister">
           注册
         </button>
-        <div class="mt-8 text-sm font-semibold text-white/70">
-          通过其他方式注册
-        </div>
+        <div class="mt-8 text-sm font-semibold text-white/70">通过其他方式注册</div>
         <div class="mt-3 flex items-center gap-3">
           <button
             v-for="p in providers"
             :key="p.key"
             type="button"
             class="group flex h-12 w-12 items-center justify-center rounded-xl bg-white/6 shadow-[0_10px_18px_rgba(0,0,0,0.22)] ring-1 ring-white/10 hover:bg-white/10 transition"
-            @click="onProvider(p.key)"
-          >
+            @click="onProvider(p.key)">
             <span
               class="flex h-8 w-8 items-center justify-center rounded-lg"
-              :style="{ background: p.bg }"
-            >
-              <i
-                :class="p.icon"
-                class="text-[18px]"
-                :style="{ color: p.color }"
-              />
+              :style="{ background: p.bg }">
+              <i :class="p.icon" class="text-[18px]" :style="{ color: p.color }" />
             </span>
           </button>
         </div>
@@ -76,40 +51,34 @@
         :key="item.key"
         type="button"
         class="group text-left"
-        @click="$emit('select', item)"
-      >
+        @click="$emit('select', item)">
         <div
-          class="relative overflow-hidden h-full rounded-2xl bg-[#253844]/90 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-200 group-hover:-translate-y-[2px]"
-        >
+          class="relative overflow-hidden h-full rounded-2xl bg-[#253844]/90 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-200 group-hover:-translate-y-[2px]">
           <!-- 只框圖片區（不含底部資訊列） -->
           <div
             class="pointer-events-none absolute inset-x-0 top-0 z-10 rounded-t-2xl border-2"
             :style="{
               borderColor: item.accentColor,
               height: `${imageHeight}px`,
-            }"
-          />
+            }" />
 
           <!-- 圖片區 -->
           <div class="relative" :style="{ height: `${imageHeight}px` }">
             <img
               :src="item.imageUrl"
               :alt="item.title"
-              class="h-full w-full object-cover object-top"
-            />
+              class="h-full w-full object-cover object-top" />
 
             <!-- 圖片底部一點暗遮罩（更像示意圖的層次） -->
             <div
-              class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/35 to-transparent"
-            />
+              class="pointer-events-none absolute inset-x-0 bottom-0 bg-linear-to-t from-black/35 to-transparent" />
           </div>
 
           <!-- 底部資訊列 -->
           <div class="flex py-3 items-center justify-between px-6">
             <div class="flex items-center gap-3">
               <span
-                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/5 text-white/70"
-              >
+                class="flex h-8 w-8 items-center justify-center rounded-xl bg-white/5 text-white/70">
                 <i :class="item.icon" class="text-[16px]" />
               </span>
 
@@ -135,102 +104,101 @@
                 rgba(255, 255, 255, 0.08),
                 transparent 45%
               );
-            "
-          />
+            " />
         </div>
       </button>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-const providers = ref([
-  { key: "google", icon: "mdi mdi-google", bg: "transparent", color: "#fff" },
-  {
-    key: "facebook",
-    icon: "mdi mdi-facebook",
-    bg: "transparent",
-    color: "#fff",
-  },
-  {
-    key: "line",
-    icon: "mdi mdi-message-processing",
-    bg: "transparent",
-    color: "#fff",
-  },
-  { key: "twitch", icon: "mdi mdi-twitch", bg: "transparent", color: "#fff" },
-]);
+  const providers = ref([
+    { key: 'google', icon: 'mdi mdi-google', bg: 'transparent', color: '#fff' },
+    {
+      key: 'facebook',
+      icon: 'mdi mdi-facebook',
+      bg: 'transparent',
+      color: '#fff',
+    },
+    {
+      key: 'line',
+      icon: 'mdi mdi-message-processing',
+      bg: 'transparent',
+      color: '#fff',
+    },
+    { key: 'twitch', icon: 'mdi mdi-twitch', bg: 'transparent', color: '#fff' },
+  ]);
 
-const onRegister = () => {
-  console.log("[QuickRegisterPanel] register");
-};
+  const onRegister = () => {
+    console.log('[QuickRegisterPanel] register');
+  };
 
-const onProvider = (key: any) => {
-  console.log("[QuickRegisterPanel] provider:", key);
-};
+  const onProvider = (key: any) => {
+    console.log('[QuickRegisterPanel] provider:', key);
+  };
 
-const links = ref([
-  {
-    color: "neutral",
-    variant: "subtle",
-    trailingIcon: "i-tabler:brand-google-filled",
-  },
-  {
-    color: "neutral",
-    variant: "subtle",
-    trailingIcon: "i-ic:baseline-telegram",
-  },
-  {
-    color: "neutral",
-    variant: "subtle",
-    trailingIcon: "i-material-symbols:add-call-outline",
-  },
-]);
+  const links = ref([
+    {
+      color: 'neutral',
+      variant: 'subtle',
+      trailingIcon: 'i-tabler:brand-google-filled',
+    },
+    {
+      color: 'neutral',
+      variant: 'subtle',
+      trailingIcon: 'i-ic:baseline-telegram',
+    },
+    {
+      color: 'neutral',
+      variant: 'subtle',
+      trailingIcon: 'i-material-symbols:add-call-outline',
+    },
+  ]);
 
-type CategoryItem = {
-  key: string;
-  title: string;
-  count: number | string;
-  icon: string; // mdi class
-  imageUrl: string;
-  accentColor: string; // 例如 '#3B82F6' / '#22C55E'
-};
+  type CategoryItem = {
+    key: string;
+    title: string;
+    count: number | string;
+    icon: string; // mdi class
+    imageUrl: string;
+    accentColor: string; // 例如 '#3B82F6' / '#22C55E'
+  };
 
-const props = withDefaults(
-  defineProps<{
-    items?: CategoryItem[];
-    imageHeight?: number; // 圖片高度
-  }>(),
-  {
-    items: () => [
-      {
-        key: "casino",
-        title: "娱乐城",
-        count: 54617,
-        icon: "mdi mdi-cards-playing-outline",
-        imageUrl:
-          "https://mediumrare.imgix.net/stake-casino-home-18-jul-25-en.png?w=700&h=460&fit=min&auto=format",
-        accentColor: "#3B82F6", // 藍框
-      },
-      {
-        key: "sport",
-        title: "体育",
-        count: 9402,
-        icon: "mdi mdi-basketball",
-        imageUrl:
-          "https://mediumrare.imgix.net/stake-sports-home-18-jul-25-zh.png?w=350&h=230&fit=min&auto=format",
-        accentColor: "#22C55E", // 綠框
-      },
-    ],
-    imageHeight: 245,
+  const props = withDefaults(
+    defineProps<{
+      items?: CategoryItem[];
+      imageHeight?: number; // 圖片高度
+    }>(),
+    {
+      items: () => [
+        {
+          key: 'casino',
+          title: '娱乐城',
+          count: 54617,
+          icon: 'mdi mdi-cards-playing-outline',
+          imageUrl:
+            'https://mediumrare.imgix.net/stake-casino-home-18-jul-25-en.png?w=700&h=460&fit=min&auto=format',
+          accentColor: '#3B82F6', // 藍框
+        },
+        {
+          key: 'sport',
+          title: '体育',
+          count: 9402,
+          icon: 'mdi mdi-basketball',
+          imageUrl:
+            'https://mediumrare.imgix.net/stake-sports-home-18-jul-25-zh.png?w=350&h=230&fit=min&auto=format',
+          accentColor: '#22C55E', // 綠框
+        },
+      ],
+      imageHeight: 245,
+    },
+  );
+
+  defineEmits<{ (e: 'select', item: CategoryItem): void }>();
+  const imageHeight = props.imageHeight;
+
+  function formatNumber(val: number | string) {
+    const n = typeof val === 'string' ? Number(val.replace(/,/g, '')) : val;
+    if (!Number.isFinite(n)) return String(val);
+    return n.toLocaleString('en-US');
   }
-);
-
-defineEmits<{ (e: "select", item: CategoryItem): void }>();
-const imageHeight = props.imageHeight;
-
-function formatNumber(val: number | string) {
-  const n = typeof val === "string" ? Number(val.replace(/,/g, "")) : val;
-  if (!Number.isFinite(n)) return String(val);
-  return n.toLocaleString("en-US");
-}
 </script>

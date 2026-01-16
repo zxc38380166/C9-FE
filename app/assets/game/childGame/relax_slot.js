@@ -1,0 +1,795 @@
+const lists = [
+    {
+        "productId": 150191,
+        "game_name": "Erik the Red",
+        "name_cn": "红胡子埃里克",
+        "name_th": "Erik the Red",
+        "game_code": "relax_slot",
+        "name_tw": "紅鬍子埃里克"
+    },
+    {
+        "productId": 150218,
+        "game_name": "Zombie Circus",
+        "name_cn": "僵尸马戏团",
+        "name_th": "Zombie Circus",
+        "game_code": "relax_slot",
+        "name_tw": "殭屍馬戲團"
+    },
+    {
+        "productId": 150190,
+        "game_name": "Epic Joker",
+        "name_cn": "无敌小丑",
+        "name_th": "Epic Joker",
+        "game_code": "relax_slot",
+        "name_tw": "無敵小丑"
+    },
+    {
+        "productId": 150214,
+        "game_name": "The Great Pigsby",
+        "name_cn": "伟大的猪茨比",
+        "name_th": "The Great Pigsby",
+        "game_code": "relax_slot",
+        "name_tw": "偉大的豬茨比"
+    },
+    {
+        "productId": 150213,
+        "game_name": "Temple Tumble",
+        "name_cn": "高塔坠落",
+        "name_th": "Temple Tumble",
+        "game_code": "relax_slot",
+        "name_tw": "高塔墜落"
+    },
+    {
+        "productId": 150188,
+        "game_name": "Dragons Awakening",
+        "name_cn": "巨龙苏醒",
+        "name_th": "Dragons Awakening",
+        "game_code": "relax_slot",
+        "name_tw": "巨龍甦醒"
+    },
+    {
+        "productId": 150198,
+        "game_name": "King of Kings",
+        "name_cn": "众王之王",
+        "name_th": "King of Kings",
+        "game_code": "relax_slot",
+        "name_tw": "眾王之王"
+    },
+    {
+        "productId": 150187,
+        "game_name": "Caveman Bob",
+        "name_cn": "原始人鲍勃",
+        "name_th": "Caveman Bob",
+        "game_code": "relax_slot",
+        "name_tw": "原始人鮑勃"
+    },
+    {
+        "productId": 150195,
+        "game_name": "Ignite The Night",
+        "name_cn": "点亮黑夜",
+        "name_th": "Ignite The Night",
+        "game_code": "relax_slot",
+        "name_tw": "點亮黑夜"
+    },
+    {
+        "productId": 150208,
+        "game_name": "Powerspin",
+        "name_cn": "超级旋转",
+        "name_th": "Powerspin",
+        "game_code": "relax_slot",
+        "name_tw": "超級旋轉"
+    },
+    {
+        "productId": 150205,
+        "game_name": "Money Train",
+        "name_cn": "宝藏列车",
+        "name_th": "Money Train",
+        "game_code": "relax_slot",
+        "name_tw": "寶藏列車"
+    },
+    {
+        "productId": 150201,
+        "game_name": "Let's get ready to Rumble",
+        "name_cn": "开始比赛吧",
+        "name_th": "Let's get ready to Rumble",
+        "game_code": "relax_slot",
+        "name_tw": "開始比賽吧"
+    },
+    {
+        "productId": 150216,
+        "game_name": "Tower Tumble",
+        "name_cn": "神庙坠落",
+        "name_th": "Tower Tumble",
+        "game_code": "relax_slot",
+        "name_tw": "神殿墜落"
+    },
+    {
+        "productId": 150217,
+        "game_name": "Wildchemy",
+        "name_cn": "百搭实验室",
+        "name_th": "Wildchemy",
+        "game_code": "relax_slot",
+        "name_tw": "百搭實驗室"
+    },
+    {
+        "productId": 150211,
+        "game_name": "Snake Arena",
+        "name_cn": "神蛇竞技",
+        "name_th": "Snake Arena",
+        "game_code": "relax_slot",
+        "name_tw": "神蛇競技"
+    },
+    {
+        "productId": 150194,
+        "game_name": "Heroes' Gathering ",
+        "name_cn": "英雄集聚",
+        "name_th": "Heroes' Gathering ",
+        "game_code": "relax_slot",
+        "name_tw": "英雄集聚"
+    },
+    {
+        "productId": 150204,
+        "game_name": "Mega Masks",
+        "name_cn": "无敌大面具",
+        "name_th": "Mega Masks",
+        "game_code": "relax_slot",
+        "name_tw": "無敵大面具"
+    },
+    {
+        "productId": 150215,
+        "game_name": "TNT Tumble",
+        "name_cn": "TNT滚落",
+        "name_th": "TNT Tumble",
+        "game_code": "relax_slot",
+        "name_tw": "TNT滾落"
+    },
+    {
+        "productId": 150193,
+        "game_name": "Hellcatraz",
+        "name_cn": "地狱岛",
+        "name_th": "Hellcatraz",
+        "game_code": "relax_slot",
+        "name_tw": "地獄島"
+    },
+    {
+        "productId": 150203,
+        "game_name": "Mega Flip",
+        "name_cn": "大翻转",
+        "name_th": "Mega Flip",
+        "game_code": "relax_slot",
+        "name_tw": "大翻轉"
+    },
+    {
+        "productId": 150202,
+        "game_name": "Marching Legions",
+        "name_cn": "行进的军团",
+        "name_th": "Marching Legions",
+        "game_code": "relax_slot",
+        "name_tw": "行進的軍團"
+    },
+    {
+        "productId": 150200,
+        "game_name": "La Fiesta",
+        "name_cn": "嘉年华",
+        "name_th": "La Fiesta",
+        "game_code": "relax_slot",
+        "name_tw": "嘉年華"
+    },
+    {
+        "productId": 150206,
+        "game_name": "Money Train 2",
+        "name_cn": "宝藏列车2",
+        "name_th": "Money Train 2",
+        "game_code": "relax_slot",
+        "name_tw": "寶藏列車2"
+    },
+    {
+        "productId": 150209,
+        "game_name": "Ramses Revenge",
+        "name_cn": "拉美西斯复仇",
+        "name_th": "Ramses Revenge",
+        "game_code": "relax_slot",
+        "name_tw": "拉美西斯復仇"
+    },
+    {
+        "productId": 150196,
+        "game_name": "Iron Bank",
+        "name_cn": "铁银行",
+        "name_th": "Iron Bank",
+        "game_code": "relax_slot",
+        "name_tw": "鐵銀行"
+    },
+    {
+        "productId": 150192,
+        "game_name": "Frequent Flyer",
+        "name_cn": "飞行常客",
+        "name_th": "Frequent Flyer",
+        "game_code": "relax_slot",
+        "name_tw": "飛行常客"
+    },
+    {
+        "productId": 150199,
+        "game_name": "Kluster Krystals Megaclusters",
+        "name_cn": "水晶大集群",
+        "name_th": "Kluster Krystals Megaclusters",
+        "game_code": "relax_slot",
+        "name_tw": "水晶大集群"
+    },
+    {
+        "productId": 150207,
+        "game_name": "Multiplier Odyssey",
+        "name_cn": "翻倍奥德赛",
+        "name_th": "Multiplier Odyssey",
+        "game_code": "relax_slot",
+        "name_tw": "翻倍奧德賽"
+    },
+    {
+        "productId": 150189,
+        "game_name": "Emerald's Infinity Reels",
+        "name_cn": "翡翠无限卷轴",
+        "name_th": "Emerald's Infinity Reels",
+        "game_code": "relax_slot",
+        "name_tw": "翡翠無限捲軸"
+    },
+    {
+        "productId": 150212,
+        "game_name": "Templar Tumble",
+        "name_cn": "高塔坠落",
+        "name_th": "Templar Tumble",
+        "game_code": "relax_slot",
+        "name_tw": "高塔墜落"
+    },
+    {
+        "productId": 150233,
+        "game_name": "Wild Chapo",
+        "name_cn": "狂野矮子",
+        "name_th": "Wild Chapo",
+        "game_code": "relax_slot",
+        "name_tw": "狂野矮子"
+    },
+    {
+        "productId": 150231,
+        "game_name": "Book of 99",
+        "name_cn": "99之书",
+        "name_th": "Book of 99",
+        "game_code": "relax_slot",
+        "name_tw": "99之書"
+    },
+    {
+        "productId": 150232,
+        "game_name": "Sails of Fortune",
+        "name_cn": "寻宝远航",
+        "name_th": "Sails of Fortune",
+        "game_code": "relax_slot",
+        "name_tw": "尋寶遠航"
+    },
+    {
+        "productId": 150235,
+        "game_name": "Top Dawg$",
+        "name_cn": "名犬（道格斯）",
+        "name_th": "Top Dawg$",
+        "game_code": "relax_slot",
+        "name_tw": "名犬（道格斯）"
+    },
+    {
+        "productId": 150236,
+        "game_name": "Spirit of The Beast",
+        "name_cn": "神灵之兽",
+        "name_th": "Spirit of The Beast",
+        "game_code": "relax_slot",
+        "name_tw": "神靈之獸"
+    },
+    {
+        "productId": 150237,
+        "game_name": "Chip Spin",
+        "name_cn": "筹码旋转",
+        "name_th": "Chip Spin",
+        "game_code": "relax_slot",
+        "name_tw": "籌碼旋轉"
+    },
+    {
+        "productId": 150243,
+        "game_name": "Deep Descent",
+        "name_cn": "深度侵袭",
+        "name_th": "Deep Descent",
+        "game_code": "relax_slot",
+        "name_tw": "深層侵襲"
+    },
+    {
+        "productId": 150242,
+        "game_name": "Money Cart 2",
+        "name_cn": "金钱列车2",
+        "name_th": "Money Cart 2",
+        "game_code": "relax_slot",
+        "name_tw": "金錢列車2"
+    },
+    {
+        "productId": 150244,
+        "game_name": "Troll's Gold",
+        "name_cn": "巨魔黄金",
+        "name_th": "Troll's Gold",
+        "game_code": "relax_slot",
+        "name_tw": "巨魔黃金"
+    },
+    {
+        "productId": 150248,
+        "game_name": "Dead Man's Trail",
+        "name_cn": "亡灵踪迹",
+        "name_th": "Dead Man's Trail",
+        "game_code": "relax_slot",
+        "name_tw": "亡靈蹤跡"
+    },
+    {
+        "productId": 150249,
+        "game_name": "Volatile Vikings",
+        "name_cn": "残暴维京人",
+        "name_th": "Volatile Vikings",
+        "game_code": "relax_slot",
+        "name_tw": "殘暴維京人"
+    },
+    {
+        "productId": 150250,
+        "game_name": "Helios Fury",
+        "name_cn": "赫利俄斯之怒",
+        "name_th": "Helios Fury",
+        "game_code": "relax_slot",
+        "name_tw": "赫利俄斯之怒"
+    },
+    {
+        "productId": 150251,
+        "game_name": "Mega Mine",
+        "name_cn": "超级矿山",
+        "name_th": "Mega Mine",
+        "game_code": "relax_slot",
+        "name_tw": "超級礦場"
+    },
+    {
+        "productId": 150316,
+        "game_name": "Cluster Tumble",
+        "name_cn": "群集坠落",
+        "name_th": "Cluster Tumble",
+        "game_code": "relax_slot",
+        "name_tw": "群集墜落"
+    },
+    {
+        "productId": 150328,
+        "game_name": "Santa's Stack",
+        "name_cn": "圣诞老人堆叠",
+        "name_th": "Santa's Stack",
+        "game_code": "relax_slot",
+        "name_tw": "聖誕老人堆疊"
+    },
+    {
+        "productId": 150343,
+        "game_name": "Money Cart",
+        "name_cn": "金钱列车",
+        "name_th": "Money Cart",
+        "game_code": "relax_slot",
+        "name_tw": "金錢列車"
+    },
+    {
+        "productId": 150354,
+        "game_name": "Plunderland",
+        "name_cn": "掠夺之地",
+        "name_th": "Plunderland",
+        "game_code": "relax_slot",
+        "name_tw": "掠奪之地"
+    },
+    {
+        "productId": 150357,
+        "game_name": "Hazakura Ways",
+        "name_cn": "羽樱之路",
+        "name_th": "Hazakura Ways",
+        "game_code": "relax_slot",
+        "name_tw": "羽櫻之路"
+    },
+    {
+        "productId": 150361,
+        "game_name": "Space Miners",
+        "name_cn": "星际矿工",
+        "name_th": "Space Miners",
+        "game_code": "relax_slot",
+        "name_tw": "星際礦工"
+    },
+    {
+        "productId": 150362,
+        "game_name": "Beast Mode",
+        "name_cn": "野兽模式",
+        "name_th": "Beast Mode",
+        "game_code": "relax_slot",
+        "name_tw": "野獸模式"
+    },
+    {
+        "productId": 150363,
+        "game_name": "Tiger Kingdom Infinity Reels",
+        "name_cn": "猛虎之国：无尽卷轴",
+        "name_th": "Tiger Kingdom Infinity Reels",
+        "game_code": "relax_slot",
+        "name_tw": "猛虎之國：無盡捲軸"
+    },
+    {
+        "productId": 150367,
+        "game_name": "HEX",
+        "name_cn": "魔法",
+        "name_th": "HEX",
+        "game_code": "relax_slot",
+        "name_tw": "魔法"
+    },
+    {
+        "productId": 150374,
+        "game_name": "Jurassic Party",
+        "name_cn": "侏罗纪派对",
+        "name_th": "Jurassic Party",
+        "game_code": "relax_slot",
+        "name_tw": "侏羅紀派對"
+    },
+    {
+        "productId": 150390,
+        "game_name": "Temple Tumble 2",
+        "name_cn": "神庙坠落2",
+        "name_th": "Temple Tumble 2",
+        "game_code": "relax_slot",
+        "name_tw": "神殿墜落2"
+    },
+    {
+        "productId": 150391,
+        "game_name": "Midnight Marauder",
+        "name_cn": "午夜掠夺者",
+        "name_th": "Midnight Marauder",
+        "game_code": "relax_slot",
+        "name_tw": "午夜掠奪者"
+    },
+    {
+        "productId": 150466,
+        "game_name": "Blender Blitz",
+        "name_cn": "冰沙衝擊",
+        "name_th": "Blender Blitz",
+        "game_code": "relax_slot",
+        "name_tw": "冰沙衝擊"
+    },
+    {
+        "productId": 150468,
+        "game_name": "Banana Town",
+        "name_cn": "香蕉城镇",
+        "name_th": "Banana Town",
+        "game_code": "relax_slot",
+        "name_tw": "香蕉城鎮"
+    },
+    {
+        "productId": 150530,
+        "game_name": "Dead Riders Trail",
+        "name_cn": "骑手亡灵踪迹",
+        "name_th": "Dead Riders Trail",
+        "game_code": "relax_slot",
+        "name_tw": "騎手亡靈蹤跡"
+    },
+    {
+        "productId": 150533,
+        "game_name": "Money Train 3",
+        "name_cn": "宝藏列车3",
+        "name_th": "Money Train 3",
+        "game_code": "relax_slot",
+        "name_tw": "寶藏列車3"
+    },
+    {
+        "productId": 150538,
+        "game_name": "Diamonds",
+        "name_cn": "钻石王老五",
+        "name_th": "Diamonds",
+        "game_code": "relax_slot",
+        "name_tw": "鑽石王老五"
+    },
+    {
+        "productId": 150540,
+        "game_name": "Volatile Vikings 2",
+        "name_cn": "残暴维京人2",
+        "name_th": "Volatile Vikings 2",
+        "game_code": "relax_slot",
+        "name_tw": "殘暴維京人2"
+    },
+    {
+        "productId": 150543,
+        "game_name": "The Great Pigsby Megaways",
+        "name_cn": "伟大的猪茨比 Megaways",
+        "name_th": "The Great Pigsby Megaways",
+        "game_code": "relax_slot",
+        "name_tw": "偉大的豬茨比Megaways"
+    },
+    {
+        "productId": 150547,
+        "game_name": "Templar Tumble 2",
+        "name_cn": "高塔坠落2",
+        "name_th": "Templar Tumble 2",
+        "game_code": "relax_slot",
+        "name_tw": "高塔墜落2"
+    },
+    {
+        "productId": 150549,
+        "game_name": "Hot Rod Racers",
+        "name_cn": "热血赛车手",
+        "name_th": "Hot Rod Racers",
+        "game_code": "relax_slot",
+        "name_tw": "熱血賽車手"
+    },
+    {
+        "productId": 150551,
+        "game_name": "Wild Yield",
+        "name_cn": "欢乐收成季",
+        "name_th": "Wild Yield",
+        "game_code": "relax_slot",
+        "name_tw": "歡樂收成季"
+    },
+    {
+        "productId": 150556,
+        "game_name": "Net Gains",
+        "name_cn": "野兽疯捕鱼",
+        "name_th": "Net Gains",
+        "game_code": "relax_slot",
+        "name_tw": "野獸瘋狂捕魚"
+    },
+    {
+        "productId": 150626,
+        "game_name": "Book of Power",
+        "name_cn": "力量之书",
+        "name_th": "Book of Power",
+        "game_code": "relax_slot",
+        "name_tw": "力量之書"
+    },
+    {
+        "productId": 150628,
+        "game_name": "Horror Hotel",
+        "name_cn": "恐怖旅店",
+        "name_th": "Horror Hotel",
+        "game_code": "relax_slot",
+        "name_tw": "恐怖旅館"
+    },
+    {
+        "productId": 150627,
+        "game_name": "Grim The Splitter",
+        "name_cn": "死神的预言",
+        "name_th": "Grim The Splitter",
+        "game_code": "relax_slot",
+        "name_tw": "死神的預言"
+    },
+    {
+        "productId": 150631,
+        "game_name": "Wild Hike",
+        "name_cn": "深入狼窝",
+        "name_th": "Wild Hike",
+        "game_code": "relax_slot",
+        "name_tw": "深入狼窩"
+    },
+    {
+        "productId": 150632,
+        "game_name": "Wild Chapo 2",
+        "name_cn": "狂野矮子2",
+        "name_th": "Wild Chapo 2",
+        "game_code": "relax_slot",
+        "name_tw": "狂野矮子2"
+    },
+    {
+        "productId": 150647,
+        "game_name": "Mega Heist",
+        "name_cn": "超级抢劫",
+        "name_th": "Mega Heist",
+        "game_code": "relax_slot",
+        "name_tw": "超搶劫"
+    },
+    {
+        "productId": 150643,
+        "game_name": "Money Cart 3",
+        "name_cn": "金钱列车3",
+        "name_th": "Money Cart 3",
+        "game_code": "relax_slot",
+        "name_tw": "金錢列車3"
+    },
+    {
+        "productId": 150637,
+        "game_name": "Neko Night ",
+        "name_cn": "猫之夜",
+        "name_th": "Neko Night ",
+        "game_code": "relax_slot",
+        "name_tw": "貓之夜"
+    },
+    {
+        "productId": 150656,
+        "game_name": "Shark Wash",
+        "name_cn": "鲨鱼水乐园",
+        "name_th": "Shark Wash",
+        "game_code": "relax_slot",
+        "name_tw": "鯊魚水樂園"
+    },
+    {
+        "productId": 150662,
+        "game_name": "Sloth Tumble",
+        "name_cn": "树懒掉掉乐",
+        "name_th": "Sloth Tumble",
+        "game_code": "relax_slot",
+        "name_tw": "樹懶掉樂"
+    },
+    {
+        "productId": 150700,
+        "game_name": "Torii Tumble",
+        "name_cn": "邪恶鸟居",
+        "name_th": "Torii Tumble",
+        "game_code": "relax_slot",
+        "name_tw": "邪惡鳥居"
+    },
+    {
+        "productId": 150705,
+        "game_name": "Money Train 4",
+        "name_cn": "宝藏列车4",
+        "name_th": "Money Train 4",
+        "game_code": "relax_slot",
+        "name_tw": "寶藏列車4"
+    },
+    {
+        "productId": 150707,
+        "game_name": "Joker Split",
+        "name_cn": "小丑的财宝",
+        "name_th": "Joker Split",
+        "game_code": "relax_slot",
+        "name_tw": "小丑的財寶"
+    },
+    {
+        "productId": 150709,
+        "game_name": "Titan Strike",
+        "name_cn": "宙斯的閃電",
+        "name_th": "Titan Strike",
+        "game_code": "relax_slot",
+        "name_tw": "宙斯的閃電"
+    },
+    {
+        "productId": 150730,
+        "game_name": "Bill & Coin",
+        "name_cn": "钱币二人组",
+        "name_th": "Bill & Coin",
+        "game_code": "relax_slot",
+        "name_tw": "錢幣二人組"
+    },
+    {
+        "productId": 150732,
+        "game_name": "Money Cart 4",
+        "name_cn": "金钱列车4",
+        "name_th": "Money Cart 4",
+        "game_code": "relax_slot",
+        "name_tw": "金錢列車4"
+    },
+    {
+        "productId": 150739,
+        "game_name": "Firewins Factory",
+        "name_cn": "胜火工厂",
+        "name_th": "Firewins Factory",
+        "game_code": "relax_slot",
+        "name_tw": "勝火工廠"
+    },
+    {
+        "productId": 150738,
+        "game_name": "Sweetopia Royale",
+        "name_cn": "甜蜜皇室",
+        "name_th": "Sweetopia Royale",
+        "game_code": "relax_slot",
+        "name_tw": "甜蜜皇室"
+    },
+    {
+        "productId": 150776,
+        "game_name": "Attila The Hun",
+        "name_cn": "匈奴王阿提拉",
+        "name_th": "Attila The Hun",
+        "game_code": "relax_slot",
+        "name_tw": "匈奴王阿提拉"
+    },
+    {
+        "productId": 150741,
+        "game_name": "Sultan Spins",
+        "name_cn": "苏丹旋转",
+        "name_th": "Sultan Spins",
+        "game_code": "relax_slot",
+        "name_tw": "蘇丹旋轉"
+    },
+    {
+        "productId": 150787,
+        "game_name": "Epic Dreams",
+        "name_cn": "史诗梦想",
+        "name_th": "Epic Dreams",
+        "game_code": "relax_slot",
+        "name_tw": "史詩夢想"
+    },
+    {
+        "productId": 150716,
+        "game_name": "Lure of Fortune",
+        "name_cn": "财富的诱惑",
+        "name_th": "Lure of Fortune",
+        "game_code": "relax_slot",
+        "name_tw": "財富的誘惑"
+    },
+    {
+        "productId": 150796,
+        "game_name": "Ancient Tumble",
+        "name_cn": "远古翻滚",
+        "name_th": "Ancient Tumble",
+        "game_code": "relax_slot",
+        "name_tw": "遠古翻滾"
+    },
+    {
+        "productId": 150802,
+        "game_name": "Atlantis Crush",
+        "name_cn": "粉碎亚特兰蒂斯",
+        "name_th": "Atlantis Crush",
+        "game_code": "relax_slot",
+        "name_tw": "粉碎亞特蘭提斯"
+    },
+    {
+        "productId": 150909,
+        "game_name": "Bone Raiders",
+        "name_cn": "骸骨袭击者",
+        "name_th": "Bone Raiders",
+        "game_code": "relax_slot",
+        "name_tw": "骸骨襲擊者"
+    },
+    {
+        "productId": 150912,
+        "game_name": "The Tumbles",
+        "name_cn": "翻滚者",
+        "name_th": "The Tumbles",
+        "game_code": "relax_slot",
+        "name_tw": "翻滾者"
+    },
+    {
+        "productId": 150915,
+        "game_name": "Quackin Reels",
+        "name_cn": "嘎嘎卷轴",
+        "name_th": "Quackin Reels",
+        "game_code": "relax_slot",
+        "name_tw": "嘎嘎捲軸"
+    },
+    {
+        "productId": 150921,
+        "game_name": "Feather Fury",
+        "name_cn": "羽毛之怒",
+        "name_th": "Feather Fury",
+        "game_code": "relax_slot",
+        "name_tw": "羽毛之怒"
+    },
+    {
+        "productId": 150933,
+        "game_name": "Money Sleigh",
+        "name_cn": "金钱雪橇",
+        "name_th": "Money Sleigh",
+        "game_code": "relax_slot",
+        "name_tw": "金錢雪橇"
+    },
+    {
+        "productId": 150934,
+        "game_name": "Winter Champions",
+        "name_cn": "冬季冠军",
+        "name_th": "Winter Champions",
+        "game_code": "relax_slot",
+        "name_tw": "冬季冠軍"
+    },
+    {
+        "productId": 150946,
+        "game_name": "Immortal 5",
+        "name_cn": "不朽5",
+        "name_th": "Immortal 5",
+        "game_code": "relax_slot",
+        "name_tw": "不朽5"
+    },
+    {
+        "productId": 150978,
+        "game_name": "Camelot Cash",
+        "name_cn": "卡米洛特现金",
+        "name_th": "Camelot Cash",
+        "game_code": "relax_slot",
+        "name_tw": "卡米洛特現金"
+    },
+    {
+        "productId": 150979,
+        "game_name": "Kraken's Cove",
+        "name_cn": "海妖湾",
+        "name_th": "Kraken's Cove",
+        "game_code": "relax_slot",
+        "name_tw": "海妖灣"
+    }
+]
+export default lists;

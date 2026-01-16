@@ -1,9 +1,9 @@
-import { defu } from "defu";
-import config from "./useConfig";
-import type { AsyncDataOptions } from "#app";
-import { getRequestHost } from "h3";
-export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
-import { useRequestEvent } from "#app";
+import { defu } from 'defu';
+import config from './useConfig';
+import type { AsyncDataOptions } from '#app';
+import { getRequestHost } from 'h3';
+export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
+import { useRequestEvent } from '#app';
 
 export interface HttpMiddlewareContext {
   url: string;
@@ -31,14 +31,14 @@ export interface UseHttpOptions<T = any> {
 /* ----------------------------- utils ----------------------------- */
 
 function buildQuery(params?: Record<string, any>) {
-  if (!params) return "";
+  if (!params) return '';
   const search = new URLSearchParams();
   Object.entries(params).forEach(([k, v]) => {
     if (v === undefined || v === null) return;
     search.append(k, String(v));
   });
   const q = search.toString();
-  return q ? `?${q}` : "";
+  return q ? `?${q}` : '';
 }
 
 /** 把 HeadersInit 統一轉成 Record<string,string>，避免 defu 型別亂掉 */
@@ -67,8 +67,10 @@ function normalizeHeaders(h?: HeadersInit): Record<string, string> {
 }
 
 /** SSR-safe：cookie 優先，client 才 fallback localStorage */
-function getTokenSSRSafe(cookieKey = "token"): string | null {
-  const tokenCookie = useCookie<string | null>(cookieKey, { path: "/" });
+function getTokenSSRSafe(cookieKey = 'token'): string | null {
+  const tokenCookie = useCookie<string | null>(cookieKey, { path: '/' });
+  console.log(tokenCookie.value, 'tokenCookie');
+
   if (tokenCookie.value) return tokenCookie.value;
   return null;
 }
@@ -76,7 +78,7 @@ function getTokenSSRSafe(cookieKey = "token"): string | null {
 /** SSR 時把 cookie/authorization forward 給後端（可選） */
 function getForwardHeadersObj(): Record<string, string> {
   if (!import.meta.server) return {};
-  const h = useRequestHeaders(["cookie", "authorization"]);
+  const h = useRequestHeaders(['cookie', 'authorization']);
   const out: Record<string, string> = {};
   if (h.cookie) out.cookie = h.cookie;
   if (h.authorization) out.authorization = h.authorization;
@@ -87,22 +89,19 @@ function getHostnameSsrSafe(): string {
   if (import.meta.client) return window.location.hostname;
 
   const event = useRequestEvent();
-  if (!event) return "";
+  if (!event) return '';
 
-  const hostRaw = getRequestHost(event, { xForwardedHost: true }) ?? "";
-  const host = hostRaw.split(",")[0]?.trim()?.split(":")[0] ?? "";
+  const hostRaw = getRequestHost(event, { xForwardedHost: true }) ?? '';
+  const host = hostRaw.split(',')[0]?.trim()?.split(':')[0] ?? '';
 
   return host;
 }
 
 /* ----------------------------- main (promise) ----------------------------- */
 
-export async function useHttp<T = any>(
-  url: string,
-  options: UseHttpOptions<T> = {}
-): Promise<T> {
+export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> = {}): Promise<T> {
   const {
-    method = "GET",
+    method = 'GET',
     params,
     body,
     headers,
@@ -110,18 +109,18 @@ export async function useHttp<T = any>(
     json = true,
     fetchOptions,
     auth = true,
-    tokenCookieKey = "token",
+    tokenCookieKey = 'token',
   } = options;
 
   const hostname = getHostnameSsrSafe();
-  const baseUrl = config(hostname).baseUrl || "http://localhost:8080";
+  const baseUrl = config(hostname).baseUrl || 'http://localhost:8080';
 
   const fullUrl = baseUrl + url + buildQuery(params);
 
   // ✅ headers 一律用「純 object」合併（不要 defu）
   const baseHeaders: Record<string, string> = {
-    "X-App": "C9",
-    ...(json ? { "Content-Type": "application/json" } : {}),
+    'X-App': 'C9',
+    ...(json ? { 'Content-Type': 'application/json' } : {}),
     ...getForwardHeadersObj(),
     ...normalizeHeaders(headers),
     ...normalizeHeaders(fetchOptions?.headers), // fetchOptions 的 headers 也允許覆蓋
@@ -129,7 +128,7 @@ export async function useHttp<T = any>(
 
   if (auth) {
     const token = getTokenSSRSafe(tokenCookieKey);
-    console.log(token, "打api時拿的");
+    console.log(token, '打api時拿的');
 
     if (token) baseHeaders.Authorization = `Bearer ${token}`;
   }
@@ -139,17 +138,12 @@ export async function useHttp<T = any>(
     {
       method,
       headers: baseHeaders,
-      body:
-        body && method !== "GET"
-          ? json
-            ? JSON.stringify(body)
-            : body
-          : undefined,
+      body: body && method !== 'GET' ? (json ? JSON.stringify(body) : body) : undefined,
     },
     {
       ...fetchOptions,
       headers: undefined, // 已經手動合併過 headers，避免 defu 再碰一次
-    }
+    },
   );
 
   const ctx: HttpMiddlewareContext = { url: fullUrl, options: requestOptions };
@@ -160,10 +154,8 @@ export async function useHttp<T = any>(
     const res = await fetch(ctx.url, ctx.options);
 
     if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      const err = new Error(
-        `HTTP ${res.status} ${res.statusText} - ${ctx.url}`
-      );
+      const text = await res.text().catch(() => '');
+      const err = new Error(`HTTP ${res.status} ${res.statusText} - ${ctx.url}`);
       (err as any).status = res.status;
       (err as any).statusText = res.statusText;
       (err as any).body = text;
@@ -186,11 +178,11 @@ export function useHttpAsync<T = any>(
   key: string,
   url: string,
   options: UseHttpOptions<T> = {},
-  asyncOptions: AsyncDataOptions<T> = {}
+  asyncOptions: AsyncDataOptions<T> = {},
 ) {
   return useAsyncData<T>(
     key,
     () => useHttp<T>(url, options),
-    defu({ server: true, lazy: false }, asyncOptions)
+    defu({ server: true, lazy: false }, asyncOptions),
   );
 }
