@@ -20,6 +20,8 @@
     ]);
 
     store.setUserDetail(userDetailRes.data.value.result);
+    console.log(userDetailRes.data.value.result, 'userDetailRes');
+
     store.setEnums(enumsRes.data.value.result);
     store.setEnums(enumsRes.data.value.result);
     store.setIsReady(true);

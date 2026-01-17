@@ -10,7 +10,7 @@
       variant="solid"
       size="xl"
       aria-label="Notifications"
-      class="text-[white] text-[15px] font-bold cursor-pointer bg-[#00df72]/70 hover:bg-[#00df72] active:bg-[#00df72]"
+      class="text-[white] text-[15px] font-bold cursor-pointer bg-[#2f4553]/70 hover:bg-[#2f4553] active:bg-[#2f4553]"
       label="登入" />
     <template #body>
       <UPageCard class="w-full max-w-md">
