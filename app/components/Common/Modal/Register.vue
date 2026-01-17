@@ -49,7 +49,7 @@
       <UPageCard v-if="currentStep === 1" class="w-full max-w-md">
         <UAuthForm
           ref="UAuthFormRef"
-          :validate-on="validateOn"
+          :validate-on="[]"
           :schema="schema"
           description="請輸入您的帳號資訊以存取您的帳戶。"
           icon="i-lucide-user"
@@ -136,7 +136,6 @@
     }
   };
 
-  const validateOn: FormInputEvents[] = ['submit'];
   const fields: AuthFormField[] = [
     {
       name: 'email',

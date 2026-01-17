@@ -16,7 +16,7 @@
       <UPageCard class="w-full max-w-md">
         <UAuthForm
           ref="UAuthFormRef"
-          :validate-on="['submit']"
+          :validate-on="[]"
           :schema="schema"
           description="請輸入您的帳號資訊以存取您的帳戶。"
           icon="i-lucide-user"
