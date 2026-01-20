@@ -32,18 +32,17 @@
   import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui';
 
   const toast = useToast();
-  const store = useStore();
-  const { isLogin, setToken, refreshUserData } = useAuth();
+  const { setToken, refreshUserData } = useAuth();
 
   const UAuthFormRef = ref(null);
   const open = ref(false);
 
   const fields: AuthFormField[] = [
     {
-      name: 'email',
-      type: 'email',
-      label: 'Email',
-      placeholder: 'Enter your email',
+      name: 'account',
+      type: 'text',
+      label: '帳號',
+      placeholder: 'Enter your account',
       required: true,
     },
     {
@@ -78,7 +77,7 @@
   ];
 
   const schema = z.object({
-    email: z.email('Invalid email'),
+    account: z.string('Password is account'),
     password: z.string('Password is required').min(6, 'Must be at least 6 characters'),
   });
 
@@ -86,7 +85,7 @@
   const onSubmit = (payload: FormSubmitEvent<Schema>) => {
     useApi()
       .login({
-        account: payload.data.email,
+        account: payload.data.account,
         password: payload.data.password,
       })
       .then(async (res) => {

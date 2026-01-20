@@ -14,7 +14,7 @@
 
   try {
     const [userDetailRes, gameProviderRes, enumsRes] = await Promise.all([
-      useApi().getUserDetail({}),
+      useApi().getUserDetailSsr({}),
       useApi().getGameProvider({}),
       useApi().getEnums({}),
     ]);

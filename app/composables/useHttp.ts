@@ -2,8 +2,17 @@ import { defu } from 'defu';
 import config from './useConfig';
 import type { AsyncDataOptions } from '#app';
 import { getRequestHost } from 'h3';
-export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 import { useRequestEvent } from '#app';
+
+export type HttpMethod = (typeof HTTP_METHOD)[keyof typeof HTTP_METHOD];
+
+export const HTTP_METHOD = {
+  GET: 'GET',
+  POST: 'POST',
+  PUT: 'PUT',
+  PATCH: 'PATCH',
+  DELETE: 'DELETE',
+} as const;
 
 export interface HttpMiddlewareContext {
   url: string;
@@ -69,9 +78,6 @@ function normalizeHeaders(h?: HeadersInit): Record<string, string> {
 /** SSR-safe：cookie 優先，client 才 fallback localStorage */
 function getTokenSSRSafe(cookieKey = 'token'): string | null {
   const tokenCookie = useCookie<string | null>(cookieKey, { path: '/' });
-
-  console.log(tokenCookie.value, 'tokenCookie');
-
   if (tokenCookie.value) return tokenCookie.value;
   return null;
 }

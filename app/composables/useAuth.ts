@@ -14,12 +14,17 @@ export function useAuth() {
   const refreshUserData = async () => {
     await nextTick();
     if (!isLogin.value) return;
-    const userDetailRes = await useApi().getUserDetail({});
-    store.setUserDetail(userDetailRes.data.value.result);
+    const userDetailRes = await useApi().getUserDetailCsr({});
+    store.setUserDetail(userDetailRes.result);
   };
 
   const setToken = async (v: string | null) => {
     token.value = v; // 自動 set / clear cookie
+  };
+
+  const logout = async () => {
+    await setToken(null);
+    store.setUserDetail({});
   };
 
   return {
@@ -27,5 +32,6 @@ export function useAuth() {
     isLogin,
     setToken,
     refreshUserData,
+    logout,
   };
 }

@@ -46,12 +46,12 @@
 </template>
 <script setup lang="ts">
   const store = useStore();
-  const { isLogin } = useAuth();
+  const { isLogin, logout } = useAuth();
 
   const userActionItems = ref([
     [
       {
-        label: store.getUserDetail.account,
+        label: store.getUserDetail?.account || '',
         avatar: {
           src: 'https://github.com/benjamincanac.png',
         },
@@ -133,6 +133,9 @@
         label: 'Logout',
         icon: 'i-lucide-log-out',
         kbds: ['shift', 'meta', 'q'],
+        onSelect() {
+          logout();
+        },
       },
     ],
   ]);
