@@ -28,7 +28,7 @@
               header: 'border-[transparent]',
               body: 'border-[transparent]',
             }">
-            <template #header> {{ store.getUserDetail.account }} </template>
+            <template #header> {{ store.getUserDetail?.account }} </template>
             <div class="pb-2">
               0.00%
               <UTooltip
@@ -82,7 +82,7 @@
         </template>
       </div>
     </section>
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+    <div v-if="isDesktop" class="grid grid-cols-1 gap-6 md:grid-cols-2">
       <button
         v-for="item in items"
         :key="item.key"
@@ -173,6 +173,8 @@
     items?: CategoryItem[];
     imageHeight?: number;
   }>();
+
+  const { isDesktop } = useDevice();
 
   defineEmits<{ (e: 'select', item: CategoryItem): void }>();
 

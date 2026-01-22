@@ -5,19 +5,20 @@
       <template #header>
         <UDashboardNavbar
           title="LOGO"
+          :ui="{ root: 'lg:!px-20' }"
           class="shadow-[0_6px_10px_-2px_rgba(0,0,0,0.4)] border-l-[#252b3a]! bg-linear-to-b from-[#1a2c38] to-[#0f212e] border-b border-white/5">
           <template #right>
             <UUser
               v-if="isLogin"
-              :name="store.getUserDetail.account"
+              :name="store.getUserDetail?.account"
               description="Software Engineer"
               :avatar="{ src: 'https://github.com/benjamincanac.png' }"
-              :chip="{
-                color: 'primary',
-                position: 'top-right',
-              }">
+              :ui="{ name: 'text-[16px] text-center font-bold', root: 'gap-3' }"
+              :chip="{ color: 'primary', position: 'top-right' }">
               <template #description>
-                <UDropdownMenu :items="userActionItems">
+                <UDropdownMenu
+                  :items="userActionItems"
+                  :ui="{ viewport: 'w-[300px]', itemWrapper: 'text-[16px] font-bold' }">
                   <UButton
                     label="儀表板"
                     icon="i-lucide-menu"
@@ -60,77 +61,76 @@
     ],
     [
       {
-        label: 'Profile',
+        label: '個人設定',
         icon: 'i-lucide-user',
       },
       {
-        label: 'Billing',
+        label: '個人驗證',
         icon: 'i-lucide-credit-card',
       },
       {
-        label: 'Settings',
+        label: '通知',
         icon: 'i-lucide-cog',
         kbds: [','],
       },
       {
-        label: 'Keyboard shortcuts',
+        label: '存款',
+        icon: 'i-lucide-monitor',
+      },
+      {
+        label: '提款',
         icon: 'i-lucide-monitor',
       },
     ],
     [
       {
-        label: 'Team',
+        label: '投注紀錄',
         icon: 'i-lucide-users',
       },
       {
-        label: 'Invite users',
-        icon: 'i-lucide-user-plus',
-        children: [
-          [
-            {
-              label: 'Email',
-              icon: 'i-lucide-mail',
-            },
-            {
-              label: 'Message',
-              icon: 'i-lucide-message-square',
-            },
-          ],
-          [
-            {
-              label: 'More',
-              icon: 'i-lucide-circle-plus',
-            },
-          ],
-        ],
+        label: '交易紀錄',
+        icon: 'i-lucide-users',
       },
       {
-        label: 'New team',
-        icon: 'i-lucide-plus',
-        kbds: ['meta', 'n'],
+        label: '帳戶錢包管理',
+        icon: 'i-lucide-users',
+      },
+      // {
+      //   label: 'test',
+      //   icon: 'i-lucide-user-plus',
+      //   children: [
+      //     [
+      //       {
+      //         label: 'Email',
+      //         icon: 'i-lucide-mail',
+      //       },
+      //       {
+      //         label: 'Message',
+      //         icon: 'i-lucide-message-square',
+      //       },
+      //     ],
+      //     [
+      //       {
+      //         label: 'More',
+      //         icon: 'i-lucide-circle-plus',
+      //       },
+      //     ],
+      //   ],
+      // },
+    ],
+    [
+      {
+        label: '獎金',
+        icon: 'i-lucide-users',
+      },
+      {
+        label: '邀請好友',
+        icon: 'i-lucide-users',
       },
     ],
     [
       {
-        label: 'GitHub',
-        icon: 'i-simple-icons-github',
-        to: 'https://github.com/nuxt/ui',
-        target: '_blank',
-      },
-      {
-        label: 'Support',
-        icon: 'i-lucide-life-buoy',
-        to: '/docs/components/dropdown-menu',
-      },
-      {
-        label: 'API',
-        icon: 'i-lucide-cloud',
-        disabled: true,
-      },
-    ],
-    [
-      {
-        label: 'Logout',
+        label: '登出',
         icon: 'i-lucide-log-out',
         kbds: ['shift', 'meta', 'q'],
         onSelect() {

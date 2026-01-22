@@ -77,18 +77,15 @@
             <div class="mt-5 text-2xl font-extrabold tracking-wide text-white">註冊成功！</div>
             <div class="mt-2 text-sm text-white/70 leading-relaxed">
               歡迎加入，我們已為你完成帳號建立。<br />
-              視窗將在 <span class="font-bold text-white">{{ countdown }}</span> 秒後自動關閉。
             </div>
             <div class="mt-6 w-full space-y-3">
               <button
                 type="button"
-                @click="closeModalAndReset"
+                @click="closeModal"
                 class="h-11 w-full rounded-xl font-bold tracking-wide transition bg-linear-to-b from-[#77cbac] to-[#1a6b52] text-white hover:brightness-110 active:brightness-95">
                 立即開始
-                {{ store.getUserDetail }}
               </button>
             </div>
-            <div class="mt-5 text-xs text-white/45">若未自動關閉，請點「立即開始」手動關閉。</div>
           </div>
         </div>
       </div>
@@ -97,14 +94,13 @@
 </template>
 <script setup lang="ts">
   import * as z from 'zod';
-  import type { FormSubmitEvent, AuthFormField, FormInputEvents } from '@nuxt/ui';
+  import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui';
   import { en, zh_tw } from '@nuxt/ui/locale';
   import type { StepperItem } from '@nuxt/ui';
 
   const { showBtn = true } = defineProps<{ showBtn?: boolean }>();
 
   const toast = useToast();
-  const store = useStore();
   const { setToken, refreshUserData } = useAuth();
 
   const UStepperRef = useTemplateRef('UStepperRef');
@@ -137,6 +133,11 @@
       if (action === 'prev' && UStepperRef.value.hasPrev) UStepperRef.value.prev();
       if (action === 'next' && UStepperRef.value.hasNext) UStepperRef.value.next();
     }
+  };
+
+  const closeModal = () => {
+    open.value = false;
+    currentStep.value = 0;
   };
 
   const fields: AuthFormField[] = [
@@ -206,47 +207,6 @@
         }
       });
   };
-
-  const COUNTDOWN_TIME = 10;
-  const countdown = ref(COUNTDOWN_TIME);
-  let countdownTimer: ReturnType<typeof setInterval> | null = null;
-
-  const stopCountdown = () => {
-    if (countdownTimer) {
-      clearInterval(countdownTimer);
-      countdownTimer = null;
-    }
-  };
-
-  const startCountdown = () => {
-    stopCountdown();
-    countdown.value = COUNTDOWN_TIME;
-    countdownTimer = setInterval(() => {
-      countdown.value -= 1;
-      if (countdown.value <= 0) {
-        stopCountdown();
-        closeModalAndReset();
-      }
-    }, 1000);
-  };
-
-  const closeModalAndReset = () => {
-    open.value = false;
-    currentStep.value = 0;
-    stopCountdown();
-  };
-
-  watch(
-    () => [open.value, currentStep.value] as const,
-    ([isOpen, step]) => {
-      if (!isOpen) {
-        stopCountdown();
-        return;
-      }
-      if (step === 2) startCountdown();
-      else stopCountdown();
-    },
-  );
 
   defineShortcuts({ r: () => (open.value = !open.value) });
 </script>

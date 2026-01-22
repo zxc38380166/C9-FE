@@ -1,15 +1,44 @@
 <template>
-  <div class="px-10 space-y-5">
+  <div class="px-3.5 lg:px-10 xl:px-20 space-y-5">
     <A1HomeBanner />
     <A1LayoutCarousel />
     <UMarquee :overlay="false" :ui="{ root: '[--gap:--spacing(3)]' }">
       <UPageCard
         v-for="item in marqueeItems"
+        :key="item.img"
         :description="item.description"
         :ui="{ container: '!p-2', description: 'text-[11px] text-center' }">
-        <template #title> <NuxtImg :src="item.img" class="w-17.5" /> </template>
+        <template #title>
+          <NuxtImg :src="item.img" class="w-17.5" />
+        </template>
       </UPageCard>
     </UMarquee>
+    <div class="space-y-4">
+      <div v-for="(sec, i) in sections" :key="sec.key" class="space-y-4">
+        <A1LayoutTitleBar
+          :leftText="sec.leftText"
+          :leftIcon="sec.leftIcon"
+          :ui="{ right: '!gap-0' }">
+          <template #right>
+            <div
+              @click="toggleGameBar(i, 'prev')"
+              :class="[sec.ui.left]"
+              class="cursor-pointer rounded-l-xl w-12.5 border flex items-center justify-center h-9">
+              <Icon :name="'material-symbols:chevron-left-rounded'" />
+            </div>
+            <div
+              @click="toggleGameBar(i, 'next')"
+              :class="[sec.ui.right]"
+              class="cursor-pointer rounded-r-xl w-12.5 border flex items-center justify-center h-9">
+              <Icon :name="'material-symbols:chevron-right-rounded'" />
+            </div>
+          </template>
+        </A1LayoutTitleBar>
+        <A1GameListBar
+          :ref="(el) => (A1GameListBarRef[i] = el)"
+          :carouselItems="sec.carouselItems" />
+      </div>
+    </div>
     <CommonRankList :items="rankingList" :interval="2000" />
     <div class="pb-100">
       <UAccordion
@@ -32,6 +61,89 @@
   </div>
 </template>
 <script setup lang="ts">
+  const TITLE_BAR_UI_NOCAN = 'text-[#667386] border-[#2f4553]';
+  const TITLE_BAR_UI_CAN = 'text-[#b1bad3] border-[#2f4553]';
+
+  const sections = reactive([
+    {
+      key: 'continue',
+      leftText: '繼續遊戲',
+      leftIcon: 'material-symbols:settings-backup-restore',
+      carouselItems: [
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
+      ],
+      ui: { left: TITLE_BAR_UI_NOCAN, right: TITLE_BAR_UI_CAN },
+    },
+    {
+      key: 'hot',
+      leftText: '熱門遊戲',
+      leftIcon: 'twemoji:slot-machine',
+      carouselItems: [
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
+      ],
+      ui: { left: TITLE_BAR_UI_NOCAN, right: TITLE_BAR_UI_CAN },
+    },
+    {
+      key: 'sport',
+      leftText: '熱門體育賽事',
+      leftIcon: 'fluent-color:sport-24',
+      carouselItems: [
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
+        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
+      ],
+      ui: { left: TITLE_BAR_UI_NOCAN, right: TITLE_BAR_UI_CAN },
+    },
+  ]);
+
+  const A1GameListBarRef: Ref = ref([]);
+  const toggleGameBar = (i: number, action: 'prev' | 'next') => {
+    const bar = A1GameListBarRef.value[i];
+    if (!bar) return;
+    const UCarouselRef = bar.UCarouselRef;
+    const api = UCarouselRef.emblaApi;
+    const { canScrollPrev, canScrollNext } = api;
+    if (action === 'prev' && canScrollPrev()) api.scrollPrev();
+    if (action === 'next' && canScrollNext()) api.scrollNext();
+    nextTick(() => {
+      if (sections[i]) {
+        sections[i].ui.left = canScrollPrev() ? TITLE_BAR_UI_CAN : TITLE_BAR_UI_NOCAN;
+        sections[i].ui.right = canScrollNext() ? TITLE_BAR_UI_CAN : TITLE_BAR_UI_NOCAN;
+      }
+    });
+  };
+
   const rankingList = [
     {
       id: 1,

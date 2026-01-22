@@ -12,7 +12,6 @@
       <Logo v-if="!collapsed" class="h-5 w-auto shrink-0"> LOGO </Logo>
       <UIcon v-else name="i-simple-icons-nuxtdotjs" class="size-5 text-primary mx-auto" />
     </template>
-
     <template #default="{ collapsed }">
       <UButton
         :label="collapsed ? undefined : 'Search...'"
@@ -28,13 +27,11 @@
           </div>
         </template>
       </UButton>
-
       <UNavigationMenu
         :collapsed="collapsed"
         :items="items[0]"
         orientation="vertical"
         :ui="{ linkLabel: 'text-[16px]' }" />
-
       <UNavigationMenu
         :collapsed="collapsed"
         :items="items[1]"
@@ -42,12 +39,9 @@
         class="mt-auto"
         :ui="{ linkLabel: 'text-[16px]' }" />
     </template>
-
     <template #footer="{ collapsed }">
       <UButton
-        :avatar="{
-          src: 'https://github.com/benjamincanac.png',
-        }"
+        :avatar="{ src: 'https://github.com/benjamincanac.png' }"
         :label="collapsed ? undefined : 'Benjamin'"
         color="neutral"
         variant="ghost"
@@ -61,7 +55,6 @@
 
   const collapsed = ref(false);
   const switchCollapsed = () => (collapsed.value = !collapsed.value);
-  defineShortcuts({ c: () => (collapsed.value = !collapsed.value) });
 
   const items: ComputedRef<NavigationMenuItem[][]> = computed(() => {
     return [
@@ -95,7 +88,7 @@
       ],
       [
         {
-          label: '展開 / 收合',
+          label: '展開 / 收合 ',
           icon: collapsed.value
             ? 'i-tabler:layout-sidebar-right-collapse'
             : 'i-tabler:layout-sidebar-left-collapse',
@@ -108,4 +101,6 @@
       ],
     ];
   });
+
+  defineShortcuts({ c: () => (collapsed.value = !collapsed.value) });
 </script>
