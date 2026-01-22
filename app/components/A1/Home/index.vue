@@ -1,5 +1,5 @@
 <template>
-  <div class="px-3.5 lg:px-10 xl:px-20 space-y-5">
+  <div class="space-y-5">
     <A1HomeBanner />
     <A1LayoutCarousel />
     <UMarquee :overlay="false" :ui="{ root: '[--gap:--spacing(3)]' }">
