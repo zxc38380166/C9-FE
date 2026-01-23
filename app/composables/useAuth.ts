@@ -27,7 +27,55 @@ export function useAuth() {
     store.setUserDetail({});
   };
 
+  const resendOtp = (options: { cooldownSeconds?: number } = {}) => {
+    const cooldownSeconds = options.cooldownSeconds ?? 60;
+
+    const remaining = ref(0);
+    const isRunning = computed(() => remaining.value > 0);
+    const canResend = computed(() => remaining.value <= 0);
+
+    let timer: ReturnType<typeof setInterval> | null = null;
+
+    const stop = () => {
+      if (timer) clearInterval(timer);
+      timer = null;
+      remaining.value = 0;
+    };
+
+    const start = (sec: number = cooldownSeconds) => {
+      // 重置
+      if (timer) clearInterval(timer);
+      remaining.value = Math.max(0, Math.floor(sec));
+
+      if (remaining.value <= 0) return;
+
+      timer = setInterval(() => {
+        remaining.value -= 1;
+        if (remaining.value <= 0) stop();
+      }, 1000);
+    };
+
+    const format = computed(() => {
+      const s = remaining.value;
+      const mm = String(Math.floor(s / 60)).padStart(2, '0');
+      const ss = String(s % 60).padStart(2, '0');
+      return `${mm}:${ss}`;
+    });
+
+    onBeforeUnmount(() => stop());
+
+    return {
+      remaining,
+      isRunning,
+      canResend,
+      format,
+      start,
+      stop,
+    };
+  };
+
   return {
+    resendOtp,
     token,
     isLogin,
     setToken,

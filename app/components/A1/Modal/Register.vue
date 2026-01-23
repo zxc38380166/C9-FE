@@ -51,11 +51,11 @@
         <UAuthForm
           ref="UAuthFormRef"
           :validate-on="[]"
-          :schema="schema"
+          :schema
           description="請輸入您的帳號資訊以存取您的帳戶。"
           icon="i-lucide-user"
-          :fields="fields"
-          :providers="providers"
+          :fields
+          :providers
           @submit="onSubmit">
           <template #submit>
             <button

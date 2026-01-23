@@ -109,11 +109,13 @@
 <script setup lang="ts">
   import * as z from 'zod';
   import type { FormSubmitEvent } from '@nuxt/ui';
+  import { A1ModalVertifyUserInfo } from '#components';
 
   const UFormRef = useTemplateRef('UFormRef');
 
   const store = useStore();
   const toast = useToast();
+  const overlay = useOverlay();
 
   const schema = z.object({
     country: z.string(),
@@ -129,21 +131,61 @@
     mobile: store.getUserDetail.mobile,
   });
 
-  const isVertify = computed(() => ({
-    email: !!store.getUserDetail.email,
-    mobile: !!store.getUserDetail.mobile,
-  }));
+  const isVertify = computed(
+    () =>
+      ({
+        email: !!store.getUserDetail.email,
+        mobile: !!store.getUserDetail.mobile,
+      } as const),
+  );
 
-  const onVertify = async (action: keyof z.infer<typeof schema>) => {
-    if (UFormRef.value) {
-      UFormRef.value.validate({ name: action }).then((res) => {
-        console.log(res, 'res');
-      });
+  type VerifyAction = keyof typeof isVertify.value;
+  const vertifyPayload = reactive<{
+    info: string;
+    actionType: VerifyAction;
+    onReSend: Function;
+    onSuccess: Function;
+  }>({
+    info: '',
+    actionType: 'email',
+    onReSend: async () => ({}),
+    onSuccess: async () => ({}),
+  });
 
-      return new Promise<void>((res) => setTimeout(res, 1000));
-    }
+  const onVertify = async (action: VerifyAction) => {
+    if (!UFormRef.value) return Promise.resolve();
+    return UFormRef.value.validate({ name: action }).then(async (values) => {
+      if (action === 'email') {
+        const { code, message } = await useApi().sendVertifyEmail({ email: values.email });
 
-    return new Promise<void>((res) => setTimeout(res, 1000));
+        if (code === 200) {
+          vertifyPayload.info = values.email;
+          vertifyPayload.actionType = 'email';
+          vertifyPayload.onSuccess = () => modals.vertifyUserInfo.close();
+          modals.vertifyUserInfo.open();
+        } else {
+          toast.add({ title: '通知', description: message });
+        }
+        return; // resolve
+      }
+
+      if (action === 'mobile') {
+        const { code, message } = await useApi().sendVertifyMobile({
+          mobile: values.mobile,
+          country: values.country,
+        });
+
+        if (code === 200) {
+          vertifyPayload.info = values.mobile;
+          vertifyPayload.actionType = 'mobile';
+          vertifyPayload.onSuccess = () => modals.vertifyUserInfo.close();
+          modals.vertifyUserInfo.open();
+        } else {
+          toast.add({ title: '通知', description: message });
+        }
+        return; // resolve
+      }
+    });
   };
 
   const countryItems = computed(() => {
@@ -152,8 +194,13 @@
     return isArray ? countryCodes.map((i: any) => `${i.callingCode}-${i.country}-${i.name}`) : [];
   });
 
-  const onSubmit = (event: FormSubmitEvent<Schema>) => {
-    toast.add({ title: 'Success', description: 'The form has been submitted.', color: 'success' });
-    console.log(event.data);
-  };
+  const onSubmit = (event: FormSubmitEvent<Schema>) => {};
+
+  const modals = reactive({
+    vertifyUserInfo: overlay.create(A1ModalVertifyUserInfo, {
+      defaultOpen: false,
+      destroyOnClose: false,
+      props: vertifyPayload,
+    }),
+  });
 </script>

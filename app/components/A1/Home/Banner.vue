@@ -136,7 +136,7 @@
   </div>
 </template>
 <script setup lang="ts">
-  import { CommonModalRegister } from '#components';
+  import { A1ModalRegister } from '#components';
 
   type CategoryItem = {
     key: string;
@@ -182,7 +182,7 @@
   const overlay = useOverlay();
   const { isLogin } = useAuth();
 
-  const registerModal = overlay.create(CommonModalRegister, {
+  const registerModal = overlay.create(A1ModalRegister, {
     defaultOpen: false,
     destroyOnClose: false,
     props: { showBtn: false },

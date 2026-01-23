@@ -31,8 +31,8 @@
               </template>
             </UUser>
             <template v-else>
-              <CommonModalRegister />
-              <CommonModalLogin />
+              <A1ModalRegister />
+              <A1ModalLogin />
             </template>
           </template>
         </UDashboardNavbar>
