@@ -71,7 +71,7 @@
   const onSubmit = (payload: FormSubmitEvent<Schema>) => {
     const actionMap: Record<string, Function> = {
       async email() {
-        const { code, message } = await useApi().checkVertifyEmail({
+        const { code, message } = await useApi().checkVerifyEmail({
           email: info,
           code: payload.data.otp.join(''),
         });

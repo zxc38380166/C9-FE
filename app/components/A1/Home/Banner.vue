@@ -174,13 +174,11 @@
     imageHeight?: number;
   }>();
 
-  const { isDesktop } = useDevice();
-
-  defineEmits<{ (e: 'select', item: CategoryItem): void }>();
-
   const store = useStore();
   const overlay = useOverlay();
   const { isLogin } = useAuth();
+  const { isDesktop } = useDevice();
+  defineEmits<{ (e: 'select', item: CategoryItem): void }>();
 
   const registerModal = overlay.create(A1ModalRegister, {
     defaultOpen: false,
@@ -199,5 +197,5 @@
     registerModal.open();
   };
 
-  const onProvider = (key: any) => {};
+  const onProvider = (key: string = '') => {};
 </script>

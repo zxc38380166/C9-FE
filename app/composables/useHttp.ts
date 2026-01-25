@@ -35,6 +35,12 @@ export interface UseHttpOptions<T = any> {
   fetchOptions?: RequestInit;
   auth?: boolean;
   tokenCookieKey?: string;
+  // 401 自動導回首頁（預設 true）某些 API 不想自動跳轉可以關掉
+  autoRedirectOn401?: boolean;
+  // 401 callback 存哪個 cookie（預設 redirectTo）
+  redirectCookieKey?: string;
+  // 401 要導到哪（預設 '/'）
+  redirectTo?: string;
 }
 
 /* ----------------------------- utils ----------------------------- */
@@ -104,6 +110,49 @@ function getHostnameSsrSafe(): string {
   return host;
 }
 
+/** 取得目前頁面的 fullPath（client 用 route，server 用 req.url） */
+function getCurrentFullPathSsrSafe(): string {
+  if (import.meta.client) {
+    const route = useRoute();
+    return route.fullPath || '/';
+  }
+  const event = useRequestEvent();
+  const url = event?.node?.req?.url || '/';
+  return url;
+}
+
+/** 401 統一處理：清 token、存 callback、跳回首頁 */
+async function handle401(opts: {
+  tokenCookieKey: string;
+  redirectCookieKey: string;
+  redirectTo: string;
+}) {
+  const { tokenCookieKey, redirectCookieKey, redirectTo } = opts;
+
+  // 1) 記住 callback
+  const callback = getCurrentFullPathSsrSafe();
+  const redirectCookie = useCookie<string | null>(redirectCookieKey, { path: '/' });
+  redirectCookie.value = callback;
+
+  // 2) 清 token
+  const tokenCookie = useCookie<string | null>(tokenCookieKey, { path: '/' });
+  tokenCookie.value = null;
+
+  // 3) 導回首頁
+  // - client：router.replace
+  // - server：navigateTo（SSR setup 時可用）
+  if (import.meta.client) {
+    const toast = useToast();
+    const router = useRouter();
+    await router.replace(redirectTo).then(() => {
+      toast.add({ title: '通知', description: '登入已失效, 請重新登入' });
+    });
+  } else {
+    // SSR 也能做 redirect（只要是在 setup/asyncData 之類被呼叫）
+    await navigateTo(redirectTo);
+  }
+}
+
 /* ----------------------------- main (promise) ----------------------------- */
 
 export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> = {}): Promise<T> {
@@ -117,12 +166,15 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     fetchOptions,
     auth = true,
     tokenCookieKey = 'token',
+    autoRedirectOn401 = true,
+    redirectCookieKey = 'redirectTo',
+    redirectTo = '/',
   } = options;
 
   const hostname = getHostnameSsrSafe();
   const baseUrl = config(hostname).baseUrl || 'http://localhost:8080';
 
-  const fullUrl = baseUrl + url + buildQuery(params);
+  const fullUrl = baseUrl + url + buildQuery(body);
 
   // ✅ headers 一律用「純 object」合併（不要 defu）
   const baseHeaders: Record<string, string> = {
@@ -135,7 +187,6 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
 
   if (auth) {
     const token = getTokenSSRSafe(tokenCookieKey);
-    console.log(token, '打api時拿的');
     if (token) baseHeaders.Authorization = `Bearer ${token}`;
   }
 
@@ -159,6 +210,16 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
 
     const res = await fetch(ctx.url, ctx.options);
 
+    if (res.status === 401 && autoRedirectOn401) {
+      await handle401({ tokenCookieKey, redirectCookieKey, redirectTo });
+      const text = await res.text().catch(() => '');
+      const err = new Error(`HTTP 401 Unauthorized - ${ctx.url}`);
+      (err as any).status = 401;
+      (err as any).statusText = res.statusText;
+      (err as any).body = text;
+      throw err;
+    }
+
     if (!res.ok) {
       const text = await res.text().catch(() => '');
       const err = new Error(`HTTP ${res.status} ${res.statusText} - ${ctx.url}`);
@@ -177,8 +238,6 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     throw error;
   }
 }
-
-/* ----------------------------- SSR prefetch (useAsyncData) ----------------------------- */
 
 export function useHttpAsync<T = any>(
   key: string,

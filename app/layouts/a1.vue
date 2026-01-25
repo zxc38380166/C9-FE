@@ -14,7 +14,7 @@
               v-if="isLogin"
               :name="store.getUserDetail?.account"
               description="Software Engineer"
-              :avatar="{ src: 'https://github.com/benjamincanac.png' }"
+              :avatar="{ src: 'https://github.com/benjamincanac.png', class: 'size-[40px]' }"
               :ui="{ name: 'text-[16px] text-center font-bold', root: 'gap-3' }"
               :chip="{ color: 'primary', position: 'top-right' }">
               <template #description>

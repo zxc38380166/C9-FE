@@ -1,117 +1,213 @@
 <template>
-  <div class="space-y-4">
-    <UPageCard
-      class="w-full"
-      title="Tailwind CSS"
-      :ui="{ body: 'w-full', header: 'w-full space-y-4' }"
-      description="Nuxt UI integrates with latest Tailwind CSS, bringing significant improvements.">
-      <template #header>
-        <div class="text-[20px] font-bold">個人資料</div>
-        <USeparator />
-      </template>
-      <template #title>
-        <div class="flex justify-between items-center w-full">
-          <UUser
-            :name="store.getUserDetail.name"
-            :description="`帳號 : ${store.getUserDetail.account}`"
-            :avatar="{
-              src: 'https://github.com/benjamincanac.png',
-              icon: 'i-lucide-image',
-            }" />
-          <UButton size="xl" class="translate-y-4 cursor-pointer">編輯</UButton>
-        </div>
-      </template>
-    </UPageCard>
-    <UPageCard
-      class="w-full"
-      title="Tailwind CSS"
-      :ui="{ body: 'w-full', header: 'w-full space-y-4' }">
-      <template #header>
-        <div class="text-[20px] font-bold">聯絡資訊</div>
-        <USeparator />
-      </template>
-      <template #title>
-        <div class="flex justify-between items-center w-full">
-          <UForm
-            ref="UFormRef"
-            class="w-full space-y-4"
-            :schema="schema"
-            :state="state"
-            @submit="onSubmit"
-            :validate-on="['input', 'blur']">
-            <UFormField size="xl" name="email" :ui="{ label: 'mb-1' }" label="電子信箱驗證">
-              <UInput
-                v-model="state.email"
-                :disabled="isVertify.email"
-                :ui="{ root: 'w-full' }"
-                placeholder="尚未綁定" />
-              <template #hint>
-                <div class="flex items-center">
-                  <template v-if="isVertify.email">
-                    <Icon :name="'icon-park:success'" class="text-[24px] text-[red]" />
-                    <span class="text-[14px] text-white/50"> 已驗證 </span>
-                  </template>
-                  <template v-else>
-                    <UButton
-                      size="xs"
-                      class="cursor-pointer"
-                      loading-auto
-                      @click="onVertify('email')">
-                      立即驗證
-                    </UButton>
-                  </template>
-                </div>
-              </template>
-            </UFormField>
-            <UFormField size="xl" name="mobile" :ui="{ label: 'mb-1' }" label="電話驗證">
-              <UFieldGroup class="w-full">
-                <USelectMenu
-                  type="button"
-                  :ui="{ content: 'w-[230px]' }"
-                  v-model="state.country"
-                  :items="countryItems"
-                  @change.stop
-                  @input.stop
-                  @blur.stop
-                  @focus.stop
-                  @keydown.stop
-                  @click.stop />
+  <div>
+    <UForm
+      ref="UFormRef"
+      class="w-full space-y-4"
+      :schema
+      :state
+      @submit="onSubmit"
+      :validate-on="['input', 'blur']">
+      <UPageCard
+        class="w-full"
+        :ui="{ body: 'w-full', header: 'w-full space-y-4' }"
+        description="Nuxt UI integrates with latest Tailwind CSS, bringing significant improvements.">
+        <template #header>
+          <div class="text-[20px] font-bold">個人資料</div>
+          <USeparator />
+        </template>
+        <template #title>
+          <div class="flex justify-between items-center w-full">
+            <UUser
+              :name="store.getUserDetail?.name"
+              :ui="{ description: 'text-[16px] text-white' }"
+              :description="`帳號 : ${store.getUserDetail?.account}`"
+              :avatar="{
+                src: 'https://github.com/benjamincanac.png',
+                icon: 'i-lucide-image',
+                class: 'size-[50px]',
+              }" />
+            <UButton size="xl" class="cursor-pointer">編輯頭像</UButton>
+          </div>
+        </template>
+      </UPageCard>
+      <UPageCard class="w-full" :ui="{ body: 'w-full', header: 'w-full space-y-4' }">
+        <template #header>
+          <div class="text-[20px] font-bold">聯絡資訊</div>
+          <USeparator />
+        </template>
+        <template #title>
+          <div class="space-y-4 justify-between items-center w-full">
+            <UFormField
+              v-for="field in vertifyInfoFields"
+              :key="field.name"
+              size="xl"
+              :name="field.name"
+              :ui="{ label: 'mb-1' }"
+              :label="field.label">
+              <template v-if="field.type === 'email'">
                 <UInput
-                  v-model="state.mobile"
-                  :disabled="isVertify.mobile"
+                  v-model="state.email"
+                  :disabled="isVerify.email"
                   :ui="{ root: 'w-full' }"
-                  placeholder="尚未綁定" />
-              </UFieldGroup>
+                  :placeholder="field.placeholder" />
+              </template>
+              <template v-else-if="field.type === 'mobile'">
+                <UFieldGroup class="w-full">
+                  <USelectMenu
+                    type="button"
+                    :ui="{ content: 'w-[230px]' }"
+                    v-model="state.country"
+                    :items="countryItems"
+                    @change.stop
+                    @input.stop
+                    @blur.stop
+                    @focus.stop
+                    @keydown.stop
+                    @click.stop />
+                  <UInput
+                    v-model="state.mobile"
+                    :disabled="isVerify.mobile"
+                    :ui="{ root: 'w-full' }"
+                    :placeholder="field.placeholder" />
+                </UFieldGroup>
+              </template>
               <template #hint>
                 <div class="flex items-center">
-                  <template v-if="isVertify.mobile">
+                  <template v-if="isVerify[field.name]">
                     <Icon :name="'icon-park:success'" class="text-[24px] text-[red]" />
                     <span class="text-[14px] text-white/50"> 已驗證 </span>
                   </template>
                   <template v-else>
                     <UButton
                       size="xs"
+                      :disabled="isVerify[field.name]"
                       class="cursor-pointer"
                       loading-auto
-                      @click="onVertify('mobile')">
+                      @click="onVerify(field.name)">
                       立即驗證
                     </UButton>
                   </template>
                 </div>
               </template>
             </UFormField>
-          </UForm>
+          </div>
+        </template>
+      </UPageCard>
+      <UPageCard class="w-full" :ui="{ body: 'w-full', header: 'w-full space-y-4' }">
+        <template #header>
+          <div class="text-[20px] font-bold">帳戶連結</div>
+          <USeparator />
+        </template>
+        <template #title>
+          <div class="space-y-4 justify-between items-center w-full">
+            <UFormField
+              v-for="field in bindInfoFields"
+              size="xl"
+              :key="field.name"
+              :name="field.name"
+              :ui="{ label: 'mb-1' }"
+              :label="field.label">
+              <template v-if="field.type === 'text'">
+                <UInput
+                  :icon="field.icon"
+                  v-model="state[field.name]"
+                  :ui="{ root: 'w-full' }"
+                  :placeholder="field.placeholder"
+                  disabled>
+                  <template #trailing>
+                    <UButton
+                      :color="isVerify[field.name] ? 'error' : 'primary'"
+                      size="xs"
+                      :icon="
+                        isVerify[field.name]
+                          ? 'fluent:plug-disconnected-16-filled'
+                          : 'file-icons:binder'
+                      "
+                      class="font-bold rounded-full">
+                      {{ isVerify[field.name] ? '斷開' : '綁定' }}
+                    </UButton>
+                  </template>
+                </UInput>
+              </template>
+            </UFormField>
+          </div>
+        </template>
+      </UPageCard>
+      <UPageCard class="w-full" :ui="{ body: ' w-full', header: 'w-full space-y-4' }">
+        <template #header>
+          <div class="text-[20px] font-bold">隱私管理</div>
+          <USeparator />
+        </template>
+        <template #title>
+          <div class="grid grid-cols-2 gap-4 w-full">
+            <UPageCard title="變更密碼" description="定期變更密碼，以保持密碼的唯一性和安全性。">
+              <template #leading>
+                <div class="flex">
+                  <Icon name="icon-park:exchange-three" size="40px" />
+                </div>
+              </template>
+              <template #footer> <UButton class="w-full">變更密碼</UButton> </template>
+            </UPageCard>
+            <UPageCard
+              title="雙因素認證"
+              description="啟用雙重因素保護您的帳戶，防止未經授權的存取。"
+              icon="i-simple-icons-tailwindcss">
+              <template #leading>
+                <div class="flex">
+                  <Icon name="streamline-plump-color:padlock-key-flat" size="40px" />
+                </div>
+              </template>
+              <template #footer> <UButton class="w-full">啟用 2FA</UButton> </template>
+            </UPageCard>
+          </div>
+        </template>
+      </UPageCard>
+      <div
+        v-if="store.getUserDetail.loginLogs"
+        class="w-full space-y-4 pb-4 bg-[#0f172b] rounded-lg">
+        <div class="flex justify-between px-4 py-3.5 border-b border-accented">
+          <div class="text-[20px] px-2 font-bold">登入位置 (最近20筆)</div>
+          <UInput
+            v-model="globalFilter"
+            class="max-w-sm w-[50%]"
+            :placeholder="'您可以查詢指定裝置或ip或最後登入時間或動作紀錄'" />
         </div>
-      </template>
-    </UPageCard>
+        <UTable
+          ref="UTableRef"
+          v-model:pagination="pagination"
+          v-model:global-filter="globalFilter"
+          :data="store.getUserDetail.loginLogs"
+          :columns="columns"
+          :pagination-options="{
+            getPaginationRowModel: getPaginationRowModel(),
+          }"
+          class="flex-1" />
+        <div class="flex justify-center border-t border-default pt-4 px-4">
+          <UPagination
+            :page="(UTableRef?.tableApi?.getState().pagination.pageIndex || 0) + 1"
+            :items-per-page="UTableRef?.tableApi?.getState().pagination.pageSize"
+            :total="UTableRef?.tableApi?.getFilteredRowModel().rows.length"
+            @update:page="(p) => UTableRef?.tableApi?.setPageIndex(p - 1)" />
+        </div>
+      </div>
+    </UForm>
   </div>
 </template>
 <script setup lang="ts">
   import * as z from 'zod';
-  import type { FormSubmitEvent } from '@nuxt/ui';
-  import { A1ModalVertifyUserInfo } from '#components';
+  import type { FormSubmitEvent, TableColumn } from '@nuxt/ui';
+  import { A1ModalVerifyUserInfo } from '#components';
+  import { getPaginationRowModel } from '@tanstack/vue-table';
+  import moment from 'moment-timezone';
+
+  useApi()
+    .getUserDetailCsr({ RELATED: ['LOGIN_LOG'] })
+    .then((res) => {
+      store.setUserDetail(res.result);
+    });
 
   const UFormRef = useTemplateRef('UFormRef');
+  const UTableRef = useTemplateRef('UTableRef');
 
   const store = useStore();
   const toast = useToast();
@@ -121,25 +217,63 @@
     country: z.string(),
     email: z.string().min(3).email('信箱格式錯誤'),
     mobile: z.string('請輸入電話').regex(/^\d+$/, '手機號碼只能輸入數字'),
+    telegram: z.string().nullable(),
+    google: z.string().nullable(),
   });
 
   type Schema = z.output<typeof schema>;
 
   const state = reactive<Partial<Schema>>({
     country: '886-TW-台灣',
-    email: store.getUserDetail.email,
-    mobile: store.getUserDetail.mobile,
+    email: store.getUserDetail?.email,
+    mobile: store.getUserDetail?.mobile,
+    telegram: store.getUserDetail?.telegram,
+    google: store.getUserDetail?.google,
   });
 
-  const isVertify = computed(
+  const isVerify = computed(
     () =>
       ({
-        email: !!store.getUserDetail.email,
-        mobile: !!store.getUserDetail.mobile,
+        email: !!store.getUserDetail?.email,
+        mobile: !!store.getUserDetail?.mobile,
+        telegram: !!store.getUserDetail?.telegram,
+        google: !!store.getUserDetail?.google,
       } as const),
   );
 
-  type VerifyAction = keyof typeof isVertify.value;
+  const vertifyInfoFields = [
+    {
+      name: 'email',
+      type: 'email',
+      label: '電子信箱驗證',
+      placeholder: '尚未綁定',
+    },
+    {
+      name: 'mobile',
+      type: 'mobile',
+      label: '電話驗證',
+      placeholder: '尚未綁定',
+    },
+  ] as const;
+
+  const bindInfoFields = [
+    {
+      name: 'telegram',
+      type: 'text',
+      label: 'Telegram',
+      icon: 'logos:telegram',
+      placeholder: '尚未綁定',
+    },
+    {
+      name: 'google',
+      type: 'text',
+      label: 'Google',
+      icon: 'devicon:google',
+      placeholder: '尚未綁定',
+    },
+  ] as const;
+
+  type VerifyAction = keyof typeof isVerify.value;
   const vertifyPayload = reactive<{
     info: string;
     actionType: VerifyAction;
@@ -152,11 +286,11 @@
     onSuccess: async () => ({}),
   });
 
-  const onVertify = async (action: VerifyAction) => {
+  const onVerify = async (action: VerifyAction) => {
     if (!UFormRef.value) return Promise.resolve();
     return UFormRef.value.validate({ name: action }).then(async (values) => {
       if (action === 'email') {
-        const { code, message } = await useApi().sendVertifyEmail({ email: values.email });
+        const { code, message } = await useApi().sendVerifyEmail({ email: values.email });
 
         if (code === 200) {
           vertifyPayload.info = values.email;
@@ -166,11 +300,11 @@
         } else {
           toast.add({ title: '通知', description: message });
         }
-        return; // resolve
+        return;
       }
 
       if (action === 'mobile') {
-        const { code, message } = await useApi().sendVertifyMobile({
+        const { code, message } = await useApi().sendVerifyMobile({
           mobile: values.mobile,
           country: values.country,
         });
@@ -183,7 +317,7 @@
         } else {
           toast.add({ title: '通知', description: message });
         }
-        return; // resolve
+        return;
       }
     });
   };
@@ -197,10 +331,76 @@
   const onSubmit = (event: FormSubmitEvent<Schema>) => {};
 
   const modals = reactive({
-    vertifyUserInfo: overlay.create(A1ModalVertifyUserInfo, {
+    vertifyUserInfo: overlay.create(A1ModalVerifyUserInfo, {
       defaultOpen: false,
       destroyOnClose: false,
       props: vertifyPayload,
     }),
+  });
+
+  const globalFilter = ref('');
+
+  type LoginLog = {
+    device: string;
+    ip: string;
+    lastUse: string;
+    action: number;
+  };
+
+  const columns: TableColumn<LoginLog>[] = [
+    {
+      accessorKey: 'ip',
+      header: 'IP地址',
+      meta: { class: { th: 'text-center w-1/4', td: 'text-center font-medium w-1/4' } },
+    },
+    {
+      accessorKey: 'device',
+      header: '裝置',
+      meta: { class: { th: 'text-center w-1/4', td: 'text-center font-medium w-1/4' } },
+      cell: ({ row }) => {
+        const device = String(row.getValue('device') ?? '');
+        return h(
+          'div',
+          { class: 'mx-auto max-w-[360px] text-center break-words whitespace-normal line-clamp-2' },
+          device,
+        );
+      },
+    },
+    {
+      accessorKey: 'lastUse',
+      header: '最後使用',
+      meta: { class: { th: 'text-center w-1/4', td: 'text-center font-medium w-1/4' } },
+      cell: ({ row }) => {
+        const s = moment(row.getValue('lastUse')).tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss');
+        const [date, time] = s.split(' ');
+        return h('div', { class: 'text-center leading-5 whitespace-normal' }, [
+          h('div', date),
+          h('div', time),
+        ]);
+      },
+    },
+    {
+      accessorKey: 'action',
+      header: '動作',
+      meta: { class: { th: 'text-center w-1/4', td: 'text-center font-medium w-1/4' } },
+      cell: ({ row }) => {
+        const color = {
+          LOGIN: 'success' as const,
+          DEL: 'error' as const,
+          LOGOUT: 'error' as const,
+          UNCAPTURED: 'neutral' as const,
+        }[row.getValue('action') as string];
+        return h(
+          UBadge,
+          { class: 'capitalize', variant: 'subtle', color },
+          () => store.getEnums.AUTH_ENUM.LOGIN_LOG.ACTION[row.getValue('action')],
+        );
+      },
+    },
+  ];
+
+  const pagination = ref({
+    pageIndex: 0,
+    pageSize: 5,
   });
 </script>
