@@ -156,13 +156,6 @@
       required: true,
     },
     {
-      name: 'otp',
-      type: 'otp',
-      label: 'OTP',
-      length: 6,
-      placeholder: '○',
-    },
-    {
       name: 'remember',
       label: 'Remember me',
       type: 'checkbox',

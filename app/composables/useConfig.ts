@@ -11,7 +11,7 @@ export const domainConfig: any = {
     siteName: 'C9科技',
   },
   ['c9-ec.zeabur.app']: {
-    baseUrl: 'https://c9-cms.zeabur.app',
+    baseUrl: 'https://c9-api.zeabur.app',
     socketUrl: 'http://localhost:8080',
     imgUrl: 'https://pub-fbbcd2298f7c4e6aa4d5f9cc90ff6d88.r2.dev',
     layout: LAYOUT_ENUM.a1,

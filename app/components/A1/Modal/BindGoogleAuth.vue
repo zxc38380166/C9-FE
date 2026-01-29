@@ -6,27 +6,27 @@
     <template #body>
       <UPageCard class="w-full max-w-md">
         <div class="w-full flex justify-center">
-          <img
-            v-if="googleAuthData.qrCode"
-            :src="googleAuthData.qrCode"
-            class="w-[200px] h-[200px]" />
-          <USkeleton v-else class="w-[200px] h-[200px]" />
+          <img v-if="googleAuthData.qrCode" :src="googleAuthData.qrCode" class="w-50 h-50" />
+          <USkeleton v-else class="w-50 h-50" />
         </div>
         <UAuthForm
-          :schema
+          ref="UAuthFormRef"
+          :loading
+          :schema="schema"
           :validate-on="['input']"
           :title="`備用金鑰（請妥善保存) ${googleAuthData.secret}`"
           :description="'啟用 Google Authenticator 後，登入與重要操作將需要輸入動態驗證碼'"
           :fields
-          :providers="[]"
           :ui="{
             title: 'text-[14px] min-h-[50px]',
             description: 'text-[14px] text-[red]',
             header: 'min-h-[100px]',
           }"
           @submit="onSubmit">
-          <template #submit>
-            <UButton type="submit" block> 確認啟用 </UButton>
+          <template #submit="{ loading }">
+            <UButton type="submit" block :loading="loading">
+              {{ loading ? '啟用中…' : '確認啟用' }}
+            </UButton>
           </template>
         </UAuthForm>
       </UPageCard>
@@ -38,11 +38,13 @@
   import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui';
 
   const { onSuccess = () => {} } = defineProps<{
-    onSuccess: Function;
+    onSuccess?: () => void;
   }>();
 
   const toast = useToast();
   const { refreshUserData } = useAuth();
+
+  const UAuthFormRef = useTemplateRef('UAuthFormRef');
 
   const fields: AuthFormField[] = [
     {
@@ -57,29 +59,40 @@
   const schema = z.object({
     otp: z
       .array(z.string())
-      .length(6, 'OTP 必須是 6 位數')
-      .refine((arr) => arr.every((v) => v !== ''), 'OTP 不可有空值'),
+      .length(6, '請輸入 6 位數驗證碼')
+      .refine((arr) => arr.every((v) => v !== ''), '請輸入 6 位數驗證碼'),
   });
 
+  const loading = ref(false);
   type Schema = z.output<typeof schema>;
-  const onSubmit = (payload: FormSubmitEvent<Schema>) => {
-    useApi()
-      .enableGoogle({ code: payload.data.otp.join('') })
-      .then(async (res) => {
-        if (res.code === 200) {
-          toast.add({ title: '通知', description: '啟用成功' });
-          await refreshUserData();
-          onSuccess();
-        } else {
-          toast.add({ title: '通知', description: res.message });
-        }
+  const onSubmit = async (payload: FormSubmitEvent<Schema>) => {
+    try {
+      loading.value = true;
+      const code = payload.data.otp.join('');
+      const res = await useApi().enableGoogle({ code });
+
+      if (res.code === 200) {
+        toast.add({ title: '通知', description: '啟用成功' });
+        await refreshUserData();
+        onSuccess();
+      } else {
+        toast.add({ title: '通知', description: res.message });
+      }
+    } catch (err: any) {
+      toast.add({
+        title: '通知',
+        description: err?.data?.message || err?.message || '系統錯誤，請稍後再試',
       });
+    } finally {
+      loading.value = false;
+    }
   };
 
   const googleAuthData = ref({ qrCode: '', secret: '' });
   const generateGoogle = async () => {
     const res = await useApi().generateGoogle();
     googleAuthData.value = res.result;
+    if (UAuthFormRef.value) UAuthFormRef.value.state.otp = [];
   };
 
   onMounted(() => {

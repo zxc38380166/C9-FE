@@ -147,7 +147,9 @@
                   <Icon name="icon-park:exchange-three" size="40px" />
                 </div>
               </template>
-              <template #footer> <UButton class="w-full">變更密碼</UButton> </template>
+              <template #footer>
+                <UButton @click="modals.editPassword.open()" class="w-full">變更密碼</UButton>
+              </template>
             </UPageCard>
             <UPageCard
               title="雙因素認證"
@@ -203,10 +205,15 @@
 </template>
 <script setup lang="ts">
   import * as z from 'zod';
-  import type { FormSubmitEvent, TableColumn } from '@nuxt/ui';
-  import { A1ModalVerifyUserInfo, UBadge, A1ModalBindGoogleAuth } from '#components';
-  import { getPaginationRowModel } from '@tanstack/vue-table';
   import moment from 'moment-timezone';
+  import type { FormSubmitEvent, TableColumn } from '@nuxt/ui';
+  import { getPaginationRowModel } from '@tanstack/vue-table';
+  import {
+    A1ModalVerifyUserInfo,
+    UBadge,
+    A1ModalBindGoogleAuth,
+    A1ModalEditPassword,
+  } from '#components';
 
   useApi()
     .getUserDetailCsr({ RELATED: ['LOGIN_LOG'] })
@@ -353,6 +360,13 @@
       props: {
         onSuccess: () => {
           modals.googleAuth.close();
+        },
+      },
+    }),
+    editPassword: overlay.create(A1ModalEditPassword, {
+      props: {
+        onSuccess: () => {
+          modals.editPassword.close();
         },
       },
     }),

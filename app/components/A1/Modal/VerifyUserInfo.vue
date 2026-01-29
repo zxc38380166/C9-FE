@@ -3,14 +3,22 @@
     <template #body>
       <UPageCard class="w-full max-w-md">
         <UAuthForm
+          ref="UAuthFormRef"
           :schema
+          :loading
           :validate-on="['input']"
           :title="`已發送驗證碼至以下${actionType}: `"
           :description="info"
           icon="material-symbols:key-outline-rounded"
           :fields
           :providers
-          @submit="onSubmit" />
+          @submit="onSubmit">
+          <template #submit="{ loading }">
+            <UButton type="submit" block :loading="loading">
+              {{ loading ? '綁定中…' : '確認綁定' }}
+            </UButton>
+          </template>
+        </UAuthForm>
       </UPageCard>
     </template>
   </UModal>
@@ -38,6 +46,8 @@
     cooldownSeconds: 60,
   });
 
+  const UAuthFormRef = useTemplateRef('UAuthFormRef');
+
   const fields: AuthFormField[] = [
     {
       name: 'otp',
@@ -63,12 +73,14 @@
   const schema = z.object({
     otp: z
       .array(z.string())
-      .length(6, 'OTP 必須是 6 位數')
-      .refine((arr) => arr.every((v) => v !== ''), 'OTP 不可有空值'),
+      .length(6, '請輸入 6 位數驗證碼')
+      .refine((arr) => arr.every((v) => v !== ''), '請輸入 6 位數驗證碼'),
   });
 
+  const loading = ref(false);
   type Schema = z.output<typeof schema>;
   const onSubmit = (payload: FormSubmitEvent<Schema>) => {
+    loading.value = true;
     const actionMap: Record<string, Function> = {
       async email() {
         const { code, message } = await useApi().checkVerifyEmail({
@@ -83,6 +95,8 @@
         } else {
           toast.add({ title: '通知', description: message });
         }
+
+        loading.value = false;
       },
     };
 
@@ -92,6 +106,7 @@
   onMounted(() => {
     nextTick(() => {
       onReSend({ remaining, isRunning, canResend, format, start, stop });
+      if (UAuthFormRef.value) UAuthFormRef.value.state.otp = [];
     });
   });
 </script>
