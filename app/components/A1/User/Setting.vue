@@ -57,6 +57,7 @@
                     type="button"
                     :ui="{ content: 'w-[230px]' }"
                     v-model="state.country"
+                    :icon="state.country?.icon"
                     :items="countryItems"
                     @change.stop
                     @input.stop
@@ -157,7 +158,14 @@
                   <Icon name="streamline-plump-color:padlock-key-flat" size="40px" />
                 </div>
               </template>
-              <template #footer> <UButton class="w-full">啟用 2FA</UButton> </template>
+              <template #footer>
+                <UButton
+                  :disabled="store.getUserDetail.googleAuthEnabled"
+                  @click="modals.googleAuth.open()"
+                  class="w-full">
+                  {{ store.getUserDetail.googleAuthEnabled ? '已啟用' : '啟用 2FA' }}
+                </UButton>
+              </template>
             </UPageCard>
           </div>
         </template>
@@ -196,15 +204,13 @@
 <script setup lang="ts">
   import * as z from 'zod';
   import type { FormSubmitEvent, TableColumn } from '@nuxt/ui';
-  import { A1ModalVerifyUserInfo } from '#components';
+  import { A1ModalVerifyUserInfo, UBadge, A1ModalBindGoogleAuth } from '#components';
   import { getPaginationRowModel } from '@tanstack/vue-table';
   import moment from 'moment-timezone';
 
   useApi()
     .getUserDetailCsr({ RELATED: ['LOGIN_LOG'] })
-    .then((res) => {
-      store.setUserDetail(res.result);
-    });
+    .then((res) => store.setUserDetail(res.result));
 
   const UFormRef = useTemplateRef('UFormRef');
   const UTableRef = useTemplateRef('UTableRef');
@@ -214,7 +220,7 @@
   const overlay = useOverlay();
 
   const schema = z.object({
-    country: z.string(),
+    country: z.object({ label: z.string(), icon: z.string() }),
     email: z.string().min(3).email('信箱格式錯誤'),
     mobile: z.string('請輸入電話').regex(/^\d+$/, '手機號碼只能輸入數字'),
     telegram: z.string().nullable(),
@@ -224,7 +230,7 @@
   type Schema = z.output<typeof schema>;
 
   const state = reactive<Partial<Schema>>({
-    country: '886-TW-台灣',
+    country: { label: '886-台灣', icon: 'cif:tw' },
     email: store.getUserDetail?.email,
     mobile: store.getUserDetail?.mobile,
     telegram: store.getUserDetail?.telegram,
@@ -325,7 +331,14 @@
   const countryItems = computed(() => {
     const countryCodes = store?.getCountryCodes;
     const isArray = Array.isArray(countryCodes);
-    return isArray ? countryCodes.map((i: any) => `${i.callingCode}-${i.country}-${i.name}`) : [];
+    return isArray
+      ? countryCodes.map((i: any) => {
+          return {
+            label: `${i.callingCode}-${i.name}`,
+            icon: `cif:${i.country}`.toLocaleLowerCase(),
+          };
+        })
+      : [];
   });
 
   const onSubmit = (event: FormSubmitEvent<Schema>) => {};
@@ -335,6 +348,13 @@
       defaultOpen: false,
       destroyOnClose: false,
       props: vertifyPayload,
+    }),
+    googleAuth: overlay.create(A1ModalBindGoogleAuth, {
+      props: {
+        onSuccess: () => {
+          modals.googleAuth.close();
+        },
+      },
     }),
   });
 
@@ -393,7 +413,7 @@
         return h(
           UBadge,
           { class: 'capitalize', variant: 'subtle', color },
-          () => store.getEnums.AUTH_ENUM.LOGIN_LOG.ACTION[row.getValue('action')],
+          () => store.getEnums.AUTH_ENUM.LOGIN_LOG.ACTION[row.getValue('action') as string],
         );
       },
     },

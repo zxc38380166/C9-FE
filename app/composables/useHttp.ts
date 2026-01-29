@@ -88,6 +88,12 @@ function getTokenSSRSafe(cookieKey = 'token'): string | null {
   return null;
 }
 
+function getLocaleSSRSafe(): string {
+  // SSR/CSR 都可用 useCookie（但它本身也要在 Nuxt context 中呼叫，所以要確保 useHttp 是 composable）
+  const c = useCookie<string | null>('i18n_redirected', { path: '/' });
+  return c.value || 'zh-TW';
+}
+
 /** SSR 時把 cookie/authorization forward 給後端（可選） */
 function getForwardHeadersObj(): Record<string, string> {
   if (!import.meta.server) return {};
@@ -178,6 +184,7 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
 
   // ✅ headers 一律用「純 object」合併（不要 defu）
   const baseHeaders: Record<string, string> = {
+    locales: getLocaleSSRSafe(),
     'X-App': 'C9',
     ...(json ? { 'Content-Type': 'application/json' } : {}),
     ...getForwardHeadersObj(),
