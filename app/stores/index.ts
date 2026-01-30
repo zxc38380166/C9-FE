@@ -6,6 +6,7 @@ export const useMainStore = defineStore('main', () => {
   const userDetail: any = ref({});
   const enums: any = ref({});
   const countryCodes = ref([]);
+  const provider = ref([]);
 
   // Actions
   const actions = {
@@ -27,6 +28,9 @@ export const useMainStore = defineStore('main', () => {
     setCountryCodes(params: any) {
       countryCodes.value = params;
     },
+    setProvider(params: any) {
+      provider.value = params;
+    },
   };
 
   // Getters
@@ -37,6 +41,7 @@ export const useMainStore = defineStore('main', () => {
     getIsRoading: computed(() => isLoading.value),
     getEnums: computed(() => enums.value),
     getCountryCodes: computed(() => countryCodes.value),
+    getProvider: computed(() => provider.value),
   };
 
   return {

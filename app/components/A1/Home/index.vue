@@ -39,8 +39,23 @@
           :carouselItems="sec.carouselItems" />
       </div>
     </div>
-    <CommonRankList :items="rankingList" :interval="2000" />
-    <div class="pb-100">
+    {{ store.getProvider }}
+    <div class="pt-6">
+      <A1LayoutTitleBar :leftText="'排行榜'" :leftIcon="'fa7-solid:ranking-star'">
+        <template #right>
+          <div>
+            <UTabs
+              :ui="{ list: 'bg-[#1a2c38]', trigger: 'cursor-pointer' }"
+              :items="rankingTabs"
+              class="w-full">
+              <template #content="{ item }"> </template>
+            </UTabs>
+          </div>
+        </template>
+      </A1LayoutTitleBar>
+      <CommonRankList :items="rankingList" :interval="2000" />
+    </div>
+    <div>
       <UAccordion
         :items="faqItems"
         :ui="{
@@ -58,9 +73,23 @@
         }"
         :multiple="false" />
     </div>
+    <div
+      class="py-20 hidden lg:flex lg:flex-wrap lg:justify-center lg:items-center gap-x-6 gap-y-4">
+      <div v-for="item in provider" :key="item.name" class="group flex items-center justify-center">
+        <NuxtImg
+          :src="item.logo"
+          :alt="item.name"
+          class="h-10.5 w-21 object-contain opacity-75 group-hover:opacity-100 grayscale-20 group-hover:grayscale-0 transition"
+          loading="lazy" />
+      </div>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
+  import type { TabsItem } from '@nuxt/ui';
+
+  const store = useStore();
+
   const TITLE_BAR_UI_NOCAN = 'text-[#667386] border-[#2f4553]';
   const TITLE_BAR_UI_CAN = 'text-[#b1bad3] border-[#2f4553]';
 
@@ -143,6 +172,24 @@
       }
     });
   };
+
+  const rankingTabs: TabsItem[] = [
+    {
+      label: '最近即時投注',
+    },
+    {
+      label: '每日投注排行榜',
+    },
+    {
+      label: '每週投注排行榜',
+    },
+    {
+      label: '每月投注排行榜',
+    },
+    {
+      label: '累積提領排行榜',
+    },
+  ];
 
   const rankingList = [
     {
@@ -514,4 +561,74 @@
       img: 'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/splus/TW/611.webp',
     },
   ]);
+
+  const provider = [
+    { name: 'ADVANTPLAY', logo: '/img/common/provider/advantplay.png' },
+    { name: 'AFB_SPORTS', logo: '/img/common/provider/afb_sports.png' },
+    { name: 'AMEBA', logo: '/img/common/provider/ameba.png' },
+    { name: 'ATG', logo: '/img/common/provider/atg.png' },
+    { name: 'BAISON', logo: '/img/common/provider/baison.png' },
+    { name: 'BBIN', logo: '/img/common/provider/bbin.png' },
+    { name: 'BTGAMING', logo: '/img/common/provider/btgaming.png' },
+    { name: 'CARD365', logo: '/img/common/provider/card365.png' },
+    { name: 'CF102', logo: '/img/common/provider/cf102.png' },
+    { name: 'CQ9', logo: '/img/common/provider/cq9.png' },
+    { name: 'CRYSTAL', logo: '/img/common/provider/crystal.png' },
+    { name: 'DG', logo: '/img/common/provider/dg.png' },
+    { name: 'EAZY_GAMING', logo: '/img/common/provider/eazy_gaming.png' },
+    { name: 'EBET', logo: '/img/common/provider/ebet.png' },
+    { name: 'EVOPLAY', logo: '/img/common/provider/evoplay.png' },
+    { name: 'EZUGI', logo: '/img/common/provider/ezugi.png' },
+    { name: 'FASTSPIN', logo: '/img/common/provider/fastspin.png' },
+    { name: 'FB_SPORTS', logo: '/img/common/provider/fb_sports.png' },
+    { name: 'FC', logo: '/img/common/provider/fc.png' },
+    { name: 'FUNTA', logo: '/img/common/provider/funta.png' },
+    { name: 'GA28', logo: '/img/common/provider/ga28.png' },
+    { name: 'GAME168', logo: '/img/common/provider/game168.png' },
+    { name: 'HT368', logo: '/img/common/provider/ht368.png' },
+    { name: 'IM_ESPORTS', logo: '/img/common/provider/im_esports.png' },
+    { name: 'IM_SPORTS', logo: '/img/common/provider/im_sports.png' },
+    { name: 'JDB', logo: '/img/common/provider/jdb.png' },
+    { name: 'JILI', logo: '/img/common/provider/jili.png' },
+    { name: 'KA', logo: '/img/common/provider/ka.png' },
+    { name: 'KINGMAKER', logo: '/img/common/provider/kingmaker.png' },
+    { name: 'LC', logo: '/img/common/provider/lc.png' },
+    { name: 'LUCKY_SPORTS', logo: '/img/common/provider/lucky_sports.png' },
+    { name: 'MG', logo: '/img/common/provider/mg.png' },
+    { name: 'MOTIVATION', logo: '/img/common/provider/motivation.png' },
+    { name: 'NEXTSPIN', logo: '/img/common/provider/nextspin.png' },
+    { name: 'OCTOPLAY', logo: '/img/common/provider/octoplay.png' },
+    { name: 'ONGAME', logo: '/img/common/provider/ongame.png' },
+    { name: 'ONLIVE', logo: '/img/common/provider/onlive.png' },
+    { name: 'PG', logo: '/img/common/provider/pg.png' },
+    { name: 'PNG', logo: '/img/common/provider/png.png' },
+    { name: 'PP', logo: '/img/common/provider/pp.png' },
+    { name: 'PS', logo: '/img/common/provider/ps.png' },
+    { name: 'RCB', logo: '/img/common/provider/rcb.png' },
+    { name: 'RG', logo: '/img/common/provider/rg.png' },
+    { name: 'RG_CLUB', logo: '/img/common/provider/rg_club.png' },
+    { name: 'RICH88', logo: '/img/common/provider/rich88.png' },
+    { name: 'RSG', logo: '/img/common/provider/rsg.png' },
+    { name: 'SA', logo: '/img/common/provider/sa.png' },
+    { name: 'SABA', logo: '/img/common/provider/saba.png' },
+    { name: 'SBOBET', logo: '/img/common/provider/sbobet.png' },
+    { name: 'SEXYBCRT', logo: '/img/common/provider/sexybcrt.png' },
+    { name: 'SPADEGAMING', logo: '/img/common/provider/spadegaming.png' },
+    { name: 'SPLUS', logo: '/img/common/provider/splus.png' },
+    { name: 'SPRIBE', logo: '/img/common/provider/spribe.png' },
+    { name: 'SV', logo: '/img/common/provider/sv.png' },
+    { name: 'TF', logo: '/img/common/provider/tf.png' },
+    { name: 'THREE_SING', logo: '/img/common/provider/three_sing.png' },
+    { name: 'TP', logo: '/img/common/provider/tp.png' },
+    { name: 'TURBO', logo: '/img/common/provider/turbo.png' },
+    { name: 'VA', logo: '/img/common/provider/va.png' },
+    { name: 'VIA_CASINO', logo: '/img/common/provider/via_casino.png' },
+    { name: 'VOLTENT', logo: '/img/common/provider/voltent.png' },
+    { name: 'WALA88', logo: '/img/common/provider/wala88.png' },
+    { name: 'WCC', logo: '/img/common/provider/wcc.png' },
+    { name: 'WG_LIVE', logo: '/img/common/provider/wg_live.png' },
+    { name: 'XGAME', logo: '/img/common/provider/xgame.png' },
+    { name: 'YELLOWBAT', logo: '/img/common/provider/yellowbat.png' },
+    { name: 'YL', logo: '/img/common/provider/yl.png' },
+  ] as const;
 </script>
