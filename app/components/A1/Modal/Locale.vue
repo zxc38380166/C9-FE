@@ -82,7 +82,6 @@
                   class="grid place-items-center size-9 rounded-xl bg-white/6 ring-1 ring-white/10 group-data-[state=checked]:bg-emerald-400/15 group-data-[state=checked]:ring-emerald-300/25 transition">
                   <Icon :name="item.icon" class="text-[18px] text-white/80" />
                 </div>
-
                 <div class="leading-tight">
                   <div class="text-[16px] font-semibold text-white/90">
                     {{ item.label }}

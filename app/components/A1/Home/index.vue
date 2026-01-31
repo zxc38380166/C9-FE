@@ -13,33 +13,7 @@
         </template>
       </UPageCard>
     </UMarquee>
-    <div class="space-y-4">
-      <div v-for="(sec, i) in sections" :key="sec.key" class="space-y-4">
-        <A1LayoutTitleBar
-          :leftText="sec.leftText"
-          :leftIcon="sec.leftIcon"
-          :ui="{ right: '!gap-0' }">
-          <template #right>
-            <div
-              @click="toggleGameBar(i, 'prev')"
-              :class="[sec.ui.left]"
-              class="cursor-pointer rounded-l-xl w-12.5 border flex items-center justify-center h-9">
-              <Icon :name="'material-symbols:chevron-left-rounded'" />
-            </div>
-            <div
-              @click="toggleGameBar(i, 'next')"
-              :class="[sec.ui.right]"
-              class="cursor-pointer rounded-r-xl w-12.5 border flex items-center justify-center h-9">
-              <Icon :name="'material-symbols:chevron-right-rounded'" />
-            </div>
-          </template>
-        </A1LayoutTitleBar>
-        <A1GameListBar
-          :ref="(el) => (A1GameListBarRef[i] = el)"
-          :carouselItems="sec.carouselItems" />
-      </div>
-    </div>
-    {{ store.getProvider }}
+    <A1GameLobby />
     <div class="pt-6">
       <A1LayoutTitleBar :leftText="'排行榜'" :leftIcon="'fa7-solid:ranking-star'">
         <template #right>
@@ -47,9 +21,7 @@
             <UTabs
               :ui="{ list: 'bg-[#1a2c38]', trigger: 'cursor-pointer' }"
               :items="rankingTabs"
-              class="w-full">
-              <template #content="{ item }"> </template>
-            </UTabs>
+              class="w-full" />
           </div>
         </template>
       </A1LayoutTitleBar>
@@ -89,89 +61,6 @@
   import type { TabsItem } from '@nuxt/ui';
 
   const store = useStore();
-
-  const TITLE_BAR_UI_NOCAN = 'text-[#667386] border-[#2f4553]';
-  const TITLE_BAR_UI_CAN = 'text-[#b1bad3] border-[#2f4553]';
-
-  const sections = reactive([
-    {
-      key: 'continue',
-      leftText: '繼續遊戲',
-      leftIcon: 'material-symbols:settings-backup-restore',
-      carouselItems: [
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
-      ],
-      ui: { left: TITLE_BAR_UI_NOCAN, right: TITLE_BAR_UI_CAN },
-    },
-    {
-      key: 'hot',
-      leftText: '熱門遊戲',
-      leftIcon: 'twemoji:slot-machine',
-      carouselItems: [
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
-      ],
-      ui: { left: TITLE_BAR_UI_NOCAN, right: TITLE_BAR_UI_CAN },
-    },
-    {
-      key: 'sport',
-      leftText: '熱門體育賽事',
-      leftIcon: 'fluent-color:sport-24',
-      carouselItems: [
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/rsg/TW/112.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/fc_fish/TW/21008.webp',
-        'https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/gameChild/pp_table/TW/bndt.webp',
-      ],
-      ui: { left: TITLE_BAR_UI_NOCAN, right: TITLE_BAR_UI_CAN },
-    },
-  ]);
-
-  const A1GameListBarRef: Ref = ref([]);
-  const toggleGameBar = (i: number, action: 'prev' | 'next') => {
-    const bar = A1GameListBarRef.value[i];
-    if (!bar) return;
-    const UCarouselRef = bar.UCarouselRef;
-    const api = UCarouselRef.emblaApi;
-    const { canScrollPrev, canScrollNext } = api;
-    if (action === 'prev' && canScrollPrev()) api.scrollPrev();
-    if (action === 'next' && canScrollNext()) api.scrollNext();
-    nextTick(() => {
-      if (sections[i]) {
-        sections[i].ui.left = canScrollPrev() ? TITLE_BAR_UI_CAN : TITLE_BAR_UI_NOCAN;
-        sections[i].ui.right = canScrollNext() ? TITLE_BAR_UI_CAN : TITLE_BAR_UI_NOCAN;
-      }
-    });
-  };
 
   const rankingTabs: TabsItem[] = [
     {
@@ -631,4 +520,28 @@
     { name: 'YELLOWBAT', logo: '/img/common/provider/yellowbat.png' },
     { name: 'YL', logo: '/img/common/provider/yl.png' },
   ] as const;
+
+  const orderNum = 20;
+
+  // 預設單一 game_code 顯示一筆, 若設定為 Infinity 則無限多
+  const limitMap = {
+    allbet: Infinity,
+    dg: Infinity,
+    rsg: Infinity,
+    ky: Infinity,
+    splus_encode: Infinity,
+    jili_chess: Infinity,
+    ftg_fish: Infinity,
+    rsg_fishing: Infinity,
+    spribe: 10,
+    // pp_table: 6,
+    jili_table: 11,
+    fc_fish: Infinity,
+  };
+
+  // 每個指定的 game_code 要從哪個 index 排
+  const positionMap = {
+    rsg: 0, // ex: splus 從索引 0 開始
+    splus_encode: 0,
+  };
 </script>

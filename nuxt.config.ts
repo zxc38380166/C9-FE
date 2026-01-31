@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@nuxt/test-utils',
     '@nuxt/ui',
     '@nuxtjs/i18n',
+    '@nuxt/content',
     '@pinia/nuxt',
   ],
   css: ['~/assets/css/global.scss', '~/assets/css/main.css'],

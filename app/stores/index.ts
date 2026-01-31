@@ -5,8 +5,8 @@ export const useMainStore = defineStore('main', () => {
   const doms: any = ref({});
   const userDetail: any = ref({});
   const enums: any = ref({});
-  const countryCodes = ref([]);
-  const provider = ref([]);
+  const countryCodes: any = ref([]);
+  const gameList: any = ref([]);
 
   // Actions
   const actions = {
@@ -28,8 +28,8 @@ export const useMainStore = defineStore('main', () => {
     setCountryCodes(params: any) {
       countryCodes.value = params;
     },
-    setProvider(params: any) {
-      provider.value = params;
+    setGameList(params: any) {
+      gameList.value = params;
     },
   };
 
@@ -41,7 +41,7 @@ export const useMainStore = defineStore('main', () => {
     getIsRoading: computed(() => isLoading.value),
     getEnums: computed(() => enums.value),
     getCountryCodes: computed(() => countryCodes.value),
-    getProvider: computed(() => provider.value),
+    getGameList: computed(() => gameList.value),
   };
 
   return {

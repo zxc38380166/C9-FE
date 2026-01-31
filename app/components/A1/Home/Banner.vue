@@ -83,12 +83,11 @@
       </div>
     </section>
     <div v-if="isDesktop" class="grid grid-cols-1 gap-6 md:grid-cols-2">
-      <button
+      <NuxtLink
         v-for="item in items"
         :key="item.key"
-        type="button"
-        class="group text-left"
-        @click="$emit('select', item)">
+        :to="`/${item.key}`"
+        class="group text-left focus:outline-none">
         <div
           class="relative overflow-hidden h-full rounded-2xl bg-[#253844]/90 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-200 group-hover:-translate-y-0.5">
           <div
@@ -131,7 +130,7 @@
               );
             " />
         </div>
-      </button>
+      </NuxtLink>
     </div>
   </div>
 </template>
@@ -150,7 +149,7 @@
   const {
     items = [
       {
-        key: 'casino',
+        key: 'game',
         title: '娱乐城',
         count: 54617,
         icon: 'twemoji:slot-machine',
@@ -175,6 +174,7 @@
   }>();
 
   const store = useStore();
+  const router = useRouter();
   const overlay = useOverlay();
   const { isLogin } = useAuth();
   const { isDesktop } = useDevice();
