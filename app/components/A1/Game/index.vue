@@ -38,37 +38,56 @@
             <div v-show="activeTab === GAME_CUSTOM.KEY">
               <A1GameLobby />
             </div>
-            <div v-show="activeTab !== GAME_CUSTOM.KEY" class="space-y-4">
-              <div
-                class="grid w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8">
-                <button
-                  v-for="game in visibleGames"
-                  :key="getGameMappingImg(game)"
-                  type="button"
-                  class="group w-full overflow-hidden rounded-2xl"
-                  @click="onClickGame(game)">
-                  <div class="relative cursor-pointer">
-                    <NuxtImg
-                      :src="getGameMappingImg(game)"
-                      :alt="getGameMappingImg(game)"
-                      class="w-full h-auto group-hover:scale-[1.06] transition-transform duration-300"
-                      loading="lazy" />
-                  </div>
-                </button>
-              </div>
-              <div class="flex justify-center pt-2" v-if="canShowMore">
-                <UButton size="lg" variant="soft" class="min-w-55" @click="showMore">
-                  展示更多
-                  <span class="ml-2 text-white/60 text-xs">
-                    ({{ shownCount }}/{{ totalCount }})
-                  </span>
-                </UButton>
-              </div>
+            <div v-show="activeTab === GAME_PROVIDER.KEY">
+              <A1GameProvider />
+            </div>
+            <div
+              v-show="![GAME_CUSTOM.KEY, GAME_PROVIDER.KEY].includes(activeTab)"
+              class="space-y-4">
+              <template v-if="visibleGames.length">
+                <div
+                  class="grid w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8">
+                  <button
+                    v-for="game in visibleGames"
+                    :key="getGameMappingImg(game)"
+                    type="button"
+                    class="group w-full overflow-hidden rounded-2xl"
+                    @click="onClickGame(game)">
+                    <div class="relative cursor-pointer">
+                      <NuxtImg
+                        :src="getGameMappingImg(game)"
+                        :alt="getGameMappingImg(game)"
+                        class="w-full h-auto group-hover:scale-[1.06] transition-transform duration-300"
+                        loading="lazy" />
+                    </div>
+                  </button>
+                </div>
+                <div v-if="canShowMore" class="pt-2 flex justify-center">
+                  <UButton
+                    size="xl"
+                    variant="ghost"
+                    class="group cursor-pointer relative overflow-hidden rounded-[10px] bg-[#0f1f2a]/70 ring-1 ring-white/10 backdrop-blur px-6 h-12.5 min-w-55 text-white/80 hover:text-white hover:bg-white/6 transition-colors duration-200 shadow-[0_14px_50px_-26px_rgba(0,0,0,0.65)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00df72]/35"
+                    @click="showMore">
+                    <span
+                      class="pointer-events-none absolute inset-0 opacity-[0.20] bg-linear-to-r from-transparent via-white/18 to-transparent -translate-x-[60%] group-hover:translate-x-[60%] transition-transform duration-700" />
+                    <span class="relative inline-flex items-center gap-2">
+                      <span class="text-[13px] font-semibold tracking-wide">展示更多</span>
+                      <span
+                        class="inline-flex items-center rounded-full bg-white/4 ring-1 ring-white/10 px-2.5 py-1 text-[13px] text-white/60">
+                        {{ shownCount }} / {{ totalCount }}
+                      </span>
+                      <span class="i-material-symbols:expand-more text-[18px] text-white/70" />
+                    </span>
+                  </UButton>
+                </div>
+              </template>
+              <A1GameEmpty v-else />
             </div>
           </div>
         </template>
       </UTabs>
     </ClientOnly>
+    <A1GameRankList v-show="activeTab !== GAME_PROVIDER.KEY" />
   </div>
 </template>
 <script setup lang="ts">
@@ -76,12 +95,14 @@
 
   const i18n = useI18n();
   const store = useStore();
-  const { GAME_TYPE_VALUE_ENUM, isChildGameType, getGameMappingImg } = useGame();
+  const { GAME_TYPE_VALUE_ENUM, isChildGameType, getGameMappingImg, provider } = useGame();
 
   const GAME_CUSTOM = { KEY: 'gameLobby', VALUE: 0 };
+  const GAME_PROVIDER = { KEY: 'gameProvider', VALUE: -1 };
 
   const tabIconMap = reactive({
     [GAME_CUSTOM.VALUE]: 'material-symbols:view-list-sharp',
+    [GAME_PROVIDER.VALUE]: 'material-symbols:business-center-outline',
     [GAME_TYPE_VALUE_ENUM.sports]: 'material-symbols-light:sports-volleyball',
     [GAME_TYPE_VALUE_ENUM.slot]: 'mdi:slot-machine-outline',
     [GAME_TYPE_VALUE_ENUM.live]: 'ic:twotone-live-tv',
@@ -95,13 +116,17 @@
   const activeTab = ref<string>(GAME_CUSTOM.KEY);
 
   const tabs = computed(() => {
-    return Object.entries({ [GAME_CUSTOM.KEY]: GAME_CUSTOM.VALUE, ...GAME_TYPE_VALUE_ENUM }).map(
-      ([key, value]) => ({
-        label: i18n.t(`game.${key}`),
-        value: key,
-        icon: tabIconMap[value],
-      }),
-    );
+    const base = {
+      [GAME_CUSTOM.KEY]: GAME_CUSTOM.VALUE,
+      ...GAME_TYPE_VALUE_ENUM,
+      [GAME_PROVIDER.KEY]: GAME_PROVIDER.VALUE,
+    };
+
+    return Object.entries(base).map(([key, value]) => ({
+      label: i18n.t(`game.${key}`),
+      value: key,
+      icon: tabIconMap[value],
+    }));
   });
 
   const flattenCache = shallowRef(new Map<string, (ProviderItem & ChildGameItem)[]>());
@@ -111,6 +136,7 @@
 
     // gameLobby 本身不用走 data
     if (activeTab.value === GAME_CUSTOM.KEY) return [];
+    if (activeTab.value === GAME_PROVIDER.KEY) return [];
 
     const key = activeTab.value;
     const raw = (mapping as any)?.[key];
@@ -149,19 +175,17 @@
   const STEP = 50;
 
   const shownCount = ref<number>(DEFAULT_SHOW);
-  watch(activeTab, () => {
-    shownCount.value = DEFAULT_SHOW;
-  });
+  watch(activeTab, () => (shownCount.value = DEFAULT_SHOW));
 
   const totalCount = computed(() => currentGames.value.length);
   const visibleGames = computed(() => currentGames.value.slice(0, shownCount.value));
   const canShowMore = computed(() => totalCount.value > shownCount.value);
 
-  function showMore() {
+  const showMore = () => {
     shownCount.value += STEP;
-  }
+  };
 
-  function onClickGame(game: ProviderItem & ChildGameItem) {
+  const onClickGame = (game: ProviderItem & ChildGameItem) => {
     console.log('click game:', game);
-  }
+  };
 </script>

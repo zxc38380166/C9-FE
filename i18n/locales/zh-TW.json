@@ -8,5 +8,6 @@
   "game.esports": "電競",
   "game.crypto": "加密貨幣",
   "game.sports": "體育",
-  "game.fish": "捕魚"
+  "game.fish": "捕魚",
+  "game.gameProvider": "遊戲商"
 }
