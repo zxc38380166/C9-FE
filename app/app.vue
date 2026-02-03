@@ -79,6 +79,9 @@
     const enums = enumsRes?.data?.value?.result;
     const provider = gameProviderRes?.data?.value?.result;
 
+    console.log(enumsRes, 'enumsRes');
+    console.log(gameProviderRes, 'gameProviderRes');
+
     if (userDetail) store.setUserDetail(userDetail);
     if (countryCodes) store.setCountryCodes(countryCodes);
     if (enums) store.setEnums(enums);
