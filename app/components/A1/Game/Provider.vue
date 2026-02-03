@@ -46,15 +46,13 @@
   </section>
 </template>
 <script setup lang="ts">
-  type ProviderLogoItem = { name: string; logo: string };
-
-  const props = defineProps<{
-    providers?: ProviderLogoItem[];
+  const { data = [] } = defineProps<{
+    data?: ProviderLogoItem[];
   }>();
 
-  const { provider } = useGame();
+  const { provider: defaultProvider } = useGame();
 
   const providers = computed<ProviderLogoItem[]>(() => {
-    return props.providers?.length ? props.providers : (provider as unknown as ProviderLogoItem[]);
+    return data?.length ? data : defaultProvider;
   });
 </script>

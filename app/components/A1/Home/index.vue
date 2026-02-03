@@ -13,8 +13,8 @@
         </template>
       </UPageCard>
     </UMarquee>
-    <!-- <A1GameLobby />
-    <A1GameRankList />
+    <A1GameLobby />
+    <!-- <A1GameRankList />
     <div>
       <UAccordion
         :items="faqItems"

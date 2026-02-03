@@ -14,8 +14,6 @@
   </UCarousel>
 </template>
 <script setup lang="ts">
-  import type { ChildGameItem, ProviderItem } from '~/app.vue';
-
   type Action = 'prev' | 'next';
 
   const { items } = defineProps<{

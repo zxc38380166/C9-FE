@@ -55,29 +55,6 @@
   const { isLogin } = useAuth();
   const { GAME_TYPE_VALUE_ENUM, isChildGameType } = useGame();
 
-  export type ProviderItem = {
-    gameCode: string;
-    gameType: number;
-    enable: boolean;
-    areaBlock: boolean;
-    maintain: boolean;
-    childGame?: ChildGameValue;
-  };
-
-  export type ChildGameMap = typeof childGame;
-  export type ChildGameKey = keyof ChildGameMap;
-  export type ChildGameValue = ChildGameMap[ChildGameKey];
-  export type ChildGameItem = ChildGameValue[number];
-  export type GameTypeKey = keyof typeof GAME_TYPE_VALUE_ENUM;
-
-  export type GameListResult = {
-    mapping: Partial<Record<GameTypeKey, ProviderItem[]>>;
-    areaBlock: string[];
-    maintain: string[];
-    enable: string[];
-    provider: ProviderItem[];
-  };
-
   try {
     const defaultPromise = [
       useApi().getGameProviderSsr({}), //

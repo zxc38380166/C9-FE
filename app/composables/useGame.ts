@@ -1,30 +1,61 @@
-import type { ProviderItem, ChildGameItem } from '~/app.vue';
+import childGame from '../assets/game/childGame';
+
+const GAME_TYPE_VALUE_ENUM = {
+  sports: 1,
+  slot: 2,
+  live: 3,
+  lottery: 4,
+  chess: 5,
+  esports: 8,
+  crypto: 9,
+  fish: 10,
+};
+
+const GAME_TYPE_KEY_ENUM = {
+  3: 'live',
+  2: 'slot',
+  5: 'chess',
+  4: 'lottery',
+  8: 'esports',
+  9: 'crypto',
+  1: 'sports',
+  10: 'fish',
+};
+
+export type ProviderLogoItem = { name: string; logo: string };
+export type ProviderItem = {
+  gameCode: string;
+  gameType: number;
+  enable: boolean;
+  areaBlock: boolean;
+  maintain: boolean;
+  childGame?: ChildGameValue;
+};
+
+export type ChildGameMap = typeof childGame;
+export type ChildGameKey = keyof ChildGameMap;
+export type ChildGameValue = ChildGameMap[ChildGameKey];
+export type ChildGameItem = ChildGameValue[number];
+export type GameTypeKey = keyof typeof GAME_TYPE_VALUE_ENUM;
+
+export type GameListResult = {
+  mapping: Partial<Record<GameTypeKey, ProviderItem[]>>;
+  areaBlock: string[];
+  maintain: string[];
+  enable: string[];
+  provider: ProviderItem[];
+};
+
+export type LoadMorePayload = {
+  prevCount: number;
+  nextCount: number;
+  total: number;
+  step: number;
+};
 
 export function useGame() {
   const store = useStore();
   const i18n = useI18n();
-
-  const GAME_TYPE_VALUE_ENUM = {
-    sports: 1,
-    slot: 2,
-    live: 3,
-    lottery: 4,
-    chess: 5,
-    esports: 8,
-    crypto: 9,
-    fish: 10,
-  };
-
-  const GAME_TYPE_KEY_ENUM = {
-    3: 'live',
-    2: 'slot',
-    5: 'chess',
-    4: 'lottery',
-    8: 'esports',
-    9: 'crypto',
-    1: 'sports',
-    10: 'fish',
-  };
 
   const isChildGameType = (gameType: number) =>
     [
@@ -61,7 +92,7 @@ export function useGame() {
     return `https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/${typePath}/${filePath}/${langPath.replace('zh-TW', 'TW')}/${fileName}.webp`;
   };
 
-  const provider = [
+  const provider: { name: string; logo: string }[] = [
     { name: 'ADVANTPLAY', logo: '/img/common/provider/advantplay.png' },
     { name: 'AFB_SPORTS', logo: '/img/common/provider/afb_sports.png' },
     { name: 'AMEBA', logo: '/img/common/provider/ameba.png' },
@@ -129,14 +160,14 @@ export function useGame() {
     { name: 'XGAME', logo: '/img/common/provider/xgame.png' },
     { name: 'YELLOWBAT', logo: '/img/common/provider/yellowbat.png' },
     { name: 'YL', logo: '/img/common/provider/yl.png' },
-  ] as const;
+  ];
 
   return {
     mapGameList,
     getGameMappingImg,
+    isChildGameType,
     GAME_TYPE_VALUE_ENUM,
     GAME_TYPE_KEY_ENUM,
-    isChildGameType,
     provider,
   };
 }

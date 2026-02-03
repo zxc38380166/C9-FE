@@ -46,7 +46,7 @@
               class="space-y-4">
               <template v-if="visibleGames.length">
                 <div
-                  class="grid w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8">
+                  class="grid w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12">
                   <button
                     v-for="game in visibleGames"
                     :key="getGameMappingImg(game)"
@@ -62,24 +62,11 @@
                     </div>
                   </button>
                 </div>
-                <div v-if="canShowMore" class="pt-2 flex justify-center">
-                  <UButton
-                    size="xl"
-                    variant="ghost"
-                    class="group cursor-pointer relative overflow-hidden rounded-[10px] bg-[#0f1f2a]/70 ring-1 ring-white/10 backdrop-blur px-6 h-12.5 min-w-55 text-white/80 hover:text-white hover:bg-white/6 transition-colors duration-200 shadow-[0_14px_50px_-26px_rgba(0,0,0,0.65)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00df72]/35"
-                    @click="showMore">
-                    <span
-                      class="pointer-events-none absolute inset-0 opacity-[0.20] bg-linear-to-r from-transparent via-white/18 to-transparent -translate-x-[60%] group-hover:translate-x-[60%] transition-transform duration-700" />
-                    <span class="relative inline-flex items-center gap-2">
-                      <span class="text-[13px] font-semibold tracking-wide">展示更多</span>
-                      <span
-                        class="inline-flex items-center rounded-full bg-white/4 ring-1 ring-white/10 px-2.5 py-1 text-[13px] text-white/60">
-                        {{ shownCount }} / {{ totalCount }}
-                      </span>
-                      <span class="i-material-symbols:expand-more text-[18px] text-white/70" />
-                    </span>
-                  </UButton>
-                </div>
+                <A1GameLoadMore
+                  v-model="shownCount"
+                  :total="totalCount"
+                  :step="STEP"
+                  @load="onLoadMore" />
               </template>
               <A1GameEmpty v-else />
             </div>
@@ -91,8 +78,6 @@
   </div>
 </template>
 <script setup lang="ts">
-  import type { ChildGameItem, ProviderItem } from '~/app.vue';
-
   const i18n = useI18n();
   const store = useStore();
   const { GAME_TYPE_VALUE_ENUM, isChildGameType, getGameMappingImg, provider } = useGame();
@@ -133,21 +118,18 @@
   const currentGames = computed<(ProviderItem & ChildGameItem)[]>(() => {
     const mapping = store.getGameList?.mapping;
     if (!mapping) return [];
-
     // gameLobby 本身不用走 data
     if (activeTab.value === GAME_CUSTOM.KEY) return [];
     if (activeTab.value === GAME_PROVIDER.KEY) return [];
 
     const key = activeTab.value;
     const raw = (mapping as any)?.[key];
-
     // 沒資料直接回空
     if (!raw) return [];
 
     // childGame 類型需要 flatten（只在該 tab 被打開時做一次）
     const gameTypeValue = (GAME_TYPE_VALUE_ENUM as any)[key] ?? null;
     const needFlatten = gameTypeValue != null && isChildGameType(gameTypeValue);
-
     if (!needFlatten) {
       // 非 child 類型：直接用原本陣列（不要複製）
       return Array.isArray(raw) ? raw : [];
@@ -158,7 +140,6 @@
     if (cached) return cached;
 
     const flattened = Array.isArray(raw) ? raw.flatMap((p: any) => p.childGame ?? []) : [];
-
     flattenCache.value.set(key, flattened);
     return flattened;
   });
@@ -173,16 +154,12 @@
   /** ===== Grid 顯示更多（只渲染 slice） ===== */
   const DEFAULT_SHOW = 50;
   const STEP = 50;
-
   const shownCount = ref<number>(DEFAULT_SHOW);
   watch(activeTab, () => (shownCount.value = DEFAULT_SHOW));
-
   const totalCount = computed(() => currentGames.value.length);
   const visibleGames = computed(() => currentGames.value.slice(0, shownCount.value));
-  const canShowMore = computed(() => totalCount.value > shownCount.value);
-
-  const showMore = () => {
-    shownCount.value += STEP;
+  const onLoadMore = (payload: LoadMorePayload) => {
+    console.log('load more:', payload);
   };
 
   const onClickGame = (game: ProviderItem & ChildGameItem) => {
