@@ -14,7 +14,7 @@
       </UPageCard>
     </UMarquee>
     <A1GameLobby />
-    <!-- <A1GameRankList />
+    <A1GameRankList />
     <div>
       <UAccordion
         :items="faqItems"
@@ -42,7 +42,7 @@
           class="h-10.5 w-21 object-contain opacity-75 group-hover:opacity-100 grayscale-20 group-hover:grayscale-0 transition"
           loading="lazy" />
       </div>
-    </div> -->
+    </div>
   </div>
 </template>
 <script setup lang="ts">
