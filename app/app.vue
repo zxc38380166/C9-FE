@@ -67,6 +67,7 @@
   export type ChildGameMap = typeof childGame;
   export type ChildGameKey = keyof ChildGameMap;
   export type ChildGameValue = ChildGameMap[ChildGameKey];
+  export type ChildGameItem = ChildGameValue[number];
   export type GameTypeKey = keyof typeof GAME_TYPE_VALUE_ENUM;
 
   export type GameListResult = {
