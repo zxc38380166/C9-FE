@@ -92,6 +92,13 @@ export function useGame() {
     return `https://pub-c2058afe93ef4c4b97216a2bd33562a7.r2.dev/games/${typePath}/${filePath}/${langPath.replace('zh-TW', 'TW')}/${fileName}.webp`;
   };
 
+  const getGameName = (item: ChildGameItem) => {
+    const locale = i18n.locale.value;
+    if (locale === 'zh-TW') return item.name_tw ?? item.game_name;
+    if (locale === 'zh-CN') return item.name_cn ?? item.game_name;
+    return item.game_name;
+  };
+
   const provider: { name: string; logo: string }[] = [
     { name: 'ADVANTPLAY', logo: '/img/common/provider/advantplay.png' },
     { name: 'AFB_SPORTS', logo: '/img/common/provider/afb_sports.png' },
@@ -169,5 +176,6 @@ export function useGame() {
     GAME_TYPE_VALUE_ENUM,
     GAME_TYPE_KEY_ENUM,
     provider,
+    getGameName,
   };
 }

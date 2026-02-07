@@ -1,7 +1,7 @@
 const kingmaker_table = [
   {
     productId: 'KM-TABLE-009',
-    name: 'thai-hi-lo2',
+    game_name: 'thai-hi-lo2',
     name_cn: '泰式比高低 2',
     name_th: 'ไฮโลไทย 2',
     game_code: 'kingmaker_table',
@@ -9,7 +9,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-010',
-    name: 'belangkai2',
+    game_name: 'belangkai2',
     name_cn: '鱼虾蚝 2',
     name_th: 'เบลังไก 2',
     game_code: 'kingmaker_table',
@@ -17,7 +17,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-011',
-    name: 'dragon-tiger2',
+    game_name: 'dragon-tiger2',
     name_cn: '龙虎斗 2',
     name_th: 'เสือมังกร 2',
     game_code: 'kingmaker_table',
@@ -25,7 +25,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-013',
-    name: 'fish-prawn-crab2',
+    game_name: 'fish-prawn-crab2',
     name_cn: '鱼虾蟹 2',
     name_th: 'น้ำเต้าปูปลา 2',
     game_code: 'kingmaker_table',
@@ -33,7 +33,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-014',
-    name: 'vn_fish-prawn-crab',
+    game_name: 'vn_fish-prawn-crab',
     name_cn: '越式鱼虾蟹',
     name_th: 'น้ำเต้าปูปลาเวียดนาม',
     game_code: 'kingmaker_table',
@@ -41,7 +41,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-015',
-    name: 'sicbo',
+    game_name: 'sicbo',
     name_cn: '骰宝',
     name_th: 'sicbo',
     game_code: 'kingmaker_table',
@@ -49,7 +49,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-017',
-    name: 'taixiu',
+    game_name: 'taixiu',
     name_cn: '越式大小',
     name_th: 'ไฮโลเวียดนาม',
     game_code: 'kingmaker_table',
@@ -57,7 +57,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-018',
-    name: 'keno',
+    game_name: 'keno',
     name_cn: '快乐彩',
     name_th: 'คีโน',
     game_code: 'kingmaker_table',
@@ -65,7 +65,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-019',
-    name: 'thai-fpc',
+    game_name: 'thai-fpc',
     name_cn: '泰式鱼虾蟹',
     name_th: 'เวียดนามน้ำเต้าปูปลา',
     game_code: 'kingmaker_table',
@@ -73,7 +73,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-020',
-    name: 'Bài Cào',
+    game_name: 'Bài Cào',
     name_cn: '三公',
     name_th: 'ไพ่สามใบ',
     game_code: 'kingmaker_table',
@@ -81,7 +81,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-021',
-    name: 'NumberMatka',
+    game_name: 'NumberMatka',
     name_cn: '三重轮盘',
     name_th: 'ทริปเปิ้ลช้านจ์รูเล็',
     game_code: 'kingmaker_table',
@@ -89,7 +89,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-022',
-    name: 'CardMatka',
+    game_name: 'CardMatka',
     name_cn: '扑克轮盘',
     name_th: 'รูเล็ต โป๊กเกอร์',
     game_code: 'kingmaker_table',
@@ -97,7 +97,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-023',
-    name: 'xocdia2',
+    game_name: 'xocdia2',
     name_cn: '色碟 2',
     name_th: 'เกมเหรียญสีนำโชค 2',
     game_code: 'kingmaker_table',
@@ -105,7 +105,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-024',
-    name: 'FanTanClassic',
+    game_name: 'FanTanClassic',
     name_cn: '番摊经典',
     name_th: 'เกมกำถั่วดั้งเดิม',
     game_code: 'kingmaker_table',
@@ -113,7 +113,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-025',
-    name: 'Fruit Roulette',
+    game_name: 'Fruit Roulette',
     name_cn: '水果轮盘',
     name_th: 'รูเล็ตผลไม้',
     game_code: 'kingmaker_table',
@@ -121,7 +121,7 @@ const kingmaker_table = [
   },
   // {
   //   productId: 'KM-TABLE-026',
-  //   name: 'Baccarat',
+  //   game_name: 'Baccarat',
   //   name_cn: '百家乐',
   //   name_th: 'บาคาร่า',
   //   game_code: 'kingmaker_table',
@@ -129,7 +129,7 @@ const kingmaker_table = [
   // },
   {
     productId: 'KM-TABLE-027',
-    name: 'european roulette',
+    game_name: 'european roulette',
     name_cn: '欧洲轮盘',
     name_th: 'รูเล็ตยุโรป',
     game_code: 'kingmaker_table',
@@ -137,7 +137,7 @@ const kingmaker_table = [
   },
   // {
   //   productId: 'KM-TABLE-028',
-  //   name: '7 Up 7 Down',
+  //   game_name: '7 Up 7 Down',
   //   name_cn: '大小七',
   //   name_th: '7 สูง 7 ต่ำ',
   //   game_code: 'kingmaker_table',
@@ -145,7 +145,7 @@ const kingmaker_table = [
   // },
   {
     productId: 'KM-TABLE-029',
-    name: 'bai buu',
+    game_name: 'bai buu',
     name_cn: '4卡扑克',
     name_th: 'Bai Buu',
     game_code: 'kingmaker_table',
@@ -153,7 +153,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-030',
-    name: 'jhandimunda',
+    game_name: 'jhandimunda',
     name_cn: '冠与锚',
     name_th: 'มงกุฏและสมอ',
     game_code: 'kingmaker_table',
@@ -161,7 +161,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-032',
-    name: 'Andar Bahar',
+    game_name: 'Andar Bahar',
     name_cn: '安达巴哈',
     name_th: 'แอนดาร์ บาฮาร์',
     game_code: 'kingmaker_table',
@@ -169,7 +169,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-033',
-    name: 'Pai Kang',
+    game_name: 'Pai Kang',
     name_cn: 'Pai Kang',
     name_th: 'ไพ่แคง',
     game_code: 'kingmaker_table',
@@ -177,7 +177,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-034',
-    name: 'KM Pok Deng',
+    game_name: 'KM Pok Deng',
     name_cn: 'KM八九点',
     name_th: 'ป๊อกเด้ง',
     game_code: 'kingmaker_table',
@@ -185,7 +185,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-035',
-    name: 'Bola Golek',
+    game_name: 'Bola Golek',
     name_cn: 'Bola Golek',
     name_th: 'Bola Golek',
     game_code: 'kingmaker_table',
@@ -193,7 +193,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-036',
-    name: 'Coin Toss',
+    game_name: 'Coin Toss',
     name_cn: '硬币翻转',
     name_th: 'โยน เหรียญ',
     game_code: 'kingmaker_table',
@@ -201,7 +201,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-037',
-    name: 'Cards Hi Lo',
+    game_name: 'Cards Hi Lo',
     name_cn: '高低扑克',
     name_th: 'การ์ด ไฮโล',
     game_code: 'kingmaker_table',
@@ -209,7 +209,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-038',
-    name: 'Blackjack',
+    game_name: 'Blackjack',
     name_cn: '二十一点',
     name_th: 'Blackjack',
     game_code: 'kingmaker_table',
@@ -217,7 +217,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-039',
-    name: '32 Cards',
+    game_name: '32 Cards',
     name_cn: '32牌',
     name_th: 'ไพ่ 32',
     game_code: 'kingmaker_table',
@@ -225,7 +225,7 @@ const kingmaker_table = [
   },
   // {
   //   productId: 'KM-TABLE-040',
-  //   name: 'Plinko',
+  //   game_name: 'Plinko',
   //   name_cn: '幸运跳跳球',
   //   name_th: 'พลิงโกะ',
   //   game_code: 'kingmaker_table',
@@ -233,7 +233,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-041',
-  //   name: 'Cash Rocket',
+  //   game_name: 'Cash Rocket',
   //   name_cn: '火箭宝藏',
   //   name_th: 'แคช ร๊อกเก็ต',
   //   game_code: 'kingmaker_table',
@@ -241,7 +241,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-042',
-  //   name: 'Minesweeper',
+  //   game_name: 'Minesweeper',
   //   name_cn: '扫雷',
   //   name_th: 'ไมน์ สวีปเปอร์',
   //   game_code: 'kingmaker_table',
@@ -249,7 +249,7 @@ const kingmaker_table = [
   // },
   {
     productId: 'KM-TABLE-043',
-    name: 'Bonus Dice',
+    game_name: 'Bonus Dice',
     name_cn: '奖金骰子',
     name_th: 'เต๋าโบนัส',
     game_code: 'kingmaker_table',
@@ -257,7 +257,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-044',
-    name: 'Dota Hi-Lo',
+    game_name: 'Dota Hi-Lo',
     name_cn: '刀塔比高低',
     name_th: 'โดต้าไฮโล',
     game_code: 'kingmaker_table',
@@ -265,7 +265,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-045',
-    name: 'Monkey King Roulette',
+    game_name: 'Monkey King Roulette',
     name_cn: '猴王轮盘',
     name_th: 'รูเล็ตซุนหงอคง',
     game_code: 'kingmaker_table',
@@ -273,7 +273,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-046',
-    name: 'Teen Patti',
+    game_name: 'Teen Patti',
     name_cn: '三张牌',
     name_th: 'ทีนแพตตี้',
     game_code: 'kingmaker_table',
@@ -281,7 +281,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-047',
-    name: 'Heist',
+    game_name: 'Heist',
     name_cn: '劫掠',
     name_th: 'ปล้นสะดม',
     game_code: 'kingmaker_table',
@@ -289,7 +289,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-048',
-    name: 'HorseRacing',
+    game_name: 'HorseRacing',
     name_cn: '虚拟赛马',
     name_th: 'ม้าแข่งเสมือนจริง',
     game_code: 'kingmaker_table',
@@ -297,7 +297,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-049',
-    name: '5 Card Poker',
+    game_name: '5 Card Poker',
     name_cn: '五张扑克',
     name_th: 'ไพ่โป๊กเกอร์ 5 ใบ',
     game_code: 'kingmaker_table',
@@ -305,7 +305,7 @@ const kingmaker_table = [
   },
   // {
   //   productId: 'KM-TABLE-050',
-  //   name: 'Colour Game',
+  //   game_name: 'Colour Game',
   //   name_cn: '颜色游戏',
   //   name_th: 'เกมสี',
   //   game_code: 'kingmaker_table',
@@ -313,7 +313,7 @@ const kingmaker_table = [
   // },
   {
     productId: 'KM-TABLE-051',
-    name: 'KM Power Ball',
+    game_name: 'KM Power Ball',
     name_cn: 'KM 超级宾戈',
     name_th: 'KM พาวเวอร์ บอล',
     game_code: 'kingmaker_table',
@@ -321,7 +321,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-052',
-    name: 'BolaTangkas',
+    game_name: 'BolaTangkas',
     name_cn: '七张扑克',
     name_th: 'ไพ่โป๊กเกอร์ 7',
     game_code: 'kingmaker_table',
@@ -329,7 +329,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-053',
-    name: 'Marble Knockout',
+    game_name: 'Marble Knockout',
     name_cn: '弹珠大决斗',
     name_th: 'KM มาร์เบิล น็อคเอ้าท์',
     game_code: 'kingmaker_table',
@@ -337,7 +337,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-055',
-    name: 'KM Virtual Greyhound Racing',
+    game_name: 'KM Virtual Greyhound Racing',
     name_cn: 'KM 虚拟犬赛',
     name_th: 'KM สุนัขแข่งเสมือนจริง',
     game_code: 'kingmaker_table',
@@ -345,7 +345,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-058',
-    name: 'KM Virtual Treadmill Racing',
+    game_name: 'KM Virtual Treadmill Racing',
     name_cn: 'KM模拟跑步机赛车',
     name_th: 'KM การแข่งลู่วิ่งเสมือนจริง',
     game_code: 'kingmaker_table',
@@ -353,7 +353,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-060',
-    name: 'Ludo',
+    game_name: 'Ludo',
     name_cn: '鲁多',
     name_th: 'ลูโด้',
     game_code: 'kingmaker_table',
@@ -361,7 +361,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-062',
-    name: 'KM Virtual Animal Race',
+    game_name: 'KM Virtual Animal Race',
     name_cn: 'KM虚拟动物竞赛',
     name_th: 'KMการแข่งสัตว์เสมือน',
     game_code: 'kingmaker_table',
@@ -369,7 +369,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-063',
-    name: 'Tongits',
+    game_name: 'Tongits',
     name_cn: 'Tongits',
     name_th: 'ทองอิตส์',
     game_code: 'kingmaker_table',
@@ -377,7 +377,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-065',
-    name: 'Pusoy',
+    game_name: 'Pusoy',
     name_cn: 'Pusoy',
     name_th: 'ไพ่ปูซอย',
     game_code: 'kingmaker_table',
@@ -385,7 +385,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-066',
-    name: 'Coin Pusher',
+    game_name: 'Coin Pusher',
     name_cn: '推币机',
     name_th: 'เกม ดันเหรียญ',
     game_code: 'kingmaker_table',
@@ -393,7 +393,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-067',
-    name: 'Cockfighting Arena',
+    game_name: 'Cockfighting Arena',
     name_cn: '斗鸡竞技场',
     name_th: 'สังเวียนชนไก่',
     game_code: 'kingmaker_table',
@@ -401,7 +401,7 @@ const kingmaker_table = [
   },
   // {
   //   productId: 'KM-TABLE-069',
-  //   name: 'Elite Aviator Club',
+  //   game_name: 'Elite Aviator Club',
   //   name_cn: '精英飞行员俱乐部',
   //   name_th: ' อีลิท เอวิเอเตอร์ คลับ',
   //   game_code: 'kingmaker_table',
@@ -409,7 +409,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-070',
-  //   name: 'Interstellar Run',
+  //   game_name: 'Interstellar Run',
   //   name_cn: '星际狂奔',
   //   name_th: ' อินเตอร์สเตลลาร์ รัน',
   //   game_code: 'kingmaker_table',
@@ -417,7 +417,7 @@ const kingmaker_table = [
   // },
   {
     productId: 'KM-TABLE-071',
-    name: 'Olympus Glory',
+    game_name: 'Olympus Glory',
     name_cn: '奥林匹斯荣光',
     name_th: 'โอลิมปัสกลอรี่',
     game_code: 'kingmaker_table',
@@ -425,7 +425,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-072',
-    name: 'Jackpot Jump',
+    game_name: 'Jackpot Jump',
     name_cn: '大奖跳跃',
     name_th: 'แจ็คพ็อตจัมพ์',
     game_code: 'kingmaker_table',
@@ -433,7 +433,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-073',
-    name: 'video-poker',
+    game_name: 'video-poker',
     name_cn: '视频扑克',
     name_th: 'โป๊กเกอร์วิดีโอ',
     game_code: 'kingmaker_table',
@@ -441,7 +441,7 @@ const kingmaker_table = [
   },
   {
     productId: 'KM-TABLE-074',
-    name: 'Penguin Panic',
+    game_name: 'Penguin Panic',
     name_cn: '企鹅危机',
     name_th: 'เพนกวินตื่นตระหนก',
     game_code: 'kingmaker_table',
@@ -449,7 +449,7 @@ const kingmaker_table = [
   },
   // {
   //   productId: 'KM-TABLE-075',
-  //   name: 'Iron Dome',
+  //   game_name: 'Iron Dome',
   //   name_cn: '铜墙铁壁',
   //   name_th: 'ไอรอนโดม',
   //   game_code: 'kingmaker_table',
@@ -457,7 +457,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-076',
-  //   name: 'TOON CRASH',
+  //   game_name: 'TOON CRASH',
   //   name_cn: '卡通碰撞',
   //   name_th: 'ตูนแคลช',
   //   game_code: 'kingmaker_table',
@@ -465,7 +465,7 @@ const kingmaker_table = [
   // },
   {
     productId: 'KM-TABLE-078',
-    name: 'Dice Duet',
+    game_name: 'Dice Duet',
     name_cn: '骰子二重奏',
     name_th: 'ไดซ์ ดูเอต',
     game_code: 'kingmaker_table',
@@ -473,7 +473,7 @@ const kingmaker_table = [
   },
   // {
   //   productId: 'KM-TABLE-079',
-  //   name: 'LADDER GAME',
+  //   game_name: 'LADDER GAME',
   //   name_cn: '阶梯游戏',
   //   name_th: 'เกมบันได',
   //   game_code: 'kingmaker_table',
@@ -481,7 +481,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-080',
-  //   name: 'Jogo de Bozó',
+  //   game_name: 'Jogo de Bozó',
   //   name_cn: '博佐游戏',
   //   name_th: 'โจโก เดอ โบโซ่',
   //   game_code: 'kingmaker_table',
@@ -489,7 +489,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-081',
-  //   name: 'Egyptian Mines',
+  //   game_name: 'Egyptian Mines',
   //   name_cn: '埃及矿洞',
   //   name_th: 'เหมืองอียิปต์',
   //   game_code: 'kingmaker_table',
@@ -497,7 +497,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-082',
-  //   name: 'Bicho',
+  //   game_name: 'Bicho',
   //   name_cn: '比佐游戏',
   //   name_th: 'บิโช',
   //   game_code: 'kingmaker_table',
@@ -505,7 +505,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-083',
-  //   name: 'BURMESE 6 ANIMALS',
+  //   game_name: 'BURMESE 6 ANIMALS',
   //   name_cn: '缅式六兽',
   //   name_th: '6 สัตว์มหาเฮง',
   //   game_code: 'kingmaker_table',
@@ -513,7 +513,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-084',
-  //   name: 'Speedy Andar Bahar',
+  //   game_name: 'Speedy Andar Bahar',
   //   name_cn: '极速安达巴哈',
   //   name_th: 'ติดสปีด แอนดาร์ บาฮาร์',
   //   game_code: 'kingmaker_table',
@@ -521,7 +521,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-085',
-  //   name: 'Teen Patti Blitz',
+  //   game_name: 'Teen Patti Blitz',
   //   name_cn: '三张牌极速',
   //   name_th: 'ไพ่อินเดีย ทีนแพ็คตี้ บลิตซ์',
   //   game_code: 'kingmaker_table',
@@ -529,7 +529,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-086',
-  //   name: 'CHICKEN CROSSY',
+  //   game_name: 'CHICKEN CROSSY',
   //   name_cn: '小鸡 穿马路',
   //   name_th: 'ไก่ซิ่งวิ่งข้ามถนน',
   //   game_code: 'kingmaker_table',
@@ -537,7 +537,7 @@ const kingmaker_table = [
   // },
   // {
   //   productId: 'KM-TABLE-087',
-  //   name: 'COLOR GAME MEGA BONUS',
+  //   game_name: 'COLOR GAME MEGA BONUS',
   //   name_cn: '颜色游戏：大奖降临',
   //   name_th: ' เกมสี: โบนัสพิเศษ',
   //   game_code: 'kingmaker_table',
@@ -545,7 +545,7 @@ const kingmaker_table = [
   // },
   {
     productId: 'KM-TABLE-088',
-    name: '7 Up 7 Down Rush',
+    game_name: '7 Up 7 Down Rush',
     name_cn: '大小七冲',
     name_th: '7 สูง 7 ต่ำ กำโชค',
     game_code: 'kingmaker_table',

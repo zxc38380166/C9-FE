@@ -6,7 +6,13 @@ export const useMainStore = defineStore('main', () => {
   const userDetail: any = ref({});
   const enums: any = ref({});
   const countryCodes: any = ref([]);
-  const gameList: any = ref([]);
+  const gameList: Ref<GameListResult> = ref({
+    areaBlock: [],
+    enable: [],
+    maintain: [],
+    mapping: {},
+    provider: [],
+  });
 
   // Actions
   const actions = {

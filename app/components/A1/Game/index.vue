@@ -1,10 +1,18 @@
 <template>
   <div class="space-y-4">
     <ClientOnly>
+      <LazyUContentSearch
+        v-model:search-term="searchTerm"
+        shortcut="shift_s"
+        :files="searchFiles"
+        :navigation="searchNavigation"
+        :links="searchLinks"
+        :color-mode="false"
+        :fuse="{ resultLimit: 40 }" />
       <A1LayoutCarousel />
       <UContentSearchButton
         :collapsed="false"
-        :label="'查詢遊戲'"
+        :label="'快速查詢遊戲'"
         :kbds="['shift', 's']"
         :ui="{
           base: [
@@ -46,7 +54,7 @@
               class="space-y-4">
               <template v-if="visibleGames.length">
                 <div
-                  class="grid w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12">
+                  class="grid w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 xl:grid-cols-10 2xl:grid-cols-12">
                   <button
                     v-for="game in visibleGames"
                     :key="getGameMappingImg(game)"
@@ -79,8 +87,10 @@
 </template>
 <script setup lang="ts">
   const i18n = useI18n();
+  const route = useRoute();
+  const router = useRouter();
   const store = useStore();
-  const { GAME_TYPE_VALUE_ENUM, isChildGameType, getGameMappingImg, provider } = useGame();
+  const { GAME_TYPE_VALUE_ENUM, isChildGameType, getGameMappingImg, getGameName } = useGame();
 
   const GAME_CUSTOM = { KEY: 'gameLobby', VALUE: 0 };
   const GAME_PROVIDER = { KEY: 'gameProvider', VALUE: -1 };
@@ -99,7 +109,6 @@
   });
 
   const activeTab = ref<string>(GAME_CUSTOM.KEY);
-
   const tabs = computed(() => {
     const base = {
       [GAME_CUSTOM.KEY]: GAME_CUSTOM.VALUE,
@@ -113,6 +122,16 @@
       icon: tabIconMap[value],
     }));
   });
+
+  watch(
+    () => route.query.tab,
+    (tabRaw) => {
+      const tab = Array.isArray(tabRaw) ? tabRaw[0] : tabRaw;
+      if (typeof tab !== 'string') return;
+      if (tab in GAME_TYPE_VALUE_ENUM) activeTab.value = tab;
+    },
+    { immediate: true },
+  );
 
   const flattenCache = shallowRef(new Map<string, (ProviderItem & ChildGameItem)[]>());
   const currentGames = computed<(ProviderItem & ChildGameItem)[]>(() => {
@@ -144,25 +163,64 @@
     return flattened;
   });
 
-  // 當 store mapping 換引用時，清 cache（避免拿到舊資料）
-  // 這個 watch 很輕量：只看 mapping 引用，不深層追蹤
   watch(
     () => store.getGameList?.mapping,
     () => (flattenCache.value = new Map()),
   );
 
-  /** ===== Grid 顯示更多（只渲染 slice） ===== */
   const DEFAULT_SHOW = 50;
   const STEP = 50;
   const shownCount = ref<number>(DEFAULT_SHOW);
-  watch(activeTab, () => (shownCount.value = DEFAULT_SHOW));
+  watch(
+    activeTab,
+    async (tab) => {
+      shownCount.value = DEFAULT_SHOW;
+      const current = Array.isArray(route.query.tab) ? route.query.tab[0] : route.query.tab;
+      if (current === tab) return;
+      await router.replace({
+        path: route.path,
+        query: { ...route.query, tab },
+      });
+    },
+    { immediate: true, flush: 'post' },
+  );
+
   const totalCount = computed(() => currentGames.value.length);
   const visibleGames = computed(() => currentGames.value.slice(0, shownCount.value));
-  const onLoadMore = (payload: LoadMorePayload) => {
-    console.log('load more:', payload);
-  };
+  const onLoadMore = (payload: LoadMorePayload) => {};
+  const onClickGame = (game: ProviderItem & ChildGameItem) => {};
 
-  const onClickGame = (game: ProviderItem & ChildGameItem) => {
-    console.log('click game:', game);
-  };
+  const searchTerm = ref('');
+  const { data: searchNavigation } = await useAsyncData('navigation', () =>
+    queryCollectionNavigation('content'),
+  );
+  const { data: searchFiles } = useLazyAsyncData(
+    'search',
+    () => queryCollectionSearchSections('content'),
+    { server: false },
+  );
+
+  const searchLinks = computed(() => {
+    const mapping = Object.entries(store.getGameList?.mapping ?? {}).map(([key, item]) => {
+      return {
+        label: i18n.t(`game.${key}`),
+        icon: tabIconMap[GAME_TYPE_VALUE_ENUM[key as GameTypeKey]],
+        to: { path: route.path, query: { ...route.query, tab: key } },
+        children: item?.map(({ childGame, gameCode }) => {
+          const hasChildGame = Array.isArray(childGame) && childGame.length;
+          const result = hasChildGame
+            ? childGame.map((gameItem: ChildGameItem) => {
+                return {
+                  label: getGameName(gameItem),
+                };
+              })
+            : [];
+
+          return { label: String(gameCode).toUpperCase(), children: result };
+        }),
+      };
+    });
+
+    return mapping;
+  });
 </script>

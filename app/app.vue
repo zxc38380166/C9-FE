@@ -4,52 +4,12 @@
       <NuxtLayout :name="useConfig().layout">
         <NuxtPage />
       </NuxtLayout>
-      <ClientOnly>
-        <LazyUContentSearch
-          v-model:search-term="searchTerm"
-          shortcut="shift_s"
-          :files="files"
-          :navigation="navigation"
-          :links="links"
-          :color-mode="false"
-          :fuse="{ resultLimit: 40 }" />
-      </ClientOnly>
     </UApp>
   </div>
 </template>
 <script setup lang="ts">
   import childGame from './assets/game/childGame';
   usePreventZoom();
-
-  const searchTerm = ref('');
-  const { data: navigation } = await useAsyncData('navigation', () =>
-    queryCollectionNavigation('content'),
-  );
-  const { data: files } = useLazyAsyncData(
-    'search',
-    () => queryCollectionSearchSections('content'),
-    { server: false },
-  );
-
-  const links = computed(() => {
-    return [
-      {
-        label: '電子',
-        avatar: { src: 'https://github.com/benjamincanac.png' },
-        children: [
-          {
-            label: 'JILI',
-            to: '/game',
-            description: 'asdf',
-            children: [
-              { label: '11111', to: '/game/sport' },
-              { label: '真人', to: '/game/live' },
-            ],
-          },
-        ],
-      },
-    ];
-  });
 
   const store = useStore();
   const { isLogin } = useAuth();
@@ -78,9 +38,6 @@
     const countryCodes = countryCodesRes?.data?.value?.result;
     const enums = enumsRes?.data?.value?.result;
     const provider = gameProviderRes?.data?.value?.result;
-
-    console.log(enumsRes?.data.value, 'enumsRes');
-    console.log(gameProviderRes?.data.value, 'gameProviderRes');
 
     if (userDetail) store.setUserDetail(userDetail);
     if (countryCodes) store.setCountryCodes(countryCodes);
