@@ -19,6 +19,7 @@
     const defaultPromise = [
       useApi().getGameProviderSsr({}), //
       useApi().getEnumsSsr({}),
+      useApi().getLoginConfigSsr({}),
     ];
 
     const loginPromise = [
@@ -31,17 +32,21 @@
       ...(isLogin.value ? loginPromise : []),
     ] as const;
 
-    const [gameProviderRes, enumsRes, userDetailRes, countryCodesRes] =
+    const [gameProviderRes, enumsRes, loginConfigRes, userDetailRes, countryCodesRes] =
       await Promise.all(promiseList);
 
     const userDetail = userDetailRes?.data?.value?.result;
     const countryCodes = countryCodesRes?.data?.value?.result;
     const enums = enumsRes?.data?.value?.result;
     const provider = gameProviderRes?.data?.value?.result;
+    const loginConfig = loginConfigRes?.data?.value?.result;
+
+    console.log(loginConfig, 'loginConfig');
 
     if (userDetail) store.setUserDetail(userDetail);
     if (countryCodes) store.setCountryCodes(countryCodes);
     if (enums) store.setEnums(enums);
+    if (loginConfig) store.setLoginConfig(loginConfig);
     if (provider) {
       const gameList: GameListResult = (provider as ProviderItem[]).reduce<GameListResult>(
         (result, item) => {

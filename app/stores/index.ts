@@ -13,6 +13,9 @@ export const useMainStore = defineStore('main', () => {
     mapping: {},
     provider: [],
   });
+  const loginConfig: Ref<{ google: string }> = ref({
+    google: '',
+  });
 
   // Actions
   const actions = {
@@ -37,6 +40,9 @@ export const useMainStore = defineStore('main', () => {
     setGameList(params: any) {
       gameList.value = params;
     },
+    setLoginConfig(params: any) {
+      loginConfig.value = params;
+    },
   };
 
   // Getters
@@ -48,6 +54,7 @@ export const useMainStore = defineStore('main', () => {
     getEnums: computed(() => enums.value),
     getCountryCodes: computed(() => countryCodes.value),
     getGameList: computed(() => gameList.value),
+    getLoginConfig: computed(() => loginConfig.value),
   };
 
   return {

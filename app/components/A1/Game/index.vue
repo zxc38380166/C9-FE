@@ -55,20 +55,22 @@
               <template v-if="visibleGames.length">
                 <div
                   class="grid w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 xl:grid-cols-10 2xl:grid-cols-12">
-                  <button
-                    v-for="game in visibleGames"
-                    :key="getGameMappingImg(game)"
-                    type="button"
-                    class="group w-full overflow-hidden rounded-2xl"
-                    @click="onClickGame(game)">
-                    <div class="relative cursor-pointer">
-                      <NuxtImg
-                        :src="getGameMappingImg(game)"
-                        :alt="getGameMappingImg(game)"
-                        class="w-full h-auto group-hover:scale-[1.06] transition-transform duration-300"
-                        loading="lazy" />
-                    </div>
-                  </button>
+                  <template v-for="game in visibleGames" :key="getGameMappingImg(game)">
+                    <button
+                      v-if="!errImg.isErr(getGameMappingImg(game))"
+                      type="button"
+                      class="group w-full overflow-hidden rounded-2xl"
+                      @click="onClickGame(game)">
+                      <div class="relative cursor-pointer">
+                        <NuxtImg
+                          :src="getGameMappingImg(game)"
+                          :alt="getGameMappingImg(game)"
+                          @error="errImg.onError(getGameMappingImg(game))"
+                          class="w-full h-auto group-hover:scale-[1.06] transition-transform duration-300"
+                          loading="lazy" />
+                      </div>
+                    </button>
+                  </template>
                 </div>
                 <A1GameLoadMore
                   v-model="shownCount"
@@ -90,7 +92,8 @@
   const route = useRoute();
   const router = useRouter();
   const store = useStore();
-  const { GAME_TYPE_VALUE_ENUM, isChildGameType, getGameMappingImg, getGameName } = useGame();
+  const { GAME_TYPE_VALUE_ENUM, isChildGameType, getGameMappingImg, getGameName, errImg } =
+    useGame();
 
   const GAME_CUSTOM = { KEY: 'gameLobby', VALUE: 0 };
   const GAME_PROVIDER = { KEY: 'gameProvider', VALUE: -1 };

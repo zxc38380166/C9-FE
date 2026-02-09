@@ -69,7 +69,7 @@
     try {
       loading.value = true;
       const code = payload.data.otp.join('');
-      const res = await useApi().enableGoogle({ code });
+      const res = await useApi().enableGoogleAuth({ code });
 
       if (res.code === 200) {
         toast.add({ title: '通知', description: '啟用成功' });

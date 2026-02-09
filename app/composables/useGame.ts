@@ -57,6 +57,16 @@ export function useGame() {
   const store = useStore();
   const i18n = useI18n();
 
+  const errImg = reactive({
+    keys: new Set(),
+    onError(key: string) {
+      this.keys.add(key);
+    },
+    isErr(key: string) {
+      return this.keys.has(key);
+    },
+  });
+
   const isChildGameType = (gameType: number) =>
     [
       GAME_TYPE_VALUE_ENUM.slot,
@@ -177,5 +187,6 @@ export function useGame() {
     GAME_TYPE_KEY_ENUM,
     provider,
     getGameName,
+    errImg,
   };
 }

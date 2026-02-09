@@ -32,7 +32,9 @@
   import type { FormSubmitEvent, AuthFormField } from '@nuxt/ui';
 
   const toast = useToast();
+  const store = useStore();
   const { setToken, refreshUserData } = useAuth();
+  const { loginThirdParty } = useLayout();
 
   const UAuthFormRef = ref(null);
   const open = ref(false);
@@ -64,14 +66,7 @@
       label: 'Google',
       icon: 'i-simple-icons-google',
       onClick: () => {
-        toast.add({ title: 'Google', description: 'Login with Google' });
-      },
-    },
-    {
-      label: 'GitHub',
-      icon: 'i-simple-icons-github',
-      onClick: () => {
-        toast.add({ title: 'GitHub', description: 'Login with GitHub' });
+        window.location.href = store.getLoginConfig.google;
       },
     },
   ];

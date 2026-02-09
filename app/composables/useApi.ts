@@ -8,13 +8,15 @@ export default function () {
       getGameProviderSsr: (payload: any, asyncOptions?: any) => useHttpAsync( `game-provider:${JSON.stringify(payload ?? {})}`, '/api/game/provider', { method: HTTP_METHOD.GET, params: payload }, asyncOptions ),
       getUserDetailSsr: (payload: any, asyncOptions?: any) => useHttpAsync( `user-detail:${JSON.stringify(payload ?? {})}`, '/api/auth/user-detail', { method: HTTP_METHOD.GET, params: payload }, asyncOptions ),
       getCountryCodesSsr: (payload: any, asyncOptions?: any) => useHttpAsync( `country-codes:${JSON.stringify(payload ?? {})}`, '/api/auth/country-codes', { method: HTTP_METHOD.GET, params: payload }, asyncOptions ),
+      getLoginConfigSsr: (payload: any, asyncOptions?: any) => useHttpAsync( `login-config:${JSON.stringify(payload ?? {})}`, '/api/auth/login-config', { method: HTTP_METHOD.GET, params: payload }, asyncOptions ),
       getUserDetailCsr: (payload: any) => useHttp('/api/auth/user-detail', { method: HTTP_METHOD.GET, body: payload }),
       getEnumsSsr: (payload: any, asyncOptions?: any) => useHttpAsync( `enums:${JSON.stringify(payload ?? {})}`, '/api/common/enums', { method: HTTP_METHOD.GET, params: payload }, asyncOptions ),
       sendVerifyEmail: (payload: any) => useHttp('/api/auth/send-verify-email', { method: HTTP_METHOD.POST, body: payload }),
       checkVerifyEmail: (payload: any) => useHttp('/api/auth/check-verify-email', { method: HTTP_METHOD.POST, body: payload }),
       sendVerifyMobile: (payload: any) => useHttp('/api/auth/send-verify-email', { method: HTTP_METHOD.POST, body: payload }),
       generateGoogle: (payload?: any) => useHttp('/api/auth/generate-google', { method: HTTP_METHOD.POST, body: payload }),
-      enableGoogle: (payload?: any) => useHttp('/api/auth/enable-google', { method: HTTP_METHOD.POST, body: payload }),
+      enableGoogleAuth: (payload?: any) => useHttp('/api/auth/enable-google-auth', { method: HTTP_METHOD.POST, body: payload }),
       editPassword: (payload?: any) => useHttp('/api/auth/edit-password', { method: HTTP_METHOD.POST, body: payload }),
+      loginGoogle: (payload?: any) => useHttp('/api/auth/login-google', { method: HTTP_METHOD.POST, body: payload }),
     };
   }
