@@ -89,13 +89,13 @@
   };
 
   const googleAuthData = ref({ qrCode: '', secret: '' });
-  const generateGoogle = async () => {
-    const res = await useApi().generateGoogle();
+  const generateGoogleAuth = async () => {
+    const res = await useApi().generateGoogleAuth();
     googleAuthData.value = res.result;
     if (UAuthFormRef.value) UAuthFormRef.value.state.otp = [];
   };
 
   onMounted(() => {
-    generateGoogle();
+    generateGoogleAuth();
   });
 </script>

@@ -14,7 +14,7 @@ export default function () {
       sendVerifyEmail: (payload: any) => useHttp('/api/auth/send-verify-email', { method: HTTP_METHOD.POST, body: payload }),
       checkVerifyEmail: (payload: any) => useHttp('/api/auth/check-verify-email', { method: HTTP_METHOD.POST, body: payload }),
       sendVerifyMobile: (payload: any) => useHttp('/api/auth/send-verify-email', { method: HTTP_METHOD.POST, body: payload }),
-      generateGoogle: (payload?: any) => useHttp('/api/auth/generate-google', { method: HTTP_METHOD.POST, body: payload }),
+      generateGoogleAuth: (payload?: any) => useHttp('/api/auth/generate-google-auth', { method: HTTP_METHOD.POST, body: payload }),
       enableGoogleAuth: (payload?: any) => useHttp('/api/auth/enable-google-auth', { method: HTTP_METHOD.POST, body: payload }),
       editPassword: (payload?: any) => useHttp('/api/auth/edit-password', { method: HTTP_METHOD.POST, body: payload }),
       loginGoogle: (payload?: any) => useHttp('/api/auth/login-google', { method: HTTP_METHOD.POST, body: payload }),
