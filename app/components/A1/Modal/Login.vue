@@ -33,7 +33,7 @@
   const { setToken, refreshUserData } = useAuth();
   const { loginThirdParty } = useLayout();
 
-  const UAuthFormRef = ref(null);
+  const UAuthFormRef = useTemplateRef('UAuthFormRef');
   const { loginModalOpen: open } = useLayout();
 
   const fields: AuthFormField[] = [

@@ -5,6 +5,6 @@
 </template>
 <script setup>
   const { is } = vueVersion({
-    A1: () => import('@/components/A1/User/Vip.vue'),
+    A1: () => import('@/components/A1/User/Vip/index.vue'),
   });
 </script>
