@@ -62,7 +62,7 @@
         <!-- 身分證正面 -->
         <UFormField label="身分證正面" name="idCardFront" :ui="{ label: 'text-white/70 mb-1' }">
           <div
-            class="relative flex flex-col items-center justify-center rounded-xl bg-slate-900/50 ring-1 ring-white/10 ring-dashed p-4 cursor-pointer hover:ring-[#00df72]/50 transition-colors min-h-[120px]"
+            class="relative flex flex-col items-center justify-center rounded-xl bg-slate-900/50 ring-1 ring-white/10 ring-dashed p-4 cursor-pointer hover:ring-[#00df72]/50 transition-colors min-h-30"
             @click="triggerUpload('idCardFront')"
             @dragover.prevent
             @drop.prevent="onDrop($event, 'idCardFront')">
@@ -86,7 +86,7 @@
         <!-- 身分證反面 -->
         <UFormField label="身分證反面" name="idCardBack" :ui="{ label: 'text-white/70 mb-1' }">
           <div
-            class="relative flex flex-col items-center justify-center rounded-xl bg-slate-900/50 ring-1 ring-white/10 ring-dashed p-4 cursor-pointer hover:ring-[#00df72]/50 transition-colors min-h-[120px]"
+            class="relative flex flex-col items-center justify-center rounded-xl bg-slate-900/50 ring-1 ring-white/10 ring-dashed p-4 cursor-pointer hover:ring-[#00df72]/50 transition-colors min-h-30"
             @click="triggerUpload('idCardBack')"
             @dragover.prevent
             @drop.prevent="onDrop($event, 'idCardBack')">
@@ -110,12 +110,12 @@
         <!-- 銀行存摺封面 -->
         <UFormField label="銀行存摺封面" name="passbookCover" :ui="{ label: 'text-white/70 mb-1' }">
           <div
-            class="relative flex flex-col items-center justify-center rounded-xl bg-slate-900/50 ring-1 ring-white/10 ring-dashed p-4 cursor-pointer hover:ring-[#00df72]/50 transition-colors min-h-[120px]"
+            class="relative flex flex-col items-center justify-center rounded-xl bg-slate-900/50 ring-1 ring-white/10 ring-dashed p-4 cursor-pointer hover:ring-[#00df72]/50 transition-colors min-h-30"
             @click="triggerUpload('passbookCover')"
             @dragover.prevent
             @drop.prevent="onDrop($event, 'passbookCover')">
             <template v-if="previews.passbookCover">
-              <NuxtImg :src="previews.passbookCover" class="max-h-[100px] rounded-lg object-contain" />
+              <NuxtImg :src="previews.passbookCover" class="max-h-25 rounded-lg object-contain" />
               <span class="mt-1 text-[12px] text-white/50">點擊重新選擇</span>
             </template>
             <template v-else>
@@ -266,7 +266,8 @@
         toast.add({ title: '通知', description: '銀行卡新增成功' });
         onSuccess();
       }
-    } catch {} finally {
+    } catch {
+    } finally {
       loading.value = false;
     }
   };

@@ -92,6 +92,8 @@
   const isActive = (path: string) => route.path === path;
   const isGameActive = () => route.path.startsWith('/game');
   const isGameTabActive = (tab: string) => isGameActive() && route.query.tab === tab;
+  const isHelpActive = () => route.path.startsWith('/help');
+  const isHelpTabActive = (tab: string) => isHelpActive() && route.query.type === tab;
 
   const gameChildren = computed<NavigationMenuItem[]>(() => [
     {
@@ -156,6 +158,51 @@
     },
   ]);
 
+  const helpChildren = computed<NavigationMenuItem[]>(() => [
+    {
+      label: i18n.t('help.about.nav'),
+      icon: 'i-lucide-info',
+      to: '/help?type=aboutUs',
+      active: isHelpTabActive('aboutUs') || (isHelpActive() && !route.query.type),
+    },
+    {
+      label: i18n.t('help.fair.nav'),
+      icon: 'i-lucide-scale',
+      to: '/help?type=fair',
+      active: isHelpTabActive('fair'),
+    },
+    {
+      label: i18n.t('help.terms.nav'),
+      icon: 'i-lucide-file-text',
+      to: '/help?type=terms',
+      active: isHelpTabActive('terms'),
+    },
+    {
+      label: i18n.t('help.privacy.nav'),
+      icon: 'i-lucide-shield',
+      to: '/help?type=privacy',
+      active: isHelpTabActive('privacy'),
+    },
+    {
+      label: i18n.t('help.faq.nav'),
+      icon: 'i-lucide-circle-help',
+      to: '/help?type=faq',
+      active: isHelpTabActive('faq'),
+    },
+    {
+      label: i18n.t('help.gambling.nav'),
+      icon: 'i-lucide-alert-triangle',
+      to: '/help?type=gambling',
+      active: isHelpTabActive('gambling'),
+    },
+    {
+      label: i18n.t('help.disclaimer.nav'),
+      icon: 'i-lucide-heart-handshake',
+      to: '/help?type=disclaimer',
+      active: isHelpTabActive('disclaimer'),
+    },
+  ]);
+
   const mainItems: ComputedRef<NavigationMenuItem[]> = computed(() => [
     {
       label: '首頁',
@@ -178,6 +225,14 @@
       active: route.path.startsWith('/promo'),
     },
     {
+      label: i18n.t('help.title'),
+      icon: 'i-lucide-life-buoy',
+      to: '/help',
+      active: isHelpActive(),
+      defaultOpen: isHelpActive(),
+      children: helpChildren.value,
+    },
+    {
       label: '近期遊戲紀錄',
       icon: 'i-lucide-history',
       badge: '4',
@@ -198,7 +253,6 @@
 
   defineShortcuts({ c: () => (collapsed.value = !collapsed.value) });
 </script>
-
 <style scoped>
   .sidebar-root {
     background: linear-gradient(180deg, #0d1b2a 0%, #0a1628 40%, #071020 100%);

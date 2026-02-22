@@ -56,13 +56,13 @@
     {
       label: 'footer.support.title',
       children: [
-        { label: 'footer.support.help', to: '#' },
-        { label: 'footer.support.fairness', to: '#' },
-        { label: 'footer.support.responsible', to: '#' },
-        { label: 'footer.support.gamblingHelp', to: '#' },
+        { label: 'footer.support.help', to: '/help?type=faq' },
+        { label: 'footer.support.fairness', to: '/help?type=fair' },
+        { label: 'footer.support.responsible', to: '/help?type=disclaimer' },
+        { label: 'footer.support.gamblingHelp', to: '/help?type=gambling' },
         { label: 'footer.support.online', to: '#' },
-        { label: 'footer.support.selfExclude', to: '#' },
-        { label: 'footer.support.law', to: '#' },
+        { label: 'footer.support.selfExclude', to: '/help?type=disclaimer' },
+        { label: 'footer.support.law', to: '/help?type=terms' },
       ],
     },
     {
@@ -70,9 +70,9 @@
       children: [
         { label: 'footer.about.vip', to: '#' },
         { label: 'footer.about.affiliate', to: '#' },
-        { label: 'footer.about.privacy', to: '#' },
+        { label: 'footer.about.privacy', to: '/help?type=privacy' },
         { label: 'footer.about.aml', to: '#' },
-        { label: 'footer.about.terms', to: '#' },
+        { label: 'footer.about.terms', to: '/help?type=terms' },
       ],
     },
     {
