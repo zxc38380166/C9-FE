@@ -146,7 +146,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { SelectItem, VendorChannel } from '~/composables/useCash';
+  import type { SelectItem } from '~/composables/useCash';
+  import type { VendorChannel } from '~/composables/useApiTypes';
 
   const { t } = useI18n();
   const store = useStore();

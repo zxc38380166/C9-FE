@@ -238,32 +238,34 @@
     accentColor: string;
   };
 
-  const {
-    items = [
-      {
-        key: 'game',
-        title: t('banner.casino'),
-        count: 54617,
-        icon: 'twemoji:slot-machine',
-        imageUrl:
-          'https://mediumrare.imgix.net/stake-casino-home-18-jul-25-en.png?w=700&h=460&fit=min&auto=format',
-        accentColor: '#3B82F6',
-      },
-      {
-        key: 'sport',
-        title: t('banner.sports'),
-        count: 9402,
-        icon: 'fluent-color:sport-24',
-        imageUrl:
-          'https://mediumrare.imgix.net/stake-sports-home-18-jul-25-zh.png?w=350&h=230&fit=min&auto=format',
-        accentColor: '#22C55E',
-      },
-    ],
-    imageHeight = 245,
-  } = defineProps<{
+  const props = defineProps<{
     items?: CategoryItem[];
     imageHeight?: number;
   }>();
+
+  const defaultItems = computed<CategoryItem[]>(() => [
+    {
+      key: 'game',
+      title: t('banner.casino'),
+      count: 54617,
+      icon: 'twemoji:slot-machine',
+      imageUrl:
+        'https://mediumrare.imgix.net/stake-casino-home-18-jul-25-en.png?w=700&h=460&fit=min&auto=format',
+      accentColor: '#3B82F6',
+    },
+    {
+      key: 'sport',
+      title: t('banner.sports'),
+      count: 9402,
+      icon: 'fluent-color:sport-24',
+      imageUrl:
+        'https://mediumrare.imgix.net/stake-sports-home-18-jul-25-zh.png?w=350&h=230&fit=min&auto=format',
+      accentColor: '#22C55E',
+    },
+  ]);
+
+  const items = computed(() => props.items ?? defaultItems.value);
+  const imageHeight = computed(() => props.imageHeight ?? 245);
 
   const store = useStore();
   const router = useRouter();
@@ -338,7 +340,7 @@
     vipLoading.value = true;
     try {
       const res = await useApi().getVipStatus();
-      if (res?.code === 200) vipStatus.value = res.result;
+      if (res?.code === 200) vipStatus.value = res.result ?? null;
     } catch (e) {
       console.error('[Home VIP] fetch failed', e);
     } finally {

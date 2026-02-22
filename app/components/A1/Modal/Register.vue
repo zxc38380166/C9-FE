@@ -188,7 +188,7 @@
         lang: locale.value,
       })
       .then(async (res) => {
-        if (res.code === 200) {
+        if (res.code === 200 && res.result) {
           toggleStepper('next');
           toast.add({ title: t('common.notify'), description: t('auth.registerSuccess') });
           await setToken(res.result.token);

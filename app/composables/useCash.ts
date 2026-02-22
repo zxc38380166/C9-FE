@@ -1,37 +1,15 @@
 import { CommonConfirmDialog } from '#components';
+import type {
+  VendorChannel,
+  BankCard,
+  CreditCard,
+  DepositPayload,
+  DepositUsdtResult,
+} from './useApiTypes';
 
 // ==================== Types ====================
 
 export type SelectItem = { label: string; value: string };
-
-export type VendorChannel = {
-  id: number;
-  name: string;
-  currency?: string;
-  enabled?: number;
-  exchangeRate?: { buy: number; sell: number };
-  paymentMethods?: string[];
-  paymentAddress?: string;
-  network?: string;
-};
-
-export type BankCard = {
-  id: number;
-  bankCode: string;
-  bankAccount: string;
-  branch: string;
-  holderName: string;
-  status: number;
-};
-
-export type CreditCard = {
-  id: number;
-  cardNumber: string;
-  holderName: string;
-  cvv: string;
-  expiryDate: string;
-  status: number;
-};
 
 export type BankCodeItem = {
   value: string;
@@ -80,13 +58,7 @@ export type UsdtCryptoInput = {
   orderAmount: number;
 };
 
-export type CryptoDepositResult = {
-  paymentAddress: string;
-  network: string;
-  currency: string;
-  orderAmount: number;
-  subOrder: string;
-};
+export type CryptoDepositResult = DepositUsdtResult;
 
 // ==================== Module-level shared state ====================
 
@@ -295,7 +267,7 @@ export default function () {
       /** 萬通支付開單：自動帶入 callback、subOrder，呼叫 deposit API 後開啟付款頁面 */
       async deposit(params: WantongDepositParams) {
         const subOrder = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-        const payload: Record<string, any> = { ...params, subOrder };
+        const payload = { ...params, subOrder } as DepositPayload;
         const resp = await useApi().deposit(payload);
 
         if (resp?.code !== 200) throw new Error(resp?.message || t('deposit.failed'));
@@ -319,7 +291,7 @@ export default function () {
       /** USDT 加密貨幣開單：呼叫 deposit API 後回傳繳費資訊（地址 + QR Code） */
       async deposit(params: UsdtDepositParams): Promise<CryptoDepositResult> {
         const subOrder = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
-        const payload: Record<string, any> = { ...params, subOrder };
+        const payload = { ...params, subOrder } as DepositPayload;
         const resp = await useApi().deposit(payload);
 
         if (resp?.code !== 200) throw new Error(resp?.message || t('deposit.failed'));

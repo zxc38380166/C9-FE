@@ -59,7 +59,7 @@
           :data="claims"
           :columns="columns"
           :ui="{
-            root: 'min-w-[480px]',
+            root: 'min-w-[640px]',
             thead: 'bg-white/3',
             th: 'text-white/50 text-center text-[11px] sm:text-[12px] font-semibold uppercase tracking-wider',
             td: 'text-center text-white/80 text-[12px] sm:text-[13px]',
@@ -87,20 +87,12 @@
 
 <script setup lang="ts">
   import type { TableColumn } from '@nuxt/ui';
+  import type { PromoClaim } from '~/composables/useApiTypes';
   import { UBadge } from '#components';
 
   const { t } = useI18n();
   const { formatNumber, formatDateTime } = utsFormat();
   const { TAG_COLOR_MAP } = utsPromo();
-
-  type PromoClaim = {
-    id: number;
-    promoId: number;
-    promoTitle: string;
-    promoTag: string;
-    rewardAmount: string;
-    claimedAt: string;
-  };
 
   const claims = ref<PromoClaim[]>([]);
   const loading = ref(false);
@@ -139,6 +131,21 @@
         class: { th: 'text-center', td: 'text-center tabular-nums text-amber-400 font-medium' },
       },
       cell: ({ row }) => fmtAmount(row.getValue('rewardAmount')),
+    },
+    {
+      accessorKey: 'requiredTurnover',
+      header: t('transaction.turnoverProgress'),
+      meta: {
+        class: { th: 'text-center', td: 'text-center tabular-nums text-[12px]' },
+      },
+      cell: ({ row }) => {
+        const required = Number(row.original.requiredTurnover || 0);
+        if (!required) return '—';
+        const completed = Number(row.original.completedTurnover || 0);
+        const done = row.original.turnoverCompleted === 1;
+        return h('span', { class: done ? 'text-emerald-400' : 'text-white/60' },
+          `${fmtAmount(completed)} / ${fmtAmount(required)}`);
+      },
     },
     {
       accessorKey: 'claimedAt',

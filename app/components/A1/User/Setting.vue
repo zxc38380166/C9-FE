@@ -163,7 +163,7 @@
               </template>
               <template #footer>
                 <UButton
-                  :disabled="store.getUserDetail.googleAuthEnabled"
+                  :disabled="!!store.getUserDetail.googleAuthEnabled"
                   @click="modals.googleAuth.open()"
                   class="w-full">
                   {{ store.getUserDetail.googleAuthEnabled ? $t('auth.enabled') : $t('auth.enable2FA') }}
@@ -189,7 +189,7 @@
             ref="UTableRef"
             v-model:pagination="pagination"
             v-model:global-filter="globalFilter"
-            :data="store.getUserDetail.loginLogs"
+            :data="store.getUserDetail.loginLogs ?? []"
             :columns="columns"
             :pagination-options="{
               getPaginationRowModel: getPaginationRowModel(),
@@ -213,6 +213,7 @@
   import moment from 'moment-timezone';
   import type { FormSubmitEvent, TableColumn } from '@nuxt/ui';
   import { getPaginationRowModel } from '@tanstack/vue-table';
+  import type { LoginLog } from '~/composables/useApiTypes';
   import {
     A1ModalVerifyUserInfo,
     UBadge,
@@ -224,7 +225,7 @@
 
   useApi()
     .getUserDetailCsr({ RELATED: ['LOGIN_LOG'] })
-    .then((res) => store.setUserDetail(res.result));
+    .then((res) => { if (res.result) store.setUserDetail(res.result); });
 
   const UFormRef = useTemplateRef('UFormRef');
   const UTableRef = useTemplateRef('UTableRef');
@@ -235,7 +236,7 @@
   const schema = z.object({
     country: z.object({ label: z.string(), icon: z.string() }),
     email: z.string().min(3).email(t('validation.emailFormat')),
-    mobile: z.string(t('validation.enterPhone')).regex(/^\d+$/, t('validation.phoneDigitOnly')),
+    mobile: z.string({ message: t('validation.enterPhone') }).regex(/^\d+$/, t('validation.phoneDigitOnly')),
     telegram: z.string().nullable(),
     google: z.string().nullable(),
   });
@@ -244,10 +245,10 @@
 
   const state = reactive<Partial<Schema>>({
     country: { label: t('setting.countryTaiwan'), icon: 'cif:tw' },
-    email: store.getUserDetail?.email,
-    mobile: store.getUserDetail?.mobile,
-    telegram: store.getUserDetail?.telegram,
-    google: store.getUserDetail?.google,
+    email: store.getUserDetail?.email ?? undefined,
+    mobile: store.getUserDetail?.mobile ?? undefined,
+    telegram: store.getUserDetail?.telegram ?? undefined,
+    google: store.getUserDetail?.google ?? undefined,
   });
 
   const isVerify = computed(
@@ -376,13 +377,6 @@
 
   const globalFilter = ref('');
 
-  type LoginLog = {
-    device: string;
-    ip: string;
-    lastUse: string;
-    action: number;
-  };
-
   const columns: TableColumn<LoginLog>[] = [
     {
       accessorKey: 'ip',
@@ -429,7 +423,7 @@
         return h(
           UBadge,
           { class: 'capitalize', variant: 'subtle', color },
-          () => store.getEnums.AUTH_ENUM.LOGIN_LOG.ACTION[row.getValue('action') as string],
+          () => store.getEnums.AUTH_ENUM?.LOGIN_LOG?.ACTION?.[row.getValue('action') as string] ?? '',
         );
       },
     },

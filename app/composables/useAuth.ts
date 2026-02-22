@@ -17,7 +17,7 @@ export function useAuth() {
     await nextTick();
     if (!isLogin.value) return;
     const userDetailRes = await useApi().getUserDetailCsr({});
-    store.setUserDetail(userDetailRes.result);
+    if (userDetailRes.result) store.setUserDetail(userDetailRes.result);
   };
 
   const setToken = async (v: string | null) => {

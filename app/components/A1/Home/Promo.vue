@@ -41,12 +41,12 @@
           class="relative overflow-hidden rounded-xl ring-1 ring-white/10 transition-all duration-300 group-hover:ring-emerald-500/30 group-hover:shadow-[0_8px_30px_rgba(16,185,129,0.12)]">
           <!-- 手機版用 imgMobile，桌面用 imgPc -->
           <NuxtImg
-            :src="item.imgMobile"
+            :src="item.imgMobile ?? undefined"
             :alt="item.title"
             class="sm:hidden w-full h-30 object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy" />
           <NuxtImg
-            :src="item.imgPc"
+            :src="item.imgPc ?? undefined"
             :alt="item.title"
             class="hidden sm:block w-full h-40 md:h-45 object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy" />
@@ -101,8 +101,8 @@
   interface PromoItem {
     id: number;
     title: string;
-    imgPc: string;
-    imgMobile: string;
+    imgPc: string | null;
+    imgMobile: string | null;
     tag: string;
     startTime: string;
     endTime: string;

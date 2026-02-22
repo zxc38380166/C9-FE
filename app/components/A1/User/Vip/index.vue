@@ -113,7 +113,7 @@
         useApi().getVipStatus(),
         useApi().getVipRebates(),
       ]);
-      if (statusRes?.code === 200) status.value = statusRes.result;
+      if (statusRes?.code === 200) status.value = statusRes.result ?? null;
       if (rebatesRes?.code === 200) allRebates.value = rebatesRes.result || [];
     } catch (e) {
       console.error('[VIP] fetch failed', e);

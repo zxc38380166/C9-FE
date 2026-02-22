@@ -555,5 +555,21 @@
   "home.faq.a4": "一般情况下，提款申请会在 24 小时内处理完成。加密货币提款通常更快，银行转账视银行处理时间而定。",
   "home.faq.q5": "遇到问题如何联系客服？",
   "home.faq.a5": "您可以通过平台内的即时客服功能联系我们，或发送电子邮件至客服邮箱。我们的客服团队 24 小时在线为您服务。",
-  "setting.countryTaiwan": "886-台湾"
+  "setting.countryTaiwan": "886-台湾",
+  "transaction.turnoverProgress": "打码进度",
+  "betRecord.title": "投注记录",
+  "betRecord.totalBets": "总注单数",
+  "betRecord.betAmount": "投注金额",
+  "betRecord.effectiveBet": "有效投注",
+  "betRecord.winLose": "输赢",
+  "betRecord.gameName": "游戏名称",
+  "betRecord.betTime": "投注时间",
+  "betRecord.noRecord": "暂无投注记录",
+  "betRecord.noRecordHint": "您的投注记录将在这里显示",
+  "betRecord.status.valid": "有效",
+  "betRecord.status.invalid": "无效",
+  "betRecord.status.cancelled": "已取消",
+  "betRecord.detailTitle": "注单明细",
+  "betRecord.noDetail": "暂无明细数据",
+  "betRecord.round": "回合"
 }

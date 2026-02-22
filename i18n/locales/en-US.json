@@ -555,5 +555,21 @@
   "home.faq.a4": "Typically, withdrawal requests are processed within 24 hours. Cryptocurrency withdrawals are usually faster, while bank transfers depend on bank processing times.",
   "home.faq.q5": "How to contact customer service?",
   "home.faq.a5": "You can contact us through the live chat feature on the platform or send an email to our support mailbox. Our customer service team is available 24/7.",
-  "setting.countryTaiwan": "886-Taiwan"
+  "setting.countryTaiwan": "886-Taiwan",
+  "transaction.turnoverProgress": "Turnover Progress",
+  "betRecord.title": "Bet Records",
+  "betRecord.totalBets": "Total Bets",
+  "betRecord.betAmount": "Bet Amount",
+  "betRecord.effectiveBet": "Effective Bet",
+  "betRecord.winLose": "Win/Lose",
+  "betRecord.gameName": "Game Name",
+  "betRecord.betTime": "Bet Time",
+  "betRecord.noRecord": "No bet records yet",
+  "betRecord.noRecordHint": "Your bet records will be displayed here",
+  "betRecord.status.valid": "Valid",
+  "betRecord.status.invalid": "Invalid",
+  "betRecord.status.cancelled": "Cancelled",
+  "betRecord.detailTitle": "Bet Details",
+  "betRecord.noDetail": "No detail data available",
+  "betRecord.round": "Round"
 }

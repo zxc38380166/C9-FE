@@ -37,18 +37,20 @@
     <A1UserTransactionDeposit v-if="activeTab === 'deposit'" />
     <A1UserTransactionWithdrawal v-else-if="activeTab === 'withdrawal'" />
     <A1UserTransactionDividend v-else-if="activeTab === 'dividend'" />
+    <A1UserTransactionBetRecord v-else-if="activeTab === 'betRecord'" />
     <A1UserTransactionPromo v-else />
   </div>
 </template>
 <script setup lang="ts">
   const { t } = useI18n();
 
-  type TabValue = 'deposit' | 'withdrawal' | 'dividend' | 'promo';
+  type TabValue = 'deposit' | 'withdrawal' | 'dividend' | 'betRecord' | 'promo';
 
   const tabs = computed<Array<{ label: string; value: TabValue; icon: string }>>(() => [
     { label: t('transaction.deposit'), value: 'deposit', icon: 'i-lucide-download' },
     { label: t('transaction.withdrawal'), value: 'withdrawal', icon: 'i-lucide-upload' },
     { label: t('transaction.dividend'), value: 'dividend', icon: 'i-lucide-percent' },
+    { label: t('betRecord.title'), value: 'betRecord', icon: 'i-lucide-dices' },
     { label: t('transaction.promo'), value: 'promo', icon: 'i-lucide-party-popper' },
   ]);
   const activeTab = ref<TabValue>('deposit');

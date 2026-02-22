@@ -156,7 +156,8 @@
 <script setup lang="ts">
   import QrcodeVue from 'qrcode.vue';
   import { useClipboard } from '@vueuse/core';
-  import type { SelectItem, VendorChannel, CryptoDepositResult } from '~/composables/useCash';
+  import type { SelectItem, CryptoDepositResult } from '~/composables/useCash';
+  import type { VendorChannel } from '~/composables/useApiTypes';
 
   const { t } = useI18n();
   const toast = useToast();

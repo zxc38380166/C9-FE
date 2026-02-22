@@ -63,12 +63,12 @@
               <!-- 圖片區 -->
               <div class="relative overflow-hidden">
                 <NuxtImg
-                  :src="item.imgMobile"
+                  :src="item.imgMobile ?? undefined"
                   :alt="item.title"
                   class="sm:hidden w-full h-40 object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy" />
                 <NuxtImg
-                  :src="item.imgPc"
+                  :src="item.imgPc ?? undefined"
                   :alt="item.title"
                   class="hidden sm:block w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy" />
@@ -229,8 +229,8 @@
   interface PromoItem {
     id: number;
     title: string;
-    imgPc: string;
-    imgMobile: string;
+    imgPc: string | null;
+    imgMobile: string | null;
     tag: string;
     startTime: string;
     endTime: string;

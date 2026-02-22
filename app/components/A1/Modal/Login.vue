@@ -84,7 +84,7 @@
         password: payload.data.password,
       })
       .then(async (res) => {
-        if (res.code === 200) {
+        if (res.code === 200 && res.result) {
           toast.add({ title: t('common.notify'), description: t('auth.loginSuccess') });
           await setToken(res.result.token);
           await refreshUserData();

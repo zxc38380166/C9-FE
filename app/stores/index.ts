@@ -1,11 +1,18 @@
+import type {
+  UserDetail,
+  CountryCode,
+  EnumsResult,
+  LoginConfigResult,
+} from '~/composables/useApiTypes';
+
 export const useMainStore = defineStore('main', () => {
   // State
-  const isReady: Ref<boolean> = ref(false);
-  const isLoading: Ref<boolean> = ref(false);
-  const doms: any = ref({});
-  const userDetail: any = ref({});
-  const enums: any = ref({});
-  const countryCodes: any = ref([]);
+  const isReady = ref(false);
+  const isLoading = ref(false);
+  const doms = ref<Record<string, any>>({});
+  const userDetail = ref<Partial<UserDetail>>({});
+  const enums = ref<Partial<EnumsResult>>({});
+  const countryCodes = ref<CountryCode[]>([]);
   const gameList: Ref<GameListResult> = ref({
     areaBlock: [],
     enable: [],
@@ -13,16 +20,14 @@ export const useMainStore = defineStore('main', () => {
     mapping: {},
     provider: [],
   });
-  const loginConfig: Ref<{ google: string }> = ref({
-    google: '',
-  });
+  const loginConfig = ref<LoginConfigResult>({ google: '' });
 
   // Actions
   const actions = {
-    setDoms(params: any) {
+    setDoms(params: Record<string, any>) {
       doms.value = params;
     },
-    setUserDetail(params: any) {
+    setUserDetail(params: Partial<UserDetail>) {
       userDetail.value = params;
     },
     setIsReady(params: boolean) {
@@ -31,16 +36,16 @@ export const useMainStore = defineStore('main', () => {
     setIsRoading(params: boolean) {
       isLoading.value = params;
     },
-    setEnums(params: any) {
+    setEnums(params: Partial<EnumsResult>) {
       enums.value = params;
     },
-    setCountryCodes(params: any) {
+    setCountryCodes(params: CountryCode[]) {
       countryCodes.value = params;
     },
-    setGameList(params: any) {
+    setGameList(params: GameListResult) {
       gameList.value = params;
     },
-    setLoginConfig(params: any) {
+    setLoginConfig(params: LoginConfigResult) {
       loginConfig.value = params;
     },
   };

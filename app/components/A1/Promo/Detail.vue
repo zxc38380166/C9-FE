@@ -26,11 +26,11 @@
       <div class="relative rounded-2xl overflow-hidden ring-1 ring-white/10">
         <!-- 手機版用 imgMobile，桌面用 imgPc -->
         <NuxtImg
-          :src="promo.imgMobile"
+          :src="promo.imgMobile ?? undefined"
           :alt="promo.title"
           class="sm:hidden w-full h-50 object-cover" />
         <NuxtImg
-          :src="promo.imgPc"
+          :src="promo.imgPc ?? undefined"
           :alt="promo.title"
           class="hidden sm:block w-full h-72 object-cover" />
         <div
@@ -180,8 +180,8 @@
   interface PromoDetail {
     id: number;
     title: string;
-    imgPc: string;
-    imgMobile: string;
+    imgPc: string | null;
+    imgMobile: string | null;
     content: string;
     actionHtml: string;
     startTime: string;

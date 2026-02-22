@@ -100,21 +100,7 @@
 
   // ==================== Types ====================
 
-  type DepositOrder = {
-    id: number;
-    channelName: string;
-    currency: string;
-    subOrder: string;
-    orderAmount: number;
-    paymentMethod: string;
-    status: string;
-    payAmount: number;
-    payTime: string;
-    usdAmount: string;
-    exchangeRate: string;
-    createdAt: string;
-    updatedAt: string;
-  };
+  import type { DepositOrder } from '~/composables/useApiTypes';
 
   // ==================== Constants ====================
 

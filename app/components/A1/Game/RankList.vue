@@ -138,6 +138,7 @@
 </template>
 <script setup lang="ts">
   import { useIntervalFn, useResizeObserver, useEventListener } from '@vueuse/core';
+  import type { RankingParams } from '~/composables/useApiTypes';
 
   const { t } = useI18n();
   const { formatAmount, formatTime } = utsFormat();
@@ -262,11 +263,13 @@
     loading.value = true;
 
     try {
-      const res = await useApi().getRanking({ type, limit: 20 });
+      const res = await useApi().getRanking({ type: type as RankingParams['type'], limit: 20 });
 
       if (res?.code === 200) {
         const data = res.result || [];
-        rankingList.value = type === 'total' ? data.map(transformTotal) : data.map(transformBet);
+        rankingList.value = type === 'total'
+          ? (data as unknown as RankingTotal[]).map(transformTotal)
+          : (data as unknown as RankingBet[]).map(transformBet);
       }
     } catch (e) {
       console.error('[Ranking] fetch failed', e);

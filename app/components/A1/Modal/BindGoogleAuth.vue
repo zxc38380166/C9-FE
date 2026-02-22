@@ -86,7 +86,9 @@
   const googleAuthData = ref({ qrCode: '', secret: '' });
   const generateGoogleAuth = async () => {
     const res = await useApi().generateGoogleAuth();
-    googleAuthData.value = res.result;
+    if (res.result) {
+      googleAuthData.value = res.result;
+    }
     if (UAuthFormRef.value) UAuthFormRef.value.state.otp = [];
   };
 
