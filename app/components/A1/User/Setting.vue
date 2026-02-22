@@ -182,7 +182,7 @@
             class="w-full sm:max-w-sm sm:w-[50%]"
             placeholder="查詢裝置、IP 或動作紀錄" />
         </div>
-        <div class="overflow-x-auto">
+        <div class="overflow-x-auto scrollbar-hide">
           <UTable
             ref="UTableRef"
             v-model:pagination="pagination"

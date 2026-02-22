@@ -39,5 +39,8 @@ export default function () {
       getPromoById: (id: number, opts?: Opts) => useHttp(`/api/promo/${id}`, { method: HTTP_METHOD.GET, ...opts }),
       claimPromo: (id: number, opts?: Opts) => useHttp(`/api/promo/${id}/claim`, { method: HTTP_METHOD.POST, ...opts }),
       getPromoClaims: (payload?: any, opts?: Opts) => useHttp('/api/promo/claims', { method: HTTP_METHOD.GET, body: payload, ...opts }),
+      getVipLevels: (payload?: any, opts?: Opts) => useHttp('/api/vip/levels', { method: HTTP_METHOD.GET, body: payload, ...opts }),
+      getVipRebates: (payload?: any, opts?: Opts) => useHttp('/api/vip/rebates', { method: HTTP_METHOD.GET, body: payload, ...opts }),
+      getVipStatus: (payload?: any, opts?: Opts) => useHttp('/api/vip/status', { method: HTTP_METHOD.GET, body: payload, ...opts }),
     };
   }

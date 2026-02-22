@@ -28,7 +28,7 @@
 
     <!-- 錢包列表 -->
     <template v-else>
-      <div class="-mx-3 sm:mx-0 overflow-x-auto">
+      <div class="-mx-3 sm:mx-0 overflow-x-auto scrollbar-hide">
         <UTable
           :data="cryptoAddresses"
           :columns="cryptoAddressColumns"

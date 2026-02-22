@@ -225,6 +225,12 @@
       active: route.path.startsWith('/promo'),
     },
     {
+      label: i18n.t('vip.title'),
+      icon: 'i-lucide-crown',
+      to: '/user/vip',
+      active: route.path === '/user/vip',
+    },
+    {
       label: i18n.t('help.title'),
       icon: 'i-lucide-life-buoy',
       to: '/help',

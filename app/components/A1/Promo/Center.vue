@@ -17,8 +17,7 @@
     <!-- 篩選列 -->
     <div>
       <div
-        class="flex items-center gap-2 overflow-x-auto"
-        style="-ms-overflow-style: none; scrollbar-width: none">
+        class="flex items-center gap-2 overflow-x-auto scrollbar-hide">
         <button
           v-for="filter in filters"
           :key="filter.value"

@@ -57,7 +57,7 @@
 
     <!-- Table -->
     <template v-else>
-      <div class="-mx-3 sm:mx-0 overflow-x-auto sm:rounded-[12px] ring-1 ring-white/6">
+      <div class="-mx-3 sm:mx-0 overflow-x-auto scrollbar-hide sm:rounded-[12px] ring-1 ring-white/6">
         <UTable
           :data="orders"
           :columns="columns"

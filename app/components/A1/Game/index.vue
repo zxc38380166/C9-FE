@@ -24,8 +24,7 @@
 
       <!-- 遊戲類別 Tabs -->
       <div
-        class="-mx-3.5 px-3.5 lg:mx-0 lg:px-0 overflow-x-auto"
-        style="-ms-overflow-style: none; scrollbar-width: none">
+        class="-mx-3.5 px-3.5 lg:mx-0 lg:px-0 overflow-x-auto scrollbar-hide">
         <div class="flex items-center gap-1.5 sm:gap-2 w-max lg:w-full lg:flex-wrap">
           <button
             v-for="tab in tabs"
