@@ -54,11 +54,8 @@
   const toast = useToast();
   const overlay = useOverlay();
 
-  const STATUS_MAP: Record<number, { label: string; color: 'warning' | 'success' | 'error' }> = {
-    0: { label: '待審核', color: 'warning' },
-    1: { label: '已通過', color: 'success' },
-    2: { label: '已拒絕', color: 'error' },
-  };
+
+
 
   type CreditCard = {
     id: number;
@@ -100,7 +97,7 @@
       header: '狀態',
       meta: { class: { th: 'text-center w-1/5', td: 'text-center w-1/5' } },
       cell: ({ row }) => {
-        const s = STATUS_MAP[row.getValue('status') as number] ?? STATUS_MAP[0]!;
+        const s = BANK_CARD_STATUS_MAP[row.getValue('status') as number] ?? BANK_CARD_STATUS_MAP[0]!;
         return h(UBadge, { color: s!.color, variant: 'subtle' }, () => s!.label);
       },
     },

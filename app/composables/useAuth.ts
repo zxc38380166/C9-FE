@@ -1,3 +1,5 @@
+import { useIntervalFn } from '@vueuse/core';
+
 export function useAuth() {
   const store = useStore();
 
@@ -34,25 +36,25 @@ export function useAuth() {
     const isRunning = computed(() => remaining.value > 0);
     const canResend = computed(() => remaining.value <= 0);
 
-    let timer: ReturnType<typeof setInterval> | null = null;
+    const { pause, resume } = useIntervalFn(
+      () => {
+        remaining.value -= 1;
+        if (remaining.value <= 0) pause();
+      },
+      1000,
+      { immediate: false },
+    );
 
     const stop = () => {
-      if (timer) clearInterval(timer);
-      timer = null;
+      pause();
       remaining.value = 0;
     };
 
     const start = (sec: number = cooldownSeconds) => {
-      // 重置
-      if (timer) clearInterval(timer);
+      pause();
       remaining.value = Math.max(0, Math.floor(sec));
-
       if (remaining.value <= 0) return;
-
-      timer = setInterval(() => {
-        remaining.value -= 1;
-        if (remaining.value <= 0) stop();
-      }, 1000);
+      resume();
     };
 
     const format = computed(() => {
@@ -61,8 +63,6 @@ export function useAuth() {
       const ss = String(s % 60).padStart(2, '0');
       return `${mm}:${ss}`;
     });
-
-    onBeforeUnmount(() => stop());
 
     return {
       remaining,

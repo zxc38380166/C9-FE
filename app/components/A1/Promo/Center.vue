@@ -90,7 +90,7 @@
                 </div>
                 <!-- tag -->
                 <div class="absolute top-3 left-3">
-                  <UBadge :color="getTagColor(item.tag)" variant="solid" size="xs">
+                  <UBadge :color="getPromoTagColor(item.tag)" variant="solid" size="xs">
                     {{ item.tag }}
                   </UBadge>
                 </div>
@@ -259,28 +259,11 @@
     { label: 'VIP', value: 'VIP' },
   ];
 
-  const tagColorMap: Record<string, string> = {
-    限時: 'error',
-    每日: 'warning',
-    推薦: 'success',
-    VIP: 'info',
-    體育: 'success',
-    賽事: 'warning',
-    新手: 'info',
-    存款: 'success',
-  };
 
-  const conditionMap: Record<string, string> = {
-    none: '無條件',
-    first_deposit: '首次存款',
-    deposit_threshold: '存款門檻',
-    vip_level: 'VIP 等級',
-  };
 
-  const getTagColor = (tag: string) => (tagColorMap[tag] || 'neutral') as any;
 
   const getConditionLabel = (item: PromoItem) => {
-    const base = conditionMap[item.conditionType] || item.conditionType;
+    const base = PROMO_CONDITION_MAP[item.conditionType] || item.conditionType;
     if (item.conditionType === 'deposit_threshold' && Number(item.conditionValue))
       return `${base} $${Number(item.conditionValue).toLocaleString()}`;
     if (item.conditionType === 'vip_level' && Number(item.conditionValue))
@@ -288,19 +271,8 @@
     return base;
   };
 
-  const formatDateShort = (dateStr: string) => {
-    if (!dateStr) return '-';
-    try {
-      return (
-        new Date(dateStr).toLocaleDateString('zh-TW', {
-          month: '2-digit',
-          day: '2-digit',
-        }) + ' 截止'
-      );
-    } catch {
-      return dateStr;
-    }
-  };
+
+
 
   const filteredItems = computed(() => {
     if (activeFilter.value === 'all') return promoItems.value;

@@ -50,7 +50,7 @@
         <!-- 時間 -->
         <div class="flex items-center justify-between text-[13px] text-white/40">
           <span>建立時間</span>
-          <span>{{ formatDate(card.createdAt) }}</span>
+          <span>{{ formatDateTime(card.createdAt) }}</span>
         </div>
       </div>
     </template>
@@ -73,13 +73,10 @@
     };
   }>();
 
-  const STATUS_MAP: Record<number, { label: string; color: 'warning' | 'success' | 'error' }> = {
-    0: { label: '待審核', color: 'warning' },
-    1: { label: '已通過', color: 'success' },
-    2: { label: '已拒絕', color: 'error' },
-  };
 
-  const statusConfig = computed(() => STATUS_MAP[card.status] || STATUS_MAP[0]);
+
+
+  const statusConfig = computed(() => BANK_CARD_STATUS_MAP[card.status] || BANK_CARD_STATUS_MAP[0]);
 
   type BankCodeItem = { value: string; label: string; child?: { value: string; label: string }[] };
   const bankCodeData = ref<BankCodeItem[]>([]);
@@ -114,11 +111,8 @@
     { key: 'passbookCover', label: '銀行存摺封面', url: card.passbookCover },
   ]);
 
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '-';
-    const d = new Date(dateStr);
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
-  };
+
+
 
   const openImage = (url: string) => {
     window.open(url, '_blank');

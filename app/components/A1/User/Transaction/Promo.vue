@@ -92,16 +92,7 @@
     claimedAt: string;
   };
 
-  const tagColorMap: Record<string, 'error' | 'warning' | 'success' | 'info' | 'neutral'> = {
-    '限時': 'error',
-    '每日': 'warning',
-    '推薦': 'success',
-    'VIP': 'info',
-    '體育': 'success',
-    '賽事': 'warning',
-    '新手': 'info',
-    '存款': 'success',
-  };
+
 
   const claims = ref<PromoClaim[]>([]);
   const loading = ref(false);
@@ -112,16 +103,9 @@
     totalPages: 0,
   });
 
-  const formatAmount = (v: any) => {
+  const fmtAmount = (v: any) => {
     const n = Number(v);
-    return Number.isFinite(n) ? `$${n.toLocaleString()}` : '—';
-  };
-
-  const formatDate = (v: string) => {
-    if (!v) return '—';
-    const d = new Date(v);
-    if (isNaN(d.getTime())) return '—';
-    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+    return Number.isFinite(n) ? `$${formatNumber(n)}` : '—';
   };
 
   const columns: TableColumn<PromoClaim>[] = [
@@ -136,7 +120,7 @@
       meta: { class: { th: 'text-center', td: 'text-center' } },
       cell: ({ row }) => {
         const tag = row.getValue('promoTag') as string;
-        const color = tagColorMap[tag] || 'neutral';
+        const color = PROMO_TAG_COLOR_MAP[tag] || 'neutral';
         return h(UBadge, { color, variant: 'subtle' }, () => tag);
       },
     },
@@ -144,13 +128,13 @@
       accessorKey: 'rewardAmount',
       header: '獎勵金額',
       meta: { class: { th: 'text-center', td: 'text-center tabular-nums text-amber-400 font-medium' } },
-      cell: ({ row }) => formatAmount(row.getValue('rewardAmount')),
+      cell: ({ row }) => fmtAmount(row.getValue('rewardAmount')),
     },
     {
       accessorKey: 'claimedAt',
       header: '領取時間',
       meta: { class: { th: 'text-center', td: 'text-center text-white/50 text-[12px] tabular-nums' } },
-      cell: ({ row }) => formatDate(row.getValue('claimedAt') as string),
+      cell: ({ row }) => formatDateTime(row.getValue('claimedAt') as string),
     },
   ];
 

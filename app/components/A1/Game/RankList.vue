@@ -220,20 +220,8 @@
     return 'mdi mdi-gamepad-variant';
   };
 
-  // ---- 格式化 ----
-  const formatAmount = (val: string | number): string => {
-    const n = Number(val || 0);
-    return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  };
 
-  const formatTime = (isoStr: string): string => {
-    try {
-      const d = new Date(isoStr);
-      return d.toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit', hour12: true });
-    } catch {
-      return isoStr;
-    }
-  };
+
 
   // ---- 轉換 API 回應 → RankingItem ----
   const transformBet = (item: RankingBet): RankingItem => {

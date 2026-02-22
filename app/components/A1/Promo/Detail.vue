@@ -36,7 +36,7 @@
         <div class="absolute inset-0 bg-linear-to-t from-[#131f30] via-[#131f30]/40 to-transparent" />
         <div class="absolute bottom-0 inset-x-0 p-5 sm:p-8">
           <div class="flex flex-wrap items-center gap-2 mb-3">
-            <UBadge :color="getTagColor(promo.tag)" variant="solid">
+            <UBadge :color="getPromoTagColor(promo.tag)" variant="solid">
               {{ promo.tag }}
             </UBadge>
             <UBadge v-if="promo.isActive" color="success" variant="solid">
@@ -81,7 +81,7 @@
             開始時間
           </div>
           <div class="text-[13px] sm:text-[14px] font-medium text-white/70">
-            {{ formatDate(promo.startTime) }}
+            {{ formatPromoDate(promo.startTime) }}
           </div>
         </div>
         <!-- 結束時間 -->
@@ -91,7 +91,7 @@
             結束時間
           </div>
           <div class="text-[13px] sm:text-[14px] font-medium text-white/70">
-            {{ formatDate(promo.endTime) }}
+            {{ formatPromoDate(promo.endTime) }}
           </div>
         </div>
       </div>
@@ -193,52 +193,21 @@
   const claiming = ref(false);
   const promo = ref<PromoDetail | null>(null);
 
-  const conditionMap: Record<string, string> = {
-    none: '無條件',
-    first_deposit: '首次存款',
-    deposit_threshold: '存款門檻',
-    vip_level: 'VIP 等級',
-  };
-
   const conditionLabel = computed(() => {
     if (!promo.value) return '';
     const type = promo.value.conditionType;
     const value = promo.value.conditionValue;
-    const base = conditionMap[type] || type;
+    const base = PROMO_CONDITION_MAP[type] || type;
     if (type === 'deposit_threshold' && Number(value)) return `${base} $${Number(value).toLocaleString()}`;
     if (type === 'vip_level' && Number(value)) return `${base} Lv.${value}`;
     return base;
   });
 
-  const tagColorMap: Record<string, string> = {
-    '限時': 'error',
-    '每日': 'warning',
-    '推薦': 'success',
-    'VIP': 'info',
-    '體育': 'success',
-    '賽事': 'warning',
-    '新手': 'info',
-    '存款': 'success',
-  };
 
-  const getTagColor = (tag: string) => {
-    return (tagColorMap[tag] || 'neutral') as any;
-  };
 
-  const formatDate = (dateStr: string) => {
-    if (!dateStr) return '-';
-    try {
-      return new Date(dateStr).toLocaleDateString('zh-TW', {
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-      });
-    } catch {
-      return dateStr;
-    }
-  };
+
+  const formatPromoDate = (dateStr: string) =>
+    formatDate(dateStr, { hour: '2-digit', minute: '2-digit' });
 
   const claimButtonText = computed(() => {
     if (!isLogin.value) return '登入參加';

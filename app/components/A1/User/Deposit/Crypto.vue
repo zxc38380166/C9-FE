@@ -151,6 +151,7 @@
 
 <script setup lang="ts">
   import QrcodeVue from 'qrcode.vue';
+  import { useClipboard } from '@vueuse/core';
   import type { SelectItem, VendorChannel, CryptoDepositResult } from '~/composables/useCash';
 
   const toast = useToast();
@@ -259,10 +260,12 @@
     }
   };
 
+  const { copy } = useClipboard();
+
   const copyAddress = async () => {
     if (!depositResult.value) return;
     try {
-      await navigator.clipboard.writeText(depositResult.value.paymentAddress);
+      await copy(depositResult.value.paymentAddress);
       toast.add({ title: '通知', description: '地址已複製' });
     } catch {
       toast.add({ title: '錯誤', description: '複製失敗，請手動複製', color: 'error' });

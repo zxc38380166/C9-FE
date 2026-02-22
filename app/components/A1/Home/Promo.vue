@@ -51,7 +51,7 @@
             class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
           <div class="absolute bottom-0 inset-x-0 p-3 sm:p-4">
             <div class="flex items-center gap-1.5 mb-1.5">
-              <UBadge :color="getTagColor(item.tag)" variant="solid" size="xs">
+              <UBadge :color="getPromoTagColor(item.tag)" variant="solid" size="xs">
                 {{ item.tag }}
               </UBadge>
               <UBadge v-if="item.isClaimable && !item.isClaimed" color="success" variant="solid" size="xs">
@@ -108,20 +108,8 @@
 
   const promoItems = ref<PromoItem[]>([]);
 
-  const tagColorMap: Record<string, string> = {
-    '限時': 'error',
-    '每日': 'warning',
-    '推薦': 'success',
-    'VIP': 'info',
-    '體育': 'success',
-    '賽事': 'warning',
-    '新手': 'info',
-    '存款': 'success',
-  };
 
-  const getTagColor = (tag: string) => {
-    return (tagColorMap[tag] || 'neutral') as any;
-  };
+
 
   const fetchPromos = async () => {
     loading.value = true;

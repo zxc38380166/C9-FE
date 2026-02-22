@@ -83,18 +83,10 @@
     currentLevel: number;
   }>();
 
-  // ---- Tier 樣式 ----
-  const tierStyles: Record<string, { bg: string; ring: string; badgeColor: string }> = {
-    bronze: { bg: 'bg-linear-to-br from-[#2a1f14] to-[#131f30]', ring: 'ring-amber-600/40', badgeColor: 'warning' },
-    gold: { bg: 'bg-linear-to-br from-[#2a2414] to-[#131f30]', ring: 'ring-amber-400/40', badgeColor: 'warning' },
-    platinum: { bg: 'bg-linear-to-br from-[#1a1f2e] to-[#131f30]', ring: 'ring-blue-400/40', badgeColor: 'info' },
-    diamond: { bg: 'bg-linear-to-br from-[#1f142a] to-[#131f30]', ring: 'ring-purple-400/40', badgeColor: 'error' },
-  };
-
-  const getStyle = (tier: string) => (tierStyles[tier] ?? tierStyles.bronze)!;
-  const getTierBgClass = (tier: string) => getStyle(tier).bg;
-  const getTierRingClass = (tier: string) => getStyle(tier).ring;
-  const getTierBadgeColor = (tier: string) => getStyle(tier).badgeColor as any;
+  // ---- Tier 樣式 (from utils/vipTier.ts) ----
+  const getTierBgClass = (tier: string) => getVipTierStyle(tier).bg;
+  const getTierRingClass = (tier: string) => getVipTierStyle(tier).ring;
+  const getTierBadgeColor = (tier: string) => getVipTierStyle(tier).badgeColor as any;
 
   // ---- 捲動 ----
   const levelScrollRef = useTemplateRef<HTMLElement>('levelScrollRef');
@@ -116,8 +108,6 @@
 
   watch(() => props.allLevels, () => nextTick(updateScrollState));
 
-  const formatNumber = (val: string | number) => {
-    const n = Number(val || 0);
-    return n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 });
-  };
+
+
 </script>
