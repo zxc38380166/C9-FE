@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full space-y-4 bg-slate-900 rounded-[14px] ring-1 ring-white/10 p-4">
+  <div class="w-full space-y-4">
     <div class="flex items-center justify-between">
       <div class="text-[20px] font-bold text-white">我的銀行卡</div>
       <UButton

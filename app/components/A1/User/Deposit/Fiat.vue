@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full space-y-4 bg-slate-900 rounded-[14px] ring-1 ring-white/10 p-4">
+  <div class="w-full space-y-4">
     <template v-if="loadingBankCards">
       <div class="flex items-center justify-center py-12">
         <UIcon name="i-lucide-loader-2" class="size-8 text-white/40 animate-spin" />
@@ -187,11 +187,11 @@
   );
 
   const selectUi = {
-    base: 'w-full h-[44px] rounded-[10px] bg-slate-900 ring-1 ring-white/10 text-white',
+    base: 'w-full h-[44px] rounded-[10px] bg-white/5 ring-1 ring-white/10 text-white',
     content: 'w-full bg-slate-900 ring-1 ring-white/10',
   };
   const inputUi = {
-    base: 'w-full h-[44px] rounded-[10px] bg-slate-900 ring-1 ring-white/10 text-white',
+    base: 'w-full h-[44px] rounded-[10px] bg-white/5 ring-1 ring-white/10 text-white',
   };
   const btnUi = {
     base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
