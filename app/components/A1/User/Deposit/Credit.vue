@@ -154,11 +154,22 @@
 
   const store = useStore();
   const {
-    channels, loadingChannels, selectedCurrency, currencyOptions,
+    channels, loadingChannels, selectedCurrency, getCurrencyOptions,
     loadingRate, quotedAtText, toFixedRate, hasRateForCurrency, showRate,
-    refreshAll, checkUserVerification, getVendorByChannelId,
+    refreshAll, checkUserVerification, vendor,
     creditCards, loadingCreditCards, fetchCreditCards,
   } = useCash();
+
+  const currencyOptions = computed(() => getCurrencyOptions('credit'));
+
+  // 預設幣別為 TWD，切換 tab 時若當前幣別不在選項中則重設
+  watch(currencyOptions, (items) => {
+    if (!items.length) return;
+    if (!items.find((i) => i.value === selectedCurrency.value)) {
+      const twd = items.find((i) => i.value === 'TWD');
+      selectedCurrency.value = twd?.value ?? items[0]!.value;
+    }
+  }, { immediate: true });
 
   const selectUi = {
     base: 'w-full h-[44px] rounded-[10px] bg-slate-900 ring-1 ring-white/10 text-white',
@@ -248,8 +259,7 @@
       const card = creditCards.value.find((c) => String(c.id) === selectedCreditCard.value);
       if (!card) throw new Error('請選擇信用卡');
 
-      const v = getVendorByChannelId(selectedChannel.value!);
-      const params = v.buildCardParams({
+      const params = vendor.wantong.buildCardParams({
         channelId: Number(selectedChannel.value),
         orderAmount: Number(amount.value),
         creditCard: card,
@@ -257,7 +267,7 @@
         email: user?.email || '',
       });
 
-      await v.deposit(params);
+      await vendor.wantong.deposit(params);
     } catch (e: any) {
       errorText.value = e?.message || '存款失敗';
     } finally {

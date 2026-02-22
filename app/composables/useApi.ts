@@ -31,5 +31,8 @@ export default function () {
       getCreditCards: (payload?: any, opts?: Opts) => useHttp('/api/wallet/credit-card/list', { method: HTTP_METHOD.GET, body: payload, ...opts }),
       addCreditCard: (payload: any, opts?: Opts) => useHttp('/api/wallet/credit-card/add', { method: HTTP_METHOD.POST, body: payload, ...opts }),
       deleteCreditCard: (id: number, opts?: Opts) => useHttp(`/api/wallet/credit-card/${id}`, { method: HTTP_METHOD.DELETE, ...opts }),
+      getCryptoAddresses: (payload?: any, opts?: Opts) => useHttp('/api/wallet/crypto-address/list', { method: HTTP_METHOD.GET, body: payload, ...opts }),
+      addCryptoAddress: (payload: any, opts?: Opts) => useHttp('/api/wallet/crypto-address/add', { method: HTTP_METHOD.POST, body: payload, ...opts }),
+      deleteCryptoAddress: (id: number, opts?: Opts) => useHttp(`/api/wallet/crypto-address/${id}`, { method: HTTP_METHOD.DELETE, ...opts }),
     };
   }

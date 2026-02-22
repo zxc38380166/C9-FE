@@ -23,12 +23,12 @@
 </template>
 
 <script setup lang="ts">
-  type TabValue = 'fiat' | 'credit' | 'usdt';
+  type TabValue = 'fiat' | 'credit' | 'crypto';
 
   const tabs: Array<{ label: string; value: TabValue; icon: string }> = [
     { label: '法幣', value: 'fiat', icon: 'i-lucide-banknote' },
     { label: '信用卡', value: 'credit', icon: 'i-lucide-credit-card' },
-    { label: '虛擬貨幣', value: 'usdt', icon: 'i-lucide-bitcoin' },
+    { label: '虛擬貨幣', value: 'crypto', icon: 'i-lucide-bitcoin' },
   ];
   const activeTab = ref<TabValue>('fiat');
 

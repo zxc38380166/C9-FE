@@ -11,6 +11,8 @@ export type VendorChannel = {
   enabled?: number;
   exchangeRate?: { buy: number; sell: number };
   paymentMethods?: string[];
+  paymentAddress?: string;
+  network?: string;
 };
 
 export type BankCard = {
@@ -67,6 +69,25 @@ export type WantongCardInput = {
   email: string;
 };
 
+export type UsdtDepositParams = {
+  channelId: number;
+  paymentMethod: 'crypto';
+  orderAmount: number;
+};
+
+export type UsdtCryptoInput = {
+  channelId: number;
+  orderAmount: number;
+};
+
+export type CryptoDepositResult = {
+  paymentAddress: string;
+  network: string;
+  currency: string;
+  orderAmount: number;
+  subOrder: string;
+};
+
 // ==================== Module-level shared state ====================
 
 const channels = ref<VendorChannel[]>([]);
@@ -96,16 +117,21 @@ export default function () {
 
   // --- Channels ---
 
-  const currencyOptions = computed<SelectItem[]>(() => {
+  const getCurrencyOptions = (paymentMethod?: string): SelectItem[] => {
     const currencies = new Set<string>();
     for (const c of channels.value) {
-      if (c.currency) currencies.add(c.currency);
+      if (!c.currency) continue;
+      if (paymentMethod && c.paymentMethods?.length && !c.paymentMethods.includes(paymentMethod))
+        continue;
+      currencies.add(c.currency);
     }
-    if (!currencies.size) currencies.add('TWD');
+    if (!currencies.size && !paymentMethod) currencies.add('TWD');
     return Array.from(currencies)
       .sort()
       .map((c) => ({ label: c, value: c }));
-  });
+  };
+
+  const currencyOptions = computed<SelectItem[]>(() => getCurrencyOptions());
 
   const parseChannelsResult = (raw: any): VendorChannel[] => {
     if (!raw) return [];
@@ -126,22 +152,10 @@ export default function () {
     try {
       const resp = await useApi().getDepositChannels();
       let parsed = resp?.code === 200 ? parseChannelsResult(resp.result) : [];
-      if (!parsed.length) {
-        const resp2 = await useApi().getVendorChannels();
-        if (resp2?.code === 200) parsed = parseChannelsResult(resp2.result);
-      }
-      channels.value = parsed;
 
-      // 自動選擇預設幣別
-      if (!selectedCurrency.value && parsed.length) {
-        const currencies = new Set<string>();
-        for (const c of parsed) {
-          if (c.currency) currencies.add(c.currency);
-        }
-        if (!currencies.size) currencies.add('TWD');
-        const sorted = Array.from(currencies).sort();
-        selectedCurrency.value = sorted.includes('TWD') ? 'TWD' : sorted[0];
-      }
+      console.log(parsed, 'parsed');
+
+      channels.value = parsed;
     } catch {
     } finally {
       loadingChannels.value = false;
@@ -286,6 +300,8 @@ export default function () {
         const payload: Record<string, any> = { ...params, subOrder };
         const resp = await useApi().deposit(payload);
 
+        if (resp?.code !== 200) throw new Error(resp?.message || '存款失敗');
+
         const resultUrl = resp.result?.data?.result_url;
         if (!resultUrl) {
           throw new Error('未取得付款頁面連結');
@@ -293,6 +309,25 @@ export default function () {
 
         toast.add({ title: '通知', description: '存款訂單建立成功，正在開啟付款頁面…' });
         window.open(resultUrl, '_blank');
+      },
+    },
+    usdt: {
+      /** 產生 USDT 加密貨幣開單參數 */
+      buildCryptoParams: (input: UsdtCryptoInput): UsdtDepositParams => ({
+        channelId: input.channelId,
+        paymentMethod: 'crypto',
+        orderAmount: input.orderAmount,
+      }),
+      /** USDT 加密貨幣開單：呼叫 deposit API 後回傳繳費資訊（地址 + QR Code） */
+      async deposit(params: UsdtDepositParams): Promise<CryptoDepositResult> {
+        const subOrder = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}`;
+        const payload: Record<string, any> = { ...params, subOrder };
+        const resp = await useApi().deposit(payload);
+
+        if (resp?.code !== 200) throw new Error(resp?.message || '存款失敗');
+
+        toast.add({ title: '通知', description: '存款訂單建立成功，請依照繳費資訊完成轉帳' });
+        return resp.result as CryptoDepositResult;
       },
     },
   };
@@ -316,6 +351,7 @@ export default function () {
     loadingChannels,
     selectedCurrency,
     currencyOptions,
+    getCurrencyOptions,
     exchangeRateData,
     loadingRate,
     quotedAtText,
