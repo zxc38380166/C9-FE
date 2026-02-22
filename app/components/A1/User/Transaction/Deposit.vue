@@ -214,7 +214,7 @@
   }));
 
   const statusOptions = computed(() => [
-    { label: t('transaction.allStatus'), value: '' },
+    { label: t('transaction.allStatus'), value: 'all' },
     { label: t('transaction.status.pending'), value: 'pending' },
     { label: t('transaction.status.created'), value: 'created' },
     { label: t('transaction.status.paid'), value: 'paid' },
@@ -225,7 +225,7 @@
 
   const orders = ref<DepositOrder[]>([]);
   const loading = ref(false);
-  const statusFilter = ref('');
+  const statusFilter = ref('all');
   const today = new Date();
   const sevenDaysAgo = new Date(today);
   sevenDaysAgo.setDate(today.getDate() - 30);
@@ -324,7 +324,7 @@
         page: pagination.page,
         pageSize: pagination.pageSize,
       };
-      if (statusFilter.value) params.status = statusFilter.value;
+      if (statusFilter.value && statusFilter.value !== 'all') params.status = statusFilter.value;
       if (startDate.value) params.startDate = startDate.value;
       if (endDate.value) params.endDate = endDate.value;
 

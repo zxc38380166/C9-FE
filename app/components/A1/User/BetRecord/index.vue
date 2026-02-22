@@ -20,16 +20,28 @@
     <!-- Filter bar -->
     <div class="flex flex-col gap-3">
       <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
-        <USelectMenu
-          v-model="statusFilter"
-          :items="statusOptions"
-          :ui="{
-            base: 'w-full sm:w-[140px] h-[34px] sm:h-[36px] rounded-[10px] bg-slate-800 ring-1 ring-white/10 text-white text-[12px] sm:text-[13px]',
-            content: 'bg-slate-800 ring-1 ring-white/10',
-          }"
-          icon="i-lucide-filter"
-          value-key="value"
-          @update:model-value="onStatusChange" />
+        <div class="flex gap-2">
+          <USelectMenu
+            v-model="statusFilter"
+            :items="statusOptions"
+            :ui="{
+              base: 'flex-1 sm:flex-none sm:w-[140px] h-[34px] sm:h-[36px] rounded-[10px] bg-slate-800 ring-1 ring-white/10 text-white text-[12px] sm:text-[13px]',
+              content: 'bg-slate-800 ring-1 ring-white/10',
+            }"
+            icon="i-lucide-filter"
+            value-key="value"
+            @update:model-value="onStatusChange" />
+          <USelectMenu
+            v-model="gameTypeFilter"
+            :items="gameTypeOptions"
+            :ui="{
+              base: 'flex-1 sm:flex-none sm:w-[140px] h-[34px] sm:h-[36px] rounded-[10px] bg-slate-800 ring-1 ring-white/10 text-white text-[12px] sm:text-[13px]',
+              content: 'bg-slate-800 ring-1 ring-white/10',
+            }"
+            icon="i-lucide-gamepad-2"
+            value-key="value"
+            @update:model-value="onFilterChange" />
+        </div>
         <div class="flex items-center gap-2 flex-1">
           <div class="relative flex-1 sm:flex-none sm:w-40">
             <Icon
@@ -282,10 +294,22 @@
   }));
 
   const statusOptions = computed(() => [
-    { label: t('transaction.allStatus'), value: '' },
+    { label: t('transaction.allStatus'), value: 'all' },
     { label: t('betRecord.status.valid'), value: 'valid' },
     { label: t('betRecord.status.invalid'), value: 'invalid' },
     { label: t('betRecord.status.cancelled'), value: 'cancelled' },
+  ]);
+
+  const gameTypeOptions = computed(() => [
+    { label: t('betRecord.allGameTypes'), value: 'all' },
+    { label: t('game.sports'), value: '1' },
+    { label: t('game.slot'), value: '2' },
+    { label: t('game.live'), value: '3' },
+    { label: t('game.lottery'), value: '4' },
+    { label: t('game.chess'), value: '5' },
+    { label: t('game.esports'), value: '8' },
+    { label: t('game.crypto'), value: '9' },
+    { label: t('game.fish'), value: '10' },
   ]);
 
   // ==================== State ====================
@@ -293,7 +317,8 @@
   const records = ref<BetRecordItem[]>([]);
   const summary = ref<BetRecordSummary | null>(null);
   const loading = ref(false);
-  const statusFilter = ref('');
+  const statusFilter = ref('all');
+  const gameTypeFilter = ref('all');
   const today = new Date();
   const sevenDaysAgo = new Date(today);
   sevenDaysAgo.setDate(today.getDate() - 30);
@@ -382,7 +407,8 @@
         page: pagination.page,
         pageSize: pagination.pageSize,
       };
-      if (statusFilter.value) params.status = statusFilter.value;
+      if (statusFilter.value && statusFilter.value !== 'all') params.status = statusFilter.value;
+      if (gameTypeFilter.value && gameTypeFilter.value !== 'all') params.gameType = gameTypeFilter.value;
       if (startDate.value) params.startDate = startDate.value;
       if (endDate.value) params.endDate = endDate.value;
 
@@ -407,6 +433,11 @@
     }
   };
 
+  const onFilterChange = () => {
+    pagination.page = 1;
+    fetchRecords();
+  };
+
   const onStatusChange = () => {
     pagination.page = 1;
     fetchRecords();
@@ -427,7 +458,7 @@
     detailLoading.value = true;
     details.value = [];
     try {
-      const resp = await useApi().getBetRecordDetails(id);
+      const resp = await useApi().getBetRecordDetails(Number(id));
       if (resp?.code === 200 && resp.result) {
         details.value = resp.result;
       }

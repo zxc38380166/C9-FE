@@ -9,14 +9,26 @@
         </div>
         <div class="text-[16px] sm:text-[18px] font-bold text-white">{{ $t('transaction.promoRecord') }}</div>
       </div>
-      <UButton
-        size="sm"
-        variant="ghost"
-        color="neutral"
-        icon="i-lucide-refresh-cw"
-        class="cursor-pointer shrink-0 rounded-[10px] ring-1 ring-white/10"
-        :loading="loading"
-        @click="fetchClaims" />
+      <div class="flex items-center gap-2">
+        <USelectMenu
+          v-model="tabFilter"
+          :items="tabOptions"
+          :ui="{
+            base: 'w-full sm:w-[140px] h-[34px] sm:h-[36px] rounded-[10px] bg-slate-800 ring-1 ring-white/10 text-white text-[12px] sm:text-[13px]',
+            content: 'bg-slate-800 ring-1 ring-white/10',
+          }"
+          icon="i-lucide-filter"
+          value-key="value"
+          @update:model-value="onTabChange" />
+        <UButton
+          size="sm"
+          variant="ghost"
+          color="neutral"
+          icon="i-lucide-refresh-cw"
+          class="cursor-pointer shrink-0 rounded-[10px] ring-1 ring-white/10"
+          :loading="loading"
+          @click="fetchClaims" />
+      </div>
     </div>
 
     <div class="h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
@@ -136,6 +148,13 @@
   const { formatNumber, formatDateTime } = utsFormat();
   const { TAG_COLOR_MAP } = utsPromo();
 
+  const tabFilter = ref('all');
+  const tabOptions = computed(() => [
+    { label: t('transaction.promoTab.all'), value: 'all' },
+    { label: t('transaction.promoTab.pending'), value: 'pending' },
+    { label: t('transaction.promoTab.completed'), value: 'completed' },
+  ]);
+
   const claims = ref<PromoClaim[]>([]);
   const loading = ref(false);
   const mobileExpandedId = ref<number | string | null>(null);
@@ -200,13 +219,21 @@
     },
   ]);
 
+  const onTabChange = () => {
+    pagination.page = 1;
+    fetchClaims();
+  };
+
   const fetchClaims = async () => {
     loading.value = true;
     try {
-      const resp = await useApi().getPromoClaims({
+      const params: Record<string, any> = {
         page: pagination.page,
         pageSize: pagination.pageSize,
-      });
+      };
+      if (tabFilter.value && tabFilter.value !== 'all') params.tab = tabFilter.value;
+
+      const resp = await useApi().getPromoClaims(params);
       if (resp?.code === 200 && resp.result) {
         claims.value = resp.result.items || [];
         const p = resp.result.pagination;
