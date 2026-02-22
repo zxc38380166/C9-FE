@@ -1,5 +1,5 @@
 <template>
-  <UModal close-icon="i-lucide-arrow-right" title="變梗登入密碼" :ui="{ title: 'text-[20px]' }">
+  <UModal close-icon="i-lucide-arrow-right" :title="$t('auth.changePasswordTitle')" :ui="{ title: 'text-[20px]' }">
     <template #body>
       <UPageCard class="w-full max-w-md">
         <UAuthForm
@@ -10,7 +10,7 @@
           @submit="onSubmit">
           <template #submit="{ loading }">
             <UButton type="submit" block :loading="loading">
-              {{ loading ? '變更中…' : '確認變更' }}
+              {{ loading ? $t('auth.changing') : $t('auth.confirmChange') }}
             </UButton>
           </template>
         </UAuthForm>
@@ -26,44 +26,45 @@
     onSuccess: Function;
   }>();
 
+  const { t } = useI18n();
   const toast = useToast();
 
   const fields: AuthFormField[] = [
     {
       name: 'password',
-      label: '當前密碼',
+      label: t('auth.currentPassword'),
       type: 'password',
-      placeholder: '請輸入當前密碼',
+      placeholder: t('auth.enterCurrentPassword'),
       required: true,
     },
     {
       name: 'newPassword',
-      label: '新密碼',
+      label: t('auth.newPassword'),
       type: 'password',
-      placeholder: '請輸入新密碼',
+      placeholder: t('auth.enterNewPassword'),
       required: true,
     },
     {
       name: 'confirmPassword',
-      label: '確認密碼',
+      label: t('auth.confirmPasswordLabel'),
       type: 'password',
-      placeholder: '請再次確認並輸入新密碼',
+      placeholder: t('auth.reenterNewPassword'),
       required: true,
     },
   ];
 
   const schema = z
     .object({
-      password: z.string('請輸入當前密碼').min(6, '最少需要6位數'),
-      newPassword: z.string('請輸入新密碼').min(6, '最少需要6位數'),
-      confirmPassword: z.string('請再次確認並輸入新密碼').min(6, '最少需要6位數'),
+      password: z.string(t('auth.enterCurrentPassword')).min(6, t('validation.minChars6')),
+      newPassword: z.string(t('auth.enterNewPassword')).min(6, t('validation.minChars6')),
+      confirmPassword: z.string(t('auth.reenterNewPassword')).min(6, t('validation.minChars6')),
     })
     .superRefine(({ newPassword, confirmPassword }, ctx) => {
       if (newPassword !== confirmPassword) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           path: ['confirmPassword'],
-          message: '確認密碼與新密碼不符合',
+          message: t('validation.passwordMismatch'),
         });
       }
     });
@@ -77,7 +78,7 @@
       .then((res) => {
         const { code } = res;
         if (code === 200) {
-          toast.add({ title: '通知', description: '變更成功, 下次登入時將使用您的新密碼' });
+          toast.add({ title: t('common.notify'), description: t('auth.passwordChanged') });
           onSuccess();
         }
       })

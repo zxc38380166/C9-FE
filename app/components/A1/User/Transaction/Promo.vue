@@ -7,7 +7,7 @@
           class="size-7 sm:size-8 rounded-[8px] sm:rounded-[10px] bg-amber-500/15 ring-1 ring-amber-500/25 flex items-center justify-center">
           <Icon name="i-lucide-party-popper" class="size-3.5 sm:size-4 text-amber-400" />
         </div>
-        <div class="text-[16px] sm:text-[18px] font-bold text-white">優惠紀錄</div>
+        <div class="text-[16px] sm:text-[18px] font-bold text-white">{{ $t('transaction.promoRecord') }}</div>
       </div>
       <UButton
         size="sm"
@@ -28,7 +28,7 @@
           class="size-12 rounded-full bg-amber-500/10 ring-1 ring-amber-500/20 flex items-center justify-center">
           <Icon name="i-lucide-loader-2" class="size-6 text-amber-400 animate-spin" />
         </div>
-        <div class="text-[13px] text-white/40">載入中...</div>
+        <div class="text-[13px] text-white/40">{{ $t('common.loading') }}</div>
       </div>
     </template>
 
@@ -40,13 +40,13 @@
           <Icon name="i-lucide-inbox" class="size-8 text-white/20" />
         </div>
         <div class="text-center">
-          <div class="text-[15px] font-medium text-white/50">暫無優惠領取紀錄</div>
-          <div class="text-[12px] text-white/30 mt-1">領取活動獎勵後紀錄將顯示於此</div>
+          <div class="text-[15px] font-medium text-white/50">{{ $t('transaction.noPromoRecord') }}</div>
+          <div class="text-[12px] text-white/30 mt-1">{{ $t('transaction.promoRecordHint') }}</div>
         </div>
         <NuxtLink
           to="/promo"
           class="text-[13px] text-emerald-400 hover:text-emerald-300 transition-colors">
-          前往活動中心
+          {{ $t('transaction.goPromoCenter') }}
         </NuxtLink>
       </div>
     </template>
@@ -72,8 +72,7 @@
         v-if="pagination.totalPages > 1"
         class="flex flex-col sm:flex-row items-center sm:justify-between gap-2 pt-1">
         <div class="text-[11px] sm:text-[12px] text-white/35 tabular-nums">
-          共 <span class="text-white/60 font-medium">{{ pagination.total }}</span> 筆，第
-          {{ pagination.page }} / {{ pagination.totalPages }} 頁
+          {{ $t('transaction.paginationInfo', { total: pagination.total, page: pagination.page, totalPages: pagination.totalPages }) }}
         </div>
         <UPagination
           :model-value="pagination.page"
@@ -90,6 +89,7 @@
   import type { TableColumn } from '@nuxt/ui';
   import { UBadge } from '#components';
 
+  const { t } = useI18n();
   const { formatNumber, formatDateTime } = utsFormat();
   const { TAG_COLOR_MAP } = utsPromo();
 
@@ -116,15 +116,15 @@
     return Number.isFinite(n) ? `$${formatNumber(n)}` : '—';
   };
 
-  const columns: TableColumn<PromoClaim>[] = [
+  const columns = computed<TableColumn<PromoClaim>[]>(() => [
     {
       accessorKey: 'promoTitle',
-      header: '活動名稱',
+      header: t('transaction.promoTitle'),
       meta: { class: { th: 'text-center', td: 'text-center font-medium' } },
     },
     {
       accessorKey: 'promoTag',
-      header: '標籤',
+      header: t('transaction.promoTag'),
       meta: { class: { th: 'text-center', td: 'text-center' } },
       cell: ({ row }) => {
         const tag = row.getValue('promoTag') as string;
@@ -134,7 +134,7 @@
     },
     {
       accessorKey: 'rewardAmount',
-      header: '獎勵金額',
+      header: t('transaction.rewardAmount'),
       meta: {
         class: { th: 'text-center', td: 'text-center tabular-nums text-amber-400 font-medium' },
       },
@@ -142,13 +142,13 @@
     },
     {
       accessorKey: 'claimedAt',
-      header: '領取時間',
+      header: t('transaction.claimedAt'),
       meta: {
         class: { th: 'text-center', td: 'text-center text-white/50 text-[12px] tabular-nums' },
       },
       cell: ({ row }) => formatDateTime(row.getValue('claimedAt') as string),
     },
-  ];
+  ]);
 
   const fetchClaims = async () => {
     loading.value = true;

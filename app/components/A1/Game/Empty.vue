@@ -2,8 +2,8 @@
   <div
     class="relative overflow-hidden rounded-[16px] bg-slate-900/55 ring-1 ring-white/10 backdrop-blur shadow-[0_14px_50px_-26px_rgba(0,0,0,0.65)]">
     <UEmpty
-      :title="title"
-      :description="description"
+      :title="title || $t('game.emptyTitle')"
+      :description="description || $t('game.emptyDesc')"
       variant="naked"
       :ui="{
         root: 'relative px-4 sm:px-6 py-7',
@@ -30,7 +30,7 @@
             <span :class="[leadingIcon]" class="text-[28px] text-white/85" />
           </div>
           <div class="mt-3 text-white/45 text-[12px] tracking-wide">
-            {{ hint }}
+            {{ hint || $t('game.emptyHint') }}
           </div>
         </div>
       </template>
@@ -86,9 +86,9 @@
   type LeadingAvatar = { src: string; alt?: string };
 
   const {
-    title = '目前沒有可顯示的遊戲',
-    description = '可能是尚未載入完成、條件篩選太嚴格，或該分類暫無內容。',
-    hint = '試試切換分類、調整關鍵字，或返回遊戲大廳',
+    title = '',
+    description = '',
+    hint = '',
     leadingIcon = 'i-material-symbols:joystick',
     leadingAvatars,
     quickEntries: quickEntriesProp,
@@ -109,23 +109,25 @@
     image: 'opacity-95',
   };
 
+  const { t } = useI18n();
+
   // 預設 quick entries（如果你沒傳）
-  const defaultQuickEntries: QuickEntry[] = [
+  const defaultQuickEntries = computed<QuickEntry[]>(() => [
     {
-      title: '投注紀錄',
-      desc: '查看您的歷史紀錄',
+      title: t('game.betHistory'),
+      desc: t('game.betHistoryDesc'),
       icon: 'streamline-color:desktop-game',
       to: '#',
     },
     {
-      title: '聯絡客服',
-      desc: '取得內容或維護資訊',
+      title: t('game.contactSupport'),
+      desc: t('game.contactSupportDesc'),
       icon: 'streamline-color:online-medical-call-service-flat',
       to: '#',
     },
-  ];
+  ]);
 
   const quickEntries = computed<QuickEntry[]>(() =>
-    quickEntriesProp?.length ? quickEntriesProp : defaultQuickEntries,
+    quickEntriesProp?.length ? quickEntriesProp : defaultQuickEntries.value,
   );
 </script>

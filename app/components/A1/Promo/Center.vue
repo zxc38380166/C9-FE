@@ -7,8 +7,8 @@
         <Icon name="noto:party-popper" class="text-[22px] sm:text-[26px]" />
       </div>
       <div>
-        <h1 class="text-[22px] sm:text-[28px] font-bold text-white tracking-wide">活動中心</h1>
-        <p class="text-[12px] sm:text-[13px] text-white/40">探索所有優惠活動，領取專屬獎勵</p>
+        <h1 class="text-[22px] sm:text-[28px] font-bold text-white tracking-wide">{{ $t('promo.center') }}</h1>
+        <p class="text-[12px] sm:text-[13px] text-white/40">{{ $t('promo.centerSubtitle') }}</p>
       </div>
     </div>
 
@@ -77,14 +77,14 @@
                 <!-- 狀態角標 -->
                 <div class="absolute top-3 right-3 flex flex-col items-end gap-1">
                   <UBadge v-if="item.isActive" color="success" variant="solid" size="xs">
-                    進行中
+                    {{ $t('promo.status.ongoing') }}
                   </UBadge>
-                  <UBadge v-else color="neutral" variant="solid" size="xs"> 已結束 </UBadge>
+                  <UBadge v-else color="neutral" variant="solid" size="xs"> {{ $t('promo.status.ended') }} </UBadge>
                   <UBadge v-if="item.isClaimed" color="neutral" variant="solid" size="xs">
-                    已領取
+                    {{ $t('promo.status.claimed') }}
                   </UBadge>
                   <UBadge v-else-if="item.isClaimable" color="warning" variant="solid" size="xs">
-                    可領取
+                    {{ $t('promo.claimable') }}
                   </UBadge>
                 </div>
                 <!-- tag -->
@@ -119,7 +119,7 @@
                 <!-- 進度條 -->
                 <div v-if="item.maxClaims" class="space-y-1.5">
                   <div class="flex items-center justify-between text-[11px] text-white/35">
-                    <span>已領取</span>
+                    <span>{{ $t('promo.progressClaimed') }}</span>
                     <span>{{ item.claimedCount }} / {{ item.maxClaims }}</span>
                   </div>
                   <div class="h-1.5 rounded-full bg-white/5 overflow-hidden">
@@ -145,7 +145,7 @@
                     class="relative z-10 flex items-center gap-1 px-3 py-1 rounded-lg text-[12px] sm:text-[13px] font-bold bg-linear-to-r from-amber-500 to-amber-600 text-white shadow-[0_0_12px_-2px_rgba(245,158,11,0.4)] hover:from-amber-400 hover:to-amber-500 transition-all cursor-pointer"
                     @click.prevent="openLoginModal()">
                     <Icon name="i-lucide-log-in" class="size-3.5" />
-                    登入參加
+                    {{ $t('promo.loginToJoin') }}
                   </button>
                   <!-- 已登入 + 可領取 -->
                   <button
@@ -158,13 +158,13 @@
                       name="i-lucide-loader-2"
                       class="size-3.5 animate-spin" />
                     <Icon v-else name="i-lucide-gift" class="size-3.5" />
-                    {{ claimingId === item.id ? '領取中' : '立即領取' }}
+                    {{ claimingId === item.id ? $t('promo.claiming') : $t('promo.claimNow') }}
                   </button>
                   <!-- 其他：查看詳情 -->
                   <div
                     v-else
                     class="flex items-center gap-1 text-emerald-400 text-[12px] sm:text-[13px] font-medium group-hover:gap-2 transition-all">
-                    查看詳情
+                    {{ $t('promo.viewDetail') }}
                     <Icon name="i-lucide-arrow-right" class="size-3.5" />
                   </div>
                 </div>
@@ -210,18 +210,19 @@
           class="size-16 rounded-2xl bg-white/5 ring-1 ring-white/8 flex items-center justify-center">
           <Icon name="i-lucide-search-x" class="size-8 text-white/20" />
         </div>
-        <span class="text-[15px] font-medium text-white/40">沒有符合條件的活動</span>
+        <span class="text-[15px] font-medium text-white/40">{{ $t('promo.noMatch') }}</span>
         <button
           v-if="activeFilter !== 'all'"
           class="text-[13px] text-emerald-400 hover:text-emerald-300 cursor-pointer"
           @click="activeFilter = 'all'">
-          查看所有活動
+          {{ $t('promo.viewAll') }}
         </button>
       </div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
+  const { t } = useI18n();
   const { formatDateShort } = utsFormat();
   const { getTagColor, CONDITION_MAP } = utsPromo();
 
@@ -254,15 +255,15 @@
   const activeFilter = ref('all');
   const pagination = reactive({ page: 1, pageSize: 9, total: 0, totalPages: 1 });
 
-  const filters = [
-    { label: '全部', value: 'all' },
-    { label: '進行中', value: 'active' },
-    { label: '可領取', value: 'claimable' },
-    { label: '限時', value: '限時' },
-    { label: '新手', value: '新手' },
-    { label: '存款', value: '存款' },
+  const filters = computed(() => [
+    { label: t('promo.filter.all'), value: 'all' },
+    { label: t('promo.status.ongoing'), value: 'active' },
+    { label: t('promo.claimable'), value: 'claimable' },
+    { label: t('promo.tag.limited'), value: '限時' },
+    { label: t('promo.tag.beginner'), value: '新手' },
+    { label: t('promo.tag.deposit'), value: '存款' },
     { label: 'VIP', value: 'VIP' },
-  ];
+  ]);
 
   const getConditionLabel = (item: PromoItem) => {
     const base = CONDITION_MAP[item.conditionType] || item.conditionType;
@@ -328,8 +329,8 @@
       const res = await useApi().claimPromo(item.id);
       if (res?.code === 200) {
         toast.add({
-          title: '領取成功',
-          description: `已獲得 $${Number(res.result?.rewardAmount || 0).toLocaleString()} 獎勵！`,
+          title: t('promo.claimSuccess'),
+          description: t('promo.claimReward', { amount: Number(res.result?.rewardAmount || 0).toLocaleString() }),
           color: 'success',
         });
         item.isClaimed = true;

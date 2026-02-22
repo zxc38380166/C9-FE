@@ -1,7 +1,7 @@
 <template>
   <div class="w-full space-y-4">
     <div class="flex items-center justify-between gap-2">
-      <div class="text-[16px] sm:text-[20px] font-bold text-white">我的信用卡</div>
+      <div class="text-[16px] sm:text-[20px] font-bold text-white">{{ $t('wallet.myCreditCards') }}</div>
       <UButton
         size="xs"
         icon="i-lucide-plus"
@@ -10,8 +10,8 @@
           base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
         }"
         @click="openAddCreditCard">
-        <span class="hidden sm:inline">新增信用卡</span>
-        <span class="sm:hidden">新增</span>
+        <span class="hidden sm:inline">{{ $t('wallet.addCreditCard') }}</span>
+        <span class="sm:hidden">{{ $t('common.add') }}</span>
       </UButton>
     </div>
     <USeparator />
@@ -20,9 +20,9 @@
     <template v-if="!creditCards.length">
       <div class="flex flex-col items-center justify-center py-12 space-y-3">
         <Icon name="i-lucide-credit-card" class="text-[48px] text-white/20" />
-        <div class="text-[14px] text-white/40">尚未綁定信用卡</div>
+        <div class="text-[14px] text-white/40">{{ $t('wallet.noCreditCard') }}</div>
         <UButton size="xs" variant="soft" class="cursor-pointer" @click="openAddCreditCard">
-          立即新增
+          {{ $t('common.addNow') }}
         </UButton>
       </div>
     </template>
@@ -46,6 +46,7 @@
   import type { TableColumn } from '@nuxt/ui';
   import { A1ModalAddCreditCard, CommonConfirmDialog, UButton, UBadge } from '#components';
 
+  const { t } = useI18n();
   const toast = useToast();
   const overlay = useOverlay();
   const { STATUS_MAP } = utsBankCard();
@@ -68,26 +69,26 @@
     return '****' + account.slice(-4);
   };
 
-  const creditCardColumns: TableColumn<CreditCard>[] = [
+  const creditCardColumns = computed<TableColumn<CreditCard>[]>(() => [
     {
       accessorKey: 'cardNumber',
-      header: '卡號',
+      header: t('creditCard.cardNumber'),
       meta: { class: { th: 'text-center w-1/5', td: 'text-center font-medium w-1/5' } },
       cell: ({ row }) => maskAccount(row.getValue('cardNumber') as string),
     },
     {
       accessorKey: 'holderName',
-      header: '持卡人',
+      header: t('creditCard.holderName'),
       meta: { class: { th: 'text-center w-1/5', td: 'text-center font-medium w-1/5' } },
     },
     {
       accessorKey: 'expiryDate',
-      header: '到期日',
+      header: t('creditCard.expiryDate'),
       meta: { class: { th: 'text-center w-1/5', td: 'text-center font-medium w-1/5' } },
     },
     {
       accessorKey: 'status',
-      header: '狀態',
+      header: t('common.status'),
       meta: { class: { th: 'text-center w-1/5', td: 'text-center w-1/5' } },
       cell: ({ row }) => {
         const s = STATUS_MAP[row.getValue('status') as number] ?? STATUS_MAP[0]!;
@@ -96,23 +97,12 @@
     },
     {
       id: 'actions',
-      header: '操作',
+      header: t('common.actions'),
       meta: { class: { th: 'text-center w-1/5', td: 'text-center w-1/5' } },
       cell: ({ row }) =>
-        h(
-          UButton,
-          {
-            size: 'xs',
-            color: 'error',
-            variant: 'soft',
-            icon: 'i-lucide-trash-2',
-            class: 'cursor-pointer',
-            onClick: () => onDeleteCreditCard(row.original.id),
-          },
-          () => '刪除',
-        ),
+        h(UButton, { size: 'xs', color: 'error', variant: 'soft', icon: 'i-lucide-trash-2', class: 'cursor-pointer', onClick: () => onDeleteCreditCard(row.original.id) }, () => t('common.delete')),
     },
-  ];
+  ]);
 
   const fetchCreditCards = async () => {
     try {
@@ -125,7 +115,7 @@
     try {
       const { code } = await useApi().deleteCreditCard(id);
       if (code === 200) {
-        toast.add({ title: '通知', description: '信用卡已刪除' });
+        toast.add({ title: t('common.notify'), description: t('wallet.creditCardDeleted') });
         creditCards.value = creditCards.value.filter((c) => c.id !== id);
       }
     } catch {}
@@ -134,9 +124,9 @@
   const onDeleteCreditCard = (id: number) => {
     const modal = overlay.create(CommonConfirmDialog, {
       props: {
-        title: '刪除信用卡',
-        description: '確定要刪除此信用卡嗎？此操作無法復原。',
-        confirmLabel: '確認刪除',
+        title: t('wallet.deleteCreditCard'),
+        description: t('wallet.deleteCreditCardDesc'),
+        confirmLabel: t('wallet.confirmDelete'),
         confirmColor: 'error',
         onSuccess: () => doDeleteCreditCard(id),
       },

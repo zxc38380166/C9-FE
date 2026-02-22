@@ -9,10 +9,10 @@
       </div>
       <div>
         <div class="text-[18px] sm:text-[22px] font-bold text-white tracking-wide">
-          帳戶錢包管理
+          {{ $t('wallet.title') }}
         </div>
         <div class="text-[11px] sm:text-[12px] text-white/40">
-          管理您的銀行卡、信用卡與加密貨幣錢包
+          {{ $t('wallet.subtitle') }}
         </div>
       </div>
     </div>
@@ -44,12 +44,14 @@
   </div>
 </template>
 <script setup lang="ts">
+  const { t } = useI18n();
+
   type TabValue = 'fiat' | 'credit' | 'crypto';
 
-  const tabs: Array<{ label: string; value: TabValue; icon: string }> = [
-    { label: '法幣', value: 'fiat', icon: 'i-lucide-banknote' },
-    { label: '信用卡', value: 'credit', icon: 'i-lucide-credit-card' },
-    { label: '虛擬貨幣', value: 'crypto', icon: 'i-lucide-bitcoin' },
-  ];
+  const tabs = computed<Array<{ label: string; value: TabValue; icon: string }>>(() => [
+    { label: t('wallet.fiat'), value: 'fiat', icon: 'i-lucide-banknote' },
+    { label: t('wallet.credit'), value: 'credit', icon: 'i-lucide-credit-card' },
+    { label: t('wallet.crypto'), value: 'crypto', icon: 'i-lucide-bitcoin' },
+  ]);
   const activeTab = ref<TabValue>('fiat');
 </script>

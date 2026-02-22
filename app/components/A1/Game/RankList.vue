@@ -4,7 +4,7 @@
     <div class="flex items-center justify-between gap-3 px-1">
       <div class="flex items-center gap-2">
         <Icon name="noto:trophy" class="text-[20px] sm:text-[24px]" />
-        <span class="text-[16px] sm:text-[20px] font-bold text-white">排行榜</span>
+        <span class="text-[16px] sm:text-[20px] font-bold text-white">{{ $t('ranking.title') }}</span>
       </div>
     </div>
     <!-- Tabs -->
@@ -32,7 +32,7 @@
     <!-- 所有排行（統一自動捲動） -->
     <template v-else>
       <div v-if="!rankingList.length" class="text-center py-12 text-white/30 text-[13px]">
-        暫無排行資料
+        {{ $t('ranking.empty') }}
       </div>
       <div
         v-else
@@ -49,16 +49,16 @@
           :class="gridClass">
           <div v-if="showRank" class="text-center tracking-wider">#</div>
           <template v-if="isTotal">
-            <div class="tracking-wider">玩家</div>
-            <div class="tracking-wider text-right">累積提領</div>
+            <div class="tracking-wider">{{ $t('ranking.player') }}</div>
+            <div class="tracking-wider text-right">{{ $t('ranking.totalPayout') }}</div>
           </template>
           <template v-else>
-            <div class="tracking-wider">遊戲</div>
-            <div class="hidden md:block tracking-wider">玩家</div>
-            <div class="hidden md:block tracking-wider">時間</div>
-            <div class="hidden md:block tracking-wider">投注額</div>
-            <div class="hidden md:block tracking-wider">乘數</div>
-            <div class="tracking-wider text-right">支付額</div>
+            <div class="tracking-wider">{{ $t('ranking.gameName') }}</div>
+            <div class="hidden md:block tracking-wider">{{ $t('ranking.player') }}</div>
+            <div class="hidden md:block tracking-wider">{{ $t('ranking.time') }}</div>
+            <div class="hidden md:block tracking-wider">{{ $t('ranking.betAmount') }}</div>
+            <div class="hidden md:block tracking-wider">{{ $t('ranking.multiplier') }}</div>
+            <div class="tracking-wider text-right">{{ $t('ranking.payout') }}</div>
           </template>
         </div>
         <!-- Viewport -->
@@ -139,6 +139,7 @@
 <script setup lang="ts">
   import { useIntervalFn, useResizeObserver, useEventListener } from '@vueuse/core';
 
+  const { t } = useI18n();
   const { formatAmount, formatTime } = utsFormat();
 
   // ---- API response types ----
@@ -178,16 +179,16 @@
   const loading = ref(false);
   const rankingList = ref<RankingItem[]>([]);
 
-  const defaultTab = { label: '即時投注', value: 'realtime' };
-  const rankingTabs = [
-    defaultTab,
-    { label: '每日排行', value: 'daily' },
-    { label: '每週排行', value: 'weekly' },
-    { label: '每月排行', value: 'monthly' },
-    { label: '累積提領', value: 'total' },
-  ];
+  const defaultTab = computed(() => ({ label: t('ranking.realtime'), value: 'realtime' }));
+  const rankingTabs = computed(() => [
+    defaultTab.value,
+    { label: t('ranking.daily'), value: 'daily' },
+    { label: t('ranking.weekly'), value: 'weekly' },
+    { label: t('ranking.monthly'), value: 'monthly' },
+    { label: t('ranking.total'), value: 'total' },
+  ]);
 
-  const currentTab = computed(() => rankingTabs[activeTab.value] ?? defaultTab);
+  const currentTab = computed(() => rankingTabs.value[activeTab.value] ?? defaultTab.value);
   const isTotal = computed(() => currentTab.value.value === 'total');
   const showRank = computed(() => currentTab.value.value !== 'realtime');
   const maxVisibleRows = 10;

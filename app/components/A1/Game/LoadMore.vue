@@ -18,7 +18,7 @@
         class="pointer-events-none absolute inset-0 opacity-[0.20] bg-linear-to-r from-transparent via-white/18 to-transparent -translate-x-[60%] group-hover:translate-x-[60%] transition-transform duration-700" />
       <span class="relative inline-flex items-center gap-2">
         <slot name="label">
-          <span class="text-[13px] font-semibold tracking-wide">{{ label }}</span>
+          <span class="text-[13px] font-semibold tracking-wide">{{ label || $t('game.loadMore') }}</span>
         </slot>
         <span
           class="inline-flex items-center rounded-full bg-white/4 ring-1 ring-white/10 px-2.5 py-1 text-[13px] text-white/60">
@@ -34,7 +34,7 @@
     modelValue,
     total,
     step = 50,
-    label = '展示更多',
+    label = '',
     disabled = false,
     autoIncrement = true,
   } = defineProps<{

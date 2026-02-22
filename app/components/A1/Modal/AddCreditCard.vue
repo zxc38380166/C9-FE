@@ -1,5 +1,5 @@
 <template>
-  <UModal title="新增信用卡" :ui="{ title: 'text-[20px]' }">
+  <UModal :title="$t('creditCard.addTitle')" :ui="{ title: 'text-[20px]' }">
     <template #body>
       <UForm
         ref="formRef"
@@ -8,20 +8,20 @@
         :state
         :validate-on="['blur', 'input']"
         @submit="onSubmit">
-        <UFormField label="卡號" name="cardNumber" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('creditCard.cardNumber')" name="cardNumber" :ui="{ label: 'text-white/70 mb-1' }">
           <UInput
             v-model="state.cardNumber"
-            placeholder="請輸入 13-19 位卡號"
+            :placeholder="$t('creditCard.enterCard1319')"
             icon="i-lucide-credit-card"
             :ui="{
               base: 'w-full h-[44px] rounded-[10px] bg-slate-900 ring-1 ring-white/10 text-white',
             }" />
         </UFormField>
 
-        <UFormField label="持卡人姓名" name="holderName" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('creditCard.holderName')" name="holderName" :ui="{ label: 'text-white/70 mb-1' }">
           <UInput
             v-model="state.holderName"
-            placeholder="請輸入持卡人姓名"
+            :placeholder="$t('creditCard.enterHolderName')"
             icon="i-lucide-user"
             :ui="{
               base: 'w-full h-[44px] rounded-[10px] bg-slate-900 ring-1 ring-white/10 text-white',
@@ -29,7 +29,7 @@
         </UFormField>
 
         <div class="grid grid-cols-2 gap-4">
-          <UFormField label="到期日" name="expiryDate" :ui="{ label: 'text-white/70 mb-1' }">
+          <UFormField :label="$t('creditCard.expiryDate')" name="expiryDate" :ui="{ label: 'text-white/70 mb-1' }">
             <UInput
               v-model="state.expiryDate"
               placeholder="MM/YY"
@@ -42,7 +42,7 @@
           <UFormField label="CVV" name="cvv" :ui="{ label: 'text-white/70 mb-1' }">
             <UInput
               v-model="state.cvv"
-              placeholder="3-4 位數"
+              :placeholder="$t('creditCard.cvvPlaceholder')"
               type="password"
               icon="i-lucide-lock"
               :ui="{
@@ -60,7 +60,7 @@
           :ui="{
             base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
           }">
-          {{ loading ? '提交中…' : '確認新增' }}
+          {{ loading ? $t('common.submitting') : $t('common.confirmAdd') }}
         </UButton>
       </UForm>
     </template>
@@ -74,14 +74,15 @@
     onSuccess: Function;
   }>();
 
+  const { t } = useI18n();
   const toast = useToast();
   const loading = ref(false);
 
   const schema = z.object({
-    cardNumber: z.string().regex(/^\d{13,19}$/, '卡號需 13-19 位數字'),
-    holderName: z.string().min(2, '請輸入持卡人姓名'),
-    expiryDate: z.string().regex(/^(0[1-9]|1[0-2])\/\d{2}$/, '格式為 MM/YY'),
-    cvv: z.string().regex(/^\d{3,4}$/, 'CVV 需 3-4 位數字'),
+    cardNumber: z.string().regex(/^\d{13,19}$/, t('validation.cardNumber1319')),
+    holderName: z.string().min(2, t('validation.enterHolderName')),
+    expiryDate: z.string().regex(/^(0[1-9]|1[0-2])\/\d{2}$/, t('validation.formatMMYY')),
+    cvv: z.string().regex(/^\d{3,4}$/, t('validation.cvv34')),
   });
 
   type Schema = z.output<typeof schema>;
@@ -98,7 +99,7 @@
     try {
       const { code } = await useApi().addCreditCard(event.data);
       if (code === 200) {
-        toast.add({ title: '通知', description: '信用卡新增成功' });
+        toast.add({ title: t('common.notify'), description: t('creditCard.addSuccess') });
         onSuccess();
       }
     } catch {

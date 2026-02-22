@@ -152,10 +152,11 @@ async function handle401(opts: {
   // - client：router.replace
   // - server：navigateTo（SSR setup 時可用）
   if (import.meta.client) {
+    const { t } = useI18n();
     const toast = useToast();
     const router = useRouter();
     await router.replace(redirectTo).then(() => {
-      toast.add({ title: '通知', description: '登入已失效, 請重新登入' });
+      toast.add({ title: t('common.notify'), description: t('auth.sessionExpired') });
     });
   } else {
     // SSR 也能做 redirect（只要是在 setup/asyncData 之類被呼叫）
@@ -271,7 +272,8 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
       }
 
       if (errorToast && import.meta.client && data.message) {
-        useToast().add({ title: '錯誤', description: data.message, color: 'error' });
+        const { t: _t } = useI18n();
+        useToast().add({ title: _t('common.error'), description: data.message, color: 'error' });
       }
     }
 

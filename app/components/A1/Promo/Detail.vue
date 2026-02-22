@@ -5,7 +5,7 @@
       to="/promo"
       class="inline-flex items-center gap-1.5 text-[13px] text-white/50 hover:text-white transition-colors">
       <Icon name="i-lucide-arrow-left" class="size-4" />
-      返回活動列表
+      {{ $t('promo.backToList') }}
     </NuxtLink>
 
     <!-- Loading skeleton -->
@@ -40,8 +40,8 @@
             <UBadge :color="getTagColor(promo.tag)" variant="solid">
               {{ promo.tag }}
             </UBadge>
-            <UBadge v-if="promo.isActive" color="success" variant="solid"> 進行中 </UBadge>
-            <UBadge v-else color="neutral" variant="solid"> 已結束 </UBadge>
+            <UBadge v-if="promo.isActive" color="success" variant="solid"> {{ $t('promo.status.ongoing') }} </UBadge>
+            <UBadge v-else color="neutral" variant="solid"> {{ $t('promo.status.ended') }} </UBadge>
           </div>
           <h1 class="text-[22px] sm:text-[32px] font-bold text-white leading-tight">
             {{ promo.title }}
@@ -55,7 +55,7 @@
         <div class="rounded-xl bg-[#131f30] ring-1 ring-white/8 p-3.5 sm:p-4 space-y-1.5">
           <div class="flex items-center gap-1.5 text-[11px] sm:text-[12px] text-white/40">
             <Icon name="i-lucide-gift" class="size-3.5 text-amber-400" />
-            獎勵金額
+            {{ $t('promo.rewardAmount') }}
           </div>
           <div class="text-[18px] sm:text-[22px] font-bold text-amber-400">
             ${{ Number(promo.rewardAmount || 0).toLocaleString() }}
@@ -65,7 +65,7 @@
         <div class="rounded-xl bg-[#131f30] ring-1 ring-white/8 p-3.5 sm:p-4 space-y-1.5">
           <div class="flex items-center gap-1.5 text-[11px] sm:text-[12px] text-white/40">
             <Icon name="i-lucide-target" class="size-3.5 text-emerald-400" />
-            活動條件
+            {{ $t('promo.conditionLabel') }}
           </div>
           <div class="text-[14px] sm:text-[16px] font-semibold text-white/80">
             {{ conditionLabel }}
@@ -75,7 +75,7 @@
         <div class="rounded-xl bg-[#131f30] ring-1 ring-white/8 p-3.5 sm:p-4 space-y-1.5">
           <div class="flex items-center gap-1.5 text-[11px] sm:text-[12px] text-white/40">
             <Icon name="i-lucide-calendar" class="size-3.5 text-blue-400" />
-            開始時間
+            {{ $t('promo.startTime') }}
           </div>
           <div class="text-[13px] sm:text-[14px] font-medium text-white/70">
             {{ formatPromoDate(promo.startTime) }}
@@ -85,7 +85,7 @@
         <div class="rounded-xl bg-[#131f30] ring-1 ring-white/8 p-3.5 sm:p-4 space-y-1.5">
           <div class="flex items-center gap-1.5 text-[11px] sm:text-[12px] text-white/40">
             <Icon name="i-lucide-clock" class="size-3.5 text-rose-400" />
-            結束時間
+            {{ $t('promo.endTime') }}
           </div>
           <div class="text-[13px] sm:text-[14px] font-medium text-white/70">
             {{ formatPromoDate(promo.endTime) }}
@@ -99,10 +99,10 @@
           <div class="space-y-2">
             <div class="flex items-center gap-2">
               <Icon name="i-lucide-trophy" class="size-5 text-amber-400" />
-              <span class="text-[16px] sm:text-[18px] font-bold text-white">領取獎勵</span>
+              <span class="text-[16px] sm:text-[18px] font-bold text-white">{{ $t('promo.claimRewardLabel') }}</span>
             </div>
             <div class="text-[12px] sm:text-[13px] text-white/50">
-              已領取 {{ promo.claimedCount || 0 }} / {{ promo.maxClaims || '∞' }} 次
+              {{ $t('promo.claimedProgress', { claimed: promo.claimedCount || 0, max: promo.maxClaims || '∞' }) }}
             </div>
             <!-- 進度條 -->
             <div
@@ -133,7 +133,7 @@
       <div class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8 space-y-4">
         <div class="flex items-center gap-2">
           <Icon name="i-lucide-file-text" class="size-5 text-emerald-400" />
-          <span class="text-[16px] sm:text-[18px] font-bold text-white">活動詳情</span>
+          <span class="text-[16px] sm:text-[18px] font-bold text-white">{{ $t('promo.detail') }}</span>
         </div>
         <div class="h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
         <!-- HTML content from API -->
@@ -149,7 +149,7 @@
         <div
           v-if="!promo.content && !promo.actionHtml"
           class="text-center py-6 text-white/30 text-[14px]">
-          暫無詳細說明
+          {{ $t('promo.noDescription') }}
         </div>
       </div>
     </template>
@@ -158,15 +158,16 @@
     <template v-else>
       <div class="flex flex-col items-center justify-center py-20 text-white/40 space-y-3">
         <Icon name="i-lucide-search-x" class="size-12" />
-        <span class="text-[16px] font-medium">找不到該活動</span>
+        <span class="text-[16px] font-medium">{{ $t('promo.notFound') }}</span>
         <NuxtLink to="/" class="text-emerald-400 hover:text-emerald-300 text-[14px]">
-          返回首頁
+          {{ $t('promo.backToHome') }}
         </NuxtLink>
       </div>
     </template>
   </div>
 </template>
 <script setup lang="ts">
+  const { t } = useI18n();
   const { formatDate } = utsFormat();
   const { getTagColor, CONDITION_MAP } = utsPromo();
 
@@ -215,12 +216,12 @@
   const formatPromoDate = (dateStr: string) => formatDate(dateStr, 'YYYY/MM/DD HH:mm');
 
   const claimButtonText = computed(() => {
-    if (!isLogin.value) return '登入參加';
-    if (claiming.value) return '領取中...';
-    if (!promo.value?.isActive) return '活動已結束';
-    if (promo.value?.isClaimed) return '已領取';
-    if (!promo.value?.isClaimable) return '未達條件';
-    return '立即領取';
+    if (!isLogin.value) return t('promo.loginToJoin');
+    if (claiming.value) return t('promo.claiming');
+    if (!promo.value?.isActive) return t('promo.eventEnded');
+    if (promo.value?.isClaimed) return t('promo.progressClaimed');
+    if (!promo.value?.isClaimable) return t('promo.notQualified');
+    return t('promo.claimNow');
   });
 
   const claimButtonClass = computed(() => {
@@ -256,8 +257,8 @@
       const res = await useApi().claimPromo(promo.value.id);
       if (res?.code === 200) {
         toast.add({
-          title: '領取成功',
-          description: `已獲得 $${Number(res.result?.rewardAmount || 0).toLocaleString()} 獎勵！`,
+          title: t('promo.claimSuccess'),
+          description: t('promo.rewardReceived').replace('${amount}', Number(res.result?.rewardAmount || 0).toLocaleString()),
           color: 'success',
         });
         promo.value.isClaimed = true;

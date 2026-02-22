@@ -37,7 +37,7 @@
                 class="flex items-center justify-center gap-1.5 rounded-full bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 size-8 sm:size-auto sm:px-4 sm:py-2 text-[13px] font-bold text-white shadow-[0_0_16px_-2px_rgba(16,185,129,0.4)] transition-all cursor-pointer"
                 @click="router.push('/user/deposit')">
                 <Icon name="i-lucide-plus" class="size-3.5" />
-                <span class="hidden sm:inline">存款</span>
+                <span class="hidden sm:inline">{{ $t('nav.deposit') }}</span>
               </button>
 
               <!-- 使用者頭像 + 下拉選單 -->
@@ -85,6 +85,7 @@
   </UDashboardGroup>
 </template>
 <script setup lang="ts">
+  const { t } = useI18n();
   const store = useStore();
   const route = useRoute();
   const router = useRouter();
@@ -114,34 +115,34 @@
     ],
     [
       {
-        label: '個人設定',
+        label: t('nav.personalSetting'),
         icon: 'i-lucide-user-cog',
         to: '/user/setting',
         active: isActive('/user/setting'),
       },
       {
-        label: '個人驗證',
+        label: t('nav.personalVerify'),
         icon: 'i-lucide-shield-check',
       },
       {
-        label: '通知',
+        label: t('nav.notification'),
         icon: 'i-lucide-bell',
         kbds: [','],
       },
     ],
     [
       {
-        label: '存款',
+        label: t('nav.deposit'),
         icon: 'i-lucide-arrow-down-to-line',
         to: '/user/deposit',
         active: isActive('/user/deposit'),
       },
       {
-        label: '提款',
+        label: t('nav.withdrawal'),
         icon: 'i-lucide-arrow-up-from-line',
       },
       {
-        label: '帳戶錢包管理',
+        label: t('nav.walletManage'),
         icon: 'i-lucide-wallet',
         to: '/user/wallet',
         active: isActive('/user/wallet'),
@@ -149,17 +150,17 @@
     ],
     [
       {
-        label: '交易紀錄',
+        label: t('nav.transactionRecord'),
         icon: 'i-lucide-receipt-text',
         to: '/user/transaction',
         active: isActive('/user/transaction'),
       },
       {
-        label: '投注紀錄',
+        label: t('nav.betRecord'),
         icon: 'i-lucide-scroll-text',
       },
       {
-        label: '活動中心',
+        label: t('nav.promoCenter'),
         icon: 'i-lucide-party-popper',
         to: '/promo',
         active: isActive('/promo'),
@@ -167,17 +168,17 @@
     ],
     [
       {
-        label: '獎金',
+        label: t('nav.bonus'),
         icon: 'i-lucide-trophy',
       },
       {
-        label: '邀請好友',
+        label: t('nav.inviteFriends'),
         icon: 'i-lucide-user-plus',
       },
     ],
     [
       {
-        label: '登出',
+        label: t('nav.logout'),
         icon: 'i-lucide-log-out',
         kbds: ['shift', 'meta', 'q'],
         onSelect() {

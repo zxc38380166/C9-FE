@@ -7,7 +7,7 @@
     </template>
     <template v-else>
       <div class="flex items-center justify-between gap-2">
-        <div class="text-[16px] sm:text-[20px] font-bold text-white">信用卡存款</div>
+        <div class="text-[16px] sm:text-[20px] font-bold text-white">{{ $t('deposit.creditDeposit') }}</div>
         <UButton
           size="xs"
           variant="soft"
@@ -15,26 +15,26 @@
           class="cursor-pointer shrink-0"
           :loading="loadingRate"
           @click="refreshAll">
-          <span class="hidden sm:inline">重新整理</span>
+          <span class="hidden sm:inline">{{ $t('common.refresh') }}</span>
         </UButton>
       </div>
       <USeparator />
 
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <!-- 1. 幣別 -->
-        <UFormField label="選擇幣別" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('deposit.selectCurrency')" :ui="{ label: 'text-white/70 mb-1' }">
           <USelectMenu
             v-model="selectedCurrency"
             :items="currencyOptions"
             :loading="loadingChannels"
             :ui="selectUi"
             icon="i-lucide-coins"
-            placeholder="請選擇幣別"
+            :placeholder="$t('deposit.selectCurrencyPlaceholder')"
             value-key="value" />
         </UFormField>
 
         <!-- 2. 支付通道 -->
-        <UFormField label="支付通道" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('deposit.paymentChannel')" :ui="{ label: 'text-white/70 mb-1' }">
           <USelectMenu
             v-model="selectedChannel"
             :items="channelOptions"
@@ -42,31 +42,31 @@
             :loading="loadingChannels"
             :ui="selectUi"
             icon="i-lucide-route"
-            placeholder="請先選擇幣別"
+            :placeholder="$t('deposit.selectCurrencyFirst')"
             value-key="value" />
         </UFormField>
 
         <!-- 3. 信用卡選擇 -->
-        <UFormField label="選擇信用卡" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('deposit.selectCreditCard')" :ui="{ label: 'text-white/70 mb-1' }">
           <USelectMenu
             v-model="selectedCreditCard"
             :items="creditCardOptions"
             :ui="selectUi"
             icon="i-lucide-credit-card"
-            placeholder="請選擇已審核的信用卡"
+            :placeholder="$t('deposit.selectApprovedCreditCard')"
             value-key="value" />
           <p v-if="!creditCardOptions.length" class="mt-1 text-[12px] text-amber-400/80">
-            尚無已審核通過的信用卡，請先至錢包管理新增信用卡
+            {{ $t('deposit.noCreditCardHint') }}
           </p>
         </UFormField>
 
         <!-- 4. 存款金額 -->
-        <UFormField label="存款金額" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('deposit.amount')" :ui="{ label: 'text-white/70 mb-1' }">
           <UInput
             v-model="amount"
             type="number"
             min="0"
-            placeholder="輸入金額"
+            :placeholder="$t('deposit.enterAmount')"
             :ui="inputUi"
             icon="i-lucide-wallet" />
         </UFormField>
@@ -75,19 +75,19 @@
       <!-- 匯率摘要 -->
       <div class="rounded-[12px] bg-white/3 ring-1 ring-white/10 p-4 space-y-2">
         <div class="flex items-center justify-between">
-          <div class="text-[14px] text-white/60">選擇幣別</div>
+          <div class="text-[14px] text-white/60">{{ $t('deposit.selectCurrency') }}</div>
           <div class="text-[14px] font-semibold text-white">{{ selectedCurrency || '-' }}</div>
         </div>
         <template v-if="selectedChannelRate">
           <div class="grid grid-cols-2 gap-3">
             <div class="rounded-[10px] bg-white/5 ring-1 ring-white/10 p-3">
-              <div class="text-[12px] text-white/60">買入匯率</div>
+              <div class="text-[12px] text-white/60">{{ $t('deposit.buyRate') }}</div>
               <div class="text-[16px] font-bold text-white">
                 {{ toFixedRate(selectedChannelRate.buy) }}
               </div>
             </div>
             <div class="rounded-[10px] bg-white/5 ring-1 ring-white/10 p-3">
-              <div class="text-[12px] text-white/60">賣出匯率</div>
+              <div class="text-[12px] text-white/60">{{ $t('deposit.sellRate') }}</div>
               <div class="text-[16px] font-bold text-white">
                 {{ toFixedRate(selectedChannelRate.sell) }}
               </div>
@@ -96,29 +96,29 @@
         </template>
         <template v-else-if="hasRateForCurrency">
           <div class="text-[12px] text-white/50 mb-1">
-            {{ selectedCurrency === 'TWD' ? 'USDT（≈USD）匯率' : `${selectedCurrency} 匯率` }}
+            {{ selectedCurrency === 'TWD' ? $t('deposit.usdtRate') : $t('deposit.currencyRate', { currency: selectedCurrency }) }}
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div class="rounded-[10px] bg-white/5 ring-1 ring-white/10 p-3">
-              <div class="text-[12px] text-white/60">即期買入</div>
+              <div class="text-[12px] text-white/60">{{ $t('deposit.spotBuy') }}</div>
               <div class="text-[16px] font-bold text-white">{{ showRate('bkbuy') }}</div>
             </div>
             <div class="rounded-[10px] bg-white/5 ring-1 ring-white/10 p-3">
-              <div class="text-[12px] text-white/60">即期賣出</div>
+              <div class="text-[12px] text-white/60">{{ $t('deposit.spotSell') }}</div>
               <div class="text-[16px] font-bold text-white">{{ showRate('bksell') }}</div>
             </div>
             <div class="rounded-[10px] bg-white/5 ring-1 ring-white/10 p-3">
-              <div class="text-[12px] text-white/60">現金買入</div>
+              <div class="text-[12px] text-white/60">{{ $t('deposit.cashBuy') }}</div>
               <div class="text-[16px] font-bold text-white">{{ showRate('cashbuy') }}</div>
             </div>
             <div class="rounded-[10px] bg-white/5 ring-1 ring-white/10 p-3">
-              <div class="text-[12px] text-white/60">現金賣出</div>
+              <div class="text-[12px] text-white/60">{{ $t('deposit.cashSell') }}</div>
               <div class="text-[16px] font-bold text-white">{{ showRate('cashsell') }}</div>
             </div>
           </div>
         </template>
         <template v-else>
-          <div class="text-[14px] text-white/40">請選擇幣別以查看匯率</div>
+          <div class="text-[14px] text-white/40">{{ $t('deposit.selectCurrencyForRate') }}</div>
         </template>
       </div>
 
@@ -131,7 +131,7 @@
         class="cursor-pointer rounded-[12px]"
         :ui="btnUi"
         @click="onDeposit">
-        {{ submitting ? '提交中…' : '確認存款' }}
+        {{ submitting ? $t('common.submitting') : $t('deposit.confirmDeposit') }}
       </UButton>
 
       <UAlert
@@ -139,7 +139,7 @@
         color="error"
         variant="soft"
         icon="i-lucide-triangle-alert"
-        title="錯誤"
+        :title="$t('common.error')"
         :description="errorText" />
     </template>
   </div>
@@ -148,6 +148,7 @@
 <script setup lang="ts">
   import type { SelectItem, VendorChannel } from '~/composables/useCash';
 
+  const { t } = useI18n();
   const store = useStore();
   const {
     channels,
@@ -238,7 +239,7 @@
     return creditCards.value
       .filter((c) => c.status === 1)
       .map((c) => ({
-        label: `****${c.cardNumber.slice(-4)} (${c.holderName}) 到期 ${c.expiryDate}`,
+        label: `****${c.cardNumber.slice(-4)} (${c.holderName}) ${t('deposit.cardExpiry')} ${c.expiryDate}`,
         value: String(c.id),
       }));
   });
@@ -279,7 +280,7 @@
     try {
       const user = store.getUserDetail;
       const card = creditCards.value.find((c) => String(c.id) === selectedCreditCard.value);
-      if (!card) throw new Error('請選擇信用卡');
+      if (!card) throw new Error(t('deposit.selectCreditCard'));
 
       const params = vendor.wantong.buildCardParams({
         channelId: Number(selectedChannel.value),
@@ -291,7 +292,7 @@
 
       await vendor.wantong.deposit(params);
     } catch (e: any) {
-      errorText.value = e?.message || '存款失敗';
+      errorText.value = e?.message || t('deposit.failed');
     } finally {
       submitting.value = false;
     }

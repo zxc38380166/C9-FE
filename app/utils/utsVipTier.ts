@@ -10,6 +10,7 @@ export interface VipTierStyle {
 
 /** VIP 等級樣式 hook */
 export const utsVipTier = () => {
+  const { t } = useI18n();
   const STYLES: Record<string, VipTierStyle> = {
     bronze: {
       bg: 'bg-linear-to-br from-[#2a1f14] to-[#131f30]',
@@ -54,10 +55,10 @@ export const utsVipTier = () => {
     STYLES[tier] ?? STYLES.bronze!;
 
   const LABELS: Record<string, string> = {
-    bronze: '青銅',
-    gold: '黃金',
-    platinum: '鉑金',
-    diamond: '鑽石',
+    bronze: t('tier.bronze'),
+    gold: t('tier.gold'),
+    platinum: t('tier.platinum'),
+    diamond: t('tier.diamond'),
   };
 
   /** 取得 tier 顯示名稱 */

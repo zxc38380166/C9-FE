@@ -2,6 +2,7 @@ import moment from 'moment-timezone';
 
 /** 通用格式化工具 hook */
 export const utsFormat = () => {
+  const { t } = useI18n();
   /** 通用數字格式化（千分位 + 小數位控制） */
   const formatNumber = (
     val: string | number,
@@ -37,7 +38,7 @@ export const utsFormat = () => {
   const formatDateShort = (dateStr: string): string => {
     if (!dateStr) return '-';
     const m = moment(dateStr);
-    return m.isValid() ? m.format('MM/DD') + ' 截止' : dateStr;
+    return m.isValid() ? m.format('MM/DD') + ' ' + t('format.deadline') : dateStr;
   };
 
   /** 上午/下午 HH:mm */

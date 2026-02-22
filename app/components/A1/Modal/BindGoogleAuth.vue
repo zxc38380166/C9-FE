@@ -1,7 +1,7 @@
 <template>
   <UModal
     close-icon="i-lucide-arrow-right"
-    title="啟動 Google Authenticator"
+    :title="$t('auth.googleAuthTitle')"
     :ui="{ title: 'text-[20px]' }">
     <template #body>
       <UPageCard class="w-full max-w-md">
@@ -14,8 +14,8 @@
           :loading
           :schema="schema"
           :validate-on="['input']"
-          :title="`備用金鑰（請妥善保存) ${googleAuthData.secret}`"
-          :description="'啟用 Google Authenticator 後，登入與重要操作將需要輸入動態驗證碼'"
+          :title="`${$t('auth.backupKey')} ${googleAuthData.secret}`"
+          :description="$t('auth.googleAuthDesc')"
           :fields
           :ui="{
             title: 'text-[14px] min-h-[50px]',
@@ -25,7 +25,7 @@
           @submit="onSubmit">
           <template #submit="{ loading }">
             <UButton type="submit" block :loading="loading">
-              {{ loading ? '啟用中…' : '確認啟用' }}
+              {{ loading ? $t('auth.enabling') : $t('auth.confirmEnable') }}
             </UButton>
           </template>
         </UAuthForm>
@@ -41,6 +41,7 @@
     onSuccess?: () => void;
   }>();
 
+  const { t } = useI18n();
   const toast = useToast();
   const { refreshUserData } = useAuth();
 
@@ -50,7 +51,7 @@
     {
       name: 'otp',
       type: 'otp',
-      label: '6 位數驗證碼',
+      label: t('auth.otpLabel'),
       length: 6,
       placeholder: '○',
     },
@@ -59,8 +60,8 @@
   const schema = z.object({
     otp: z
       .array(z.string())
-      .length(6, '請輸入 6 位數驗證碼')
-      .refine((arr) => arr.every((v) => v !== ''), '請輸入 6 位數驗證碼'),
+      .length(6, t('validation.enterOtp6'))
+      .refine((arr) => arr.every((v) => v !== ''), t('validation.enterOtp6')),
   });
 
   const loading = ref(false);
@@ -72,7 +73,7 @@
       const res = await useApi().enableGoogleAuth({ code });
 
       if (res.code === 200) {
-        toast.add({ title: '通知', description: '啟用成功' });
+        toast.add({ title: t('common.notify'), description: t('auth.enableSuccess') });
         await refreshUserData();
         onSuccess();
       }

@@ -15,9 +15,9 @@
 <script setup lang="ts">
   const {
     leftIcon = 'material-symbols:settings-backup-restore',
-    leftText = '預設左側文字',
+    leftText = '',
     rightIcon = 'material-symbols:arrow-circle-left',
-    rightText = '預設右側文字',
+    rightText = '',
     ui = { right: '' },
   } = defineProps<{
     leftIcon?: string;

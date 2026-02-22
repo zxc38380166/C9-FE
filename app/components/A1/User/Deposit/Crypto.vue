@@ -3,7 +3,7 @@
     <!-- 建單前：填寫表單 -->
     <template v-if="!depositResult">
       <div class="flex items-center justify-between gap-2">
-        <div class="text-[16px] sm:text-[20px] font-bold text-white">虛擬貨幣存款</div>
+        <div class="text-[16px] sm:text-[20px] font-bold text-white">{{ $t('deposit.cryptoDeposit') }}</div>
         <UButton
           size="xs"
           variant="soft"
@@ -11,26 +11,26 @@
           class="cursor-pointer shrink-0"
           :loading="loadingChannels"
           @click="refreshAll">
-          <span class="hidden sm:inline">重新整理</span>
+          <span class="hidden sm:inline">{{ $t('common.refresh') }}</span>
         </UButton>
       </div>
       <USeparator />
 
       <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
         <!-- 1. 幣別 -->
-        <UFormField label="選擇幣別" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('deposit.selectCurrency')" :ui="{ label: 'text-white/70 mb-1' }">
           <USelectMenu
             v-model="selectedCurrency"
             :items="currencyOptions"
             :loading="loadingChannels"
             :ui="selectUi"
             icon="i-lucide-coins"
-            placeholder="請選擇幣別"
+            :placeholder="$t('deposit.selectCurrencyPlaceholder')"
             value-key="value" />
         </UFormField>
 
         <!-- 2. 支付通道 -->
-        <UFormField label="支付通道" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('deposit.paymentChannel')" :ui="{ label: 'text-white/70 mb-1' }">
           <USelectMenu
             v-model="selectedChannel"
             :items="channelOptions"
@@ -38,17 +38,17 @@
             :loading="loadingChannels"
             :ui="selectUi"
             icon="i-lucide-route"
-            placeholder="請先選擇幣別"
+            :placeholder="$t('deposit.selectCurrencyFirst')"
             value-key="value" />
         </UFormField>
 
         <!-- 3. 存款金額 -->
-        <UFormField label="存款金額 (USDT)" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('deposit.amountUsdt')" :ui="{ label: 'text-white/70 mb-1' }">
           <UInput
             v-model="amount"
             type="number"
             min="0"
-            placeholder="輸入金額"
+            :placeholder="$t('deposit.enterAmount')"
             :ui="inputUi"
             icon="i-lucide-wallet" />
         </UFormField>
@@ -63,7 +63,7 @@
         class="cursor-pointer rounded-[12px]"
         :ui="btnUi"
         @click="onDeposit">
-        {{ submitting ? '提交中…' : '確認存款' }}
+        {{ submitting ? $t('common.submitting') : $t('deposit.confirmDeposit') }}
       </UButton>
 
       <UAlert
@@ -71,21 +71,21 @@
         color="error"
         variant="soft"
         icon="i-lucide-triangle-alert"
-        title="錯誤"
+        :title="$t('common.error')"
         :description="errorText" />
     </template>
 
     <!-- 建單後：顯示繳費資訊 + QR Code -->
     <template v-else>
       <div class="flex items-center justify-between gap-2">
-        <div class="text-[16px] sm:text-[20px] font-bold text-white">存款訂單已建立</div>
+        <div class="text-[16px] sm:text-[20px] font-bold text-white">{{ $t('deposit.orderCreated') }}</div>
         <UButton
           size="xs"
           variant="soft"
           icon="i-lucide-arrow-left"
           class="cursor-pointer shrink-0"
           @click="depositResult = null">
-          返回
+          {{ $t('common.back') }}
         </UButton>
       </div>
       <USeparator />
@@ -94,8 +94,8 @@
         color="warning"
         variant="soft"
         icon="i-lucide-info"
-        title="請注意"
-        description="請使用對應的網路進行轉帳，轉至錯誤網路將導致資金遺失。" />
+        :title="$t('deposit.warning')"
+        :description="$t('deposit.warningDesc')" />
 
       <div class="flex flex-col items-center space-y-5 py-4">
         <!-- QR Code -->
@@ -111,28 +111,28 @@
         <div class="w-full max-w-sm space-y-3">
           <div class="rounded-[12px] bg-white/5 ring-1 ring-white/10 p-4 space-y-3">
             <div class="flex items-center justify-between">
-              <span class="text-[13px] text-white/60">幣種</span>
+              <span class="text-[13px] text-white/60">{{ $t('crypto.currency') }}</span>
               <span class="text-[14px] font-semibold text-white">{{ depositResult.currency }}</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-[13px] text-white/60">網路</span>
+              <span class="text-[13px] text-white/60">{{ $t('crypto.network') }}</span>
               <span class="text-[14px] font-semibold text-white">{{ depositResult.network }}</span>
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-[13px] text-white/60">金額</span>
+              <span class="text-[13px] text-white/60">{{ $t('common.amount') }}</span>
               <span class="text-[14px] font-semibold text-white"
                 >{{ depositResult.orderAmount }} {{ depositResult.currency }}</span
               >
             </div>
             <div class="flex items-center justify-between">
-              <span class="text-[13px] text-white/60">訂單編號</span>
+              <span class="text-[13px] text-white/60">{{ $t('transaction.orderNumber') }}</span>
               <span class="text-[14px] font-semibold text-white">{{ depositResult.subOrder }}</span>
             </div>
           </div>
 
           <!-- 地址 + 複製 -->
           <div class="rounded-[12px] bg-white/5 ring-1 ring-white/10 p-4 space-y-2">
-            <div class="text-[13px] text-white/60">錢包地址</div>
+            <div class="text-[13px] text-white/60">{{ $t('crypto.address') }}</div>
             <div class="flex items-center gap-2">
               <div class="flex-1 truncate text-[13px] font-mono text-white/90">
                 {{ depositResult.paymentAddress }}
@@ -143,7 +143,7 @@
                 icon="i-lucide-copy"
                 class="cursor-pointer shrink-0"
                 @click="copyAddress">
-                複製
+                {{ $t('common.copy') }}
               </UButton>
             </div>
           </div>
@@ -158,6 +158,7 @@
   import { useClipboard } from '@vueuse/core';
   import type { SelectItem, VendorChannel, CryptoDepositResult } from '~/composables/useCash';
 
+  const { t } = useI18n();
   const toast = useToast();
   const {
     channels,
@@ -258,7 +259,7 @@
 
       depositResult.value = await vendor.usdt.deposit(params);
     } catch (e: any) {
-      errorText.value = e?.message || '存款失敗';
+      errorText.value = e?.message || t('deposit.failed');
     } finally {
       submitting.value = false;
     }
@@ -270,9 +271,9 @@
     if (!depositResult.value) return;
     try {
       await copy(depositResult.value.paymentAddress);
-      toast.add({ title: '通知', description: '地址已複製' });
+      toast.add({ title: t('common.notify'), description: t('deposit.addressCopied') });
     } catch {
-      toast.add({ title: '錯誤', description: '複製失敗，請手動複製', color: 'error' });
+      toast.add({ title: t('common.error'), description: t('deposit.copyFailed'), color: 'error' });
     }
   };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <UModal title="新增加密貨幣錢包" :ui="{ title: 'text-[20px]' }">
+  <UModal :title="$t('crypto.addTitle')" :ui="{ title: 'text-[20px]' }">
     <template #body>
       <UForm
         ref="formRef"
@@ -8,10 +8,10 @@
         :state
         :validate-on="['blur', 'input']"
         @submit="onSubmit">
-        <UFormField label="錢包名稱" name="walletName" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('crypto.walletName')" name="walletName" :ui="{ label: 'text-white/70 mb-1' }">
           <UInput
             v-model="state.walletName"
-            placeholder="請輸入錢包名稱"
+            :placeholder="$t('crypto.enterWalletName')"
             icon="i-lucide-wallet"
             :ui="{
               base: 'w-full h-[44px] rounded-[10px] bg-slate-900 ring-1 ring-white/10 text-white',
@@ -19,7 +19,7 @@
         </UFormField>
 
         <div class="grid grid-cols-2 gap-4">
-          <UFormField label="幣種" name="currency" :ui="{ label: 'text-white/70 mb-1' }">
+          <UFormField :label="$t('crypto.currency')" name="currency" :ui="{ label: 'text-white/70 mb-1' }">
             <UInput
               v-model="state.currency"
               disabled
@@ -29,7 +29,7 @@
               }" />
           </UFormField>
 
-          <UFormField label="網路" name="network" :ui="{ label: 'text-white/70 mb-1' }">
+          <UFormField :label="$t('crypto.network')" name="network" :ui="{ label: 'text-white/70 mb-1' }">
             <USelectMenu
               v-model="state.network"
               :items="networkOptions"
@@ -38,15 +38,15 @@
                 content: 'w-full bg-slate-900 ring-1 ring-white/10',
               }"
               icon="i-lucide-network"
-              placeholder="請選擇網路"
+              :placeholder="$t('crypto.selectNetwork')"
               value-key="value" />
           </UFormField>
         </div>
 
-        <UFormField label="錢包地址" name="address" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('crypto.address')" name="address" :ui="{ label: 'text-white/70 mb-1' }">
           <UInput
             v-model="state.address"
-            placeholder="請輸入錢包地址"
+            :placeholder="$t('crypto.enterAddress')"
             icon="i-lucide-hash"
             :ui="{
               base: 'w-full h-[44px] rounded-[10px] bg-slate-900 ring-1 ring-white/10 text-white',
@@ -62,7 +62,7 @@
           :ui="{
             base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
           }">
-          {{ loading ? '提交中…' : '確認新增' }}
+          {{ loading ? $t('common.submitting') : $t('common.confirmAdd') }}
         </UButton>
       </UForm>
     </template>
@@ -76,6 +76,7 @@
     onSuccess: Function;
   }>();
 
+  const { t } = useI18n();
   const toast = useToast();
   const loading = ref(false);
 
@@ -85,10 +86,10 @@
   ];
 
   const schema = z.object({
-    walletName: z.string().min(1, '請輸入錢包名稱'),
-    currency: z.string().min(1, '請選擇幣種'),
-    network: z.string().min(1, '請選擇網路'),
-    address: z.string().min(10, '請輸入有效的錢包地址'),
+    walletName: z.string().min(1, t('validation.enterWalletName')),
+    currency: z.string().min(1, t('validation.selectCurrency')),
+    network: z.string().min(1, t('validation.selectNetwork')),
+    address: z.string().min(10, t('validation.enterValidAddress')),
   });
 
   type Schema = z.output<typeof schema>;
@@ -105,7 +106,7 @@
     try {
       const { code } = await useApi().addCryptoAddress(event.data);
       if (code === 200) {
-        toast.add({ title: '通知', description: '加密貨幣錢包新增成功' });
+        toast.add({ title: t('common.notify'), description: t('crypto.addSuccess') });
         onSuccess();
       }
     } catch {

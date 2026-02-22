@@ -4,7 +4,7 @@
     <ClientOnly>
       <UContentSearchButton
         :collapsed="false"
-        :label="'快速查詢遊戲'"
+        :label="$t('game.quickSearch')"
         :kbds="['shift', 's']"
         :ui="{
           base: [

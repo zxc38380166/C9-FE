@@ -8,8 +8,8 @@
         <Icon name="i-lucide-receipt-text" class="size-4 sm:size-5 text-emerald-400" />
       </div>
       <div>
-        <div class="text-[18px] sm:text-[22px] font-bold text-white tracking-wide">交易紀錄</div>
-        <div class="text-[11px] sm:text-[12px] text-white/40">查看您的所有交易明細</div>
+        <div class="text-[18px] sm:text-[22px] font-bold text-white tracking-wide">{{ $t('transaction.title') }}</div>
+        <div class="text-[11px] sm:text-[12px] text-white/40">{{ $t('transaction.subtitle') }}</div>
       </div>
     </div>
 
@@ -41,13 +41,15 @@
   </div>
 </template>
 <script setup lang="ts">
+  const { t } = useI18n();
+
   type TabValue = 'deposit' | 'withdrawal' | 'dividend' | 'promo';
 
-  const tabs: Array<{ label: string; value: TabValue; icon: string }> = [
-    { label: '存款', value: 'deposit', icon: 'i-lucide-download' },
-    { label: '提款', value: 'withdrawal', icon: 'i-lucide-upload' },
-    { label: '紅利', value: 'dividend', icon: 'i-lucide-percent' },
-    { label: '優惠', value: 'promo', icon: 'i-lucide-party-popper' },
-  ];
+  const tabs = computed<Array<{ label: string; value: TabValue; icon: string }>>(() => [
+    { label: t('transaction.deposit'), value: 'deposit', icon: 'i-lucide-download' },
+    { label: t('transaction.withdrawal'), value: 'withdrawal', icon: 'i-lucide-upload' },
+    { label: t('transaction.dividend'), value: 'dividend', icon: 'i-lucide-percent' },
+    { label: t('transaction.promo'), value: 'promo', icon: 'i-lucide-party-popper' },
+  ]);
   const activeTab = ref<TabValue>('deposit');
 </script>

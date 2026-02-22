@@ -11,8 +11,8 @@
             <span class="i-material-symbols:dashboard text-[20px] text-white/80" />
           </div>
           <div class="space-y-0.5">
-            <div class="text-white font-semibold tracking-wide text-[14px]">遊戲廠商</div>
-            <div class="text-white/55 text-[12px]">合作供應商 Logo 牆</div>
+            <div class="text-white font-semibold tracking-wide text-[14px]">{{ $t('game.provider') }}</div>
+            <div class="text-white/55 text-[12px]">{{ $t('game.providerDesc') }}</div>
           </div>
         </div>
       </div>

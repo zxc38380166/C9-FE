@@ -3,7 +3,7 @@
     <div class="flex items-center justify-between px-1">
       <div class="flex items-center gap-2">
         <Icon name="noto:party-popper" class="text-[20px] sm:text-[24px]" />
-        <span class="text-[16px] sm:text-[20px] font-bold text-white">精選活動</span>
+        <span class="text-[16px] sm:text-[20px] font-bold text-white">{{ $t('promo.featured') }}</span>
         <UBadge color="error" variant="subtle" size="xs" class="ml-1">HOT</UBadge>
       </div>
       <div class="flex items-center gap-1.5">
@@ -62,7 +62,7 @@
                 color="success"
                 variant="solid"
                 size="xs">
-                可領取
+                {{ $t('promo.claimable') }}
               </UBadge>
             </div>
             <div class="text-[13px] sm:text-[15px] font-bold text-white leading-tight">
@@ -76,7 +76,7 @@
     <!-- Empty state -->
     <div v-else class="flex flex-col items-center justify-center py-10 text-white/40">
       <Icon name="i-lucide-party-popper" class="size-10 mb-2" />
-      <span class="text-[14px]">暫無活動</span>
+      <span class="text-[14px]">{{ $t('promo.noPromo') }}</span>
     </div>
 
     <!-- 頁碼指示器 -->

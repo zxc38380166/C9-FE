@@ -7,7 +7,7 @@
           class="size-7 sm:size-8 rounded-[8px] sm:rounded-[10px] bg-emerald-500/15 ring-1 ring-emerald-500/25 flex items-center justify-center">
           <Icon name="i-lucide-arrow-down-to-line" class="size-3.5 sm:size-4 text-emerald-400" />
         </div>
-        <div class="text-[16px] sm:text-[18px] font-bold text-white">存款紀錄</div>
+        <div class="text-[16px] sm:text-[18px] font-bold text-white">{{ $t('transaction.depositRecord') }}</div>
       </div>
       <div class="flex items-center gap-2">
         <USelectMenu
@@ -40,7 +40,7 @@
           class="size-12 rounded-full bg-emerald-500/10 ring-1 ring-emerald-500/20 flex items-center justify-center">
           <Icon name="i-lucide-loader-2" class="size-6 text-emerald-400 animate-spin" />
         </div>
-        <div class="text-[13px] text-white/40">載入中...</div>
+        <div class="text-[13px] text-white/40">{{ $t('common.loading') }}</div>
       </div>
     </template>
 
@@ -52,8 +52,8 @@
           <Icon name="i-lucide-inbox" class="size-8 text-white/20" />
         </div>
         <div class="text-center">
-          <div class="text-[15px] font-medium text-white/50">暫無存款紀錄</div>
-          <div class="text-[12px] text-white/30 mt-1">完成存款後紀錄將顯示於此</div>
+          <div class="text-[15px] font-medium text-white/50">{{ $t('transaction.noRecord') }}</div>
+          <div class="text-[12px] text-white/30 mt-1">{{ $t('transaction.noRecordHint') }}</div>
         </div>
       </div>
     </template>
@@ -79,8 +79,7 @@
         v-if="pagination.totalPages > 1"
         class="flex flex-col sm:flex-row items-center sm:justify-between gap-2 pt-1">
         <div class="text-[11px] sm:text-[12px] text-white/35 tabular-nums">
-          共 <span class="text-white/60 font-medium">{{ pagination.total }}</span> 筆，第
-          {{ pagination.page }} / {{ pagination.totalPages }} 頁
+          {{ $t('transaction.paginationInfo', { total: pagination.total, page: pagination.page, totalPages: pagination.totalPages }) }}
         </div>
         <UPagination
           :model-value="pagination.page"
@@ -96,6 +95,8 @@
 <script setup lang="ts">
   import type { TableColumn } from '@nuxt/ui';
   import { UBadge } from '#components';
+
+  const { t } = useI18n();
 
   // ==================== Types ====================
 
@@ -117,29 +118,28 @@
 
   // ==================== Constants ====================
 
-  const STATUS_MAP: Record<
-    string,
-    { label: string; color: 'warning' | 'info' | 'success' | 'error' }
-  > = {
-    pending: { label: '待處理', color: 'warning' },
-    created: { label: '已建立', color: 'info' },
-    paid: { label: '已完成', color: 'success' },
-    failed: { label: '失敗', color: 'error' },
-  };
+  const STATUS_MAP = computed<
+    Record<string, { label: string; color: 'warning' | 'info' | 'success' | 'error' }>
+  >(() => ({
+    pending: { label: t('transaction.status.pending'), color: 'warning' },
+    created: { label: t('transaction.status.created'), color: 'info' },
+    paid: { label: t('transaction.status.paid'), color: 'success' },
+    failed: { label: t('transaction.status.failed'), color: 'error' },
+  }));
 
-  const PAYMENT_METHOD_MAP: Record<string, string> = {
-    fiat: '法幣',
-    credit: '信用卡',
-    crypto: '虛擬貨幣',
-  };
+  const PAYMENT_METHOD_MAP = computed<Record<string, string>>(() => ({
+    fiat: t('deposit.fiat'),
+    credit: t('deposit.credit'),
+    crypto: t('deposit.crypto'),
+  }));
 
-  const statusOptions = [
-    { label: '全部狀態', value: '' },
-    { label: '待處理', value: 'pending' },
-    { label: '已建立', value: 'created' },
-    { label: '已完成', value: 'paid' },
-    { label: '失敗', value: 'failed' },
-  ];
+  const statusOptions = computed(() => [
+    { label: t('transaction.allStatus'), value: '' },
+    { label: t('transaction.status.pending'), value: 'pending' },
+    { label: t('transaction.status.created'), value: 'created' },
+    { label: t('transaction.status.paid'), value: 'paid' },
+    { label: t('transaction.status.failed'), value: 'failed' },
+  ]);
 
   // ==================== State ====================
 
@@ -163,45 +163,45 @@
 
   const formatDate = (v: string) => (formatDateTime(v) === '-' ? '—' : formatDateTime(v));
 
-  const columns: TableColumn<DepositOrder>[] = [
+  const columns = computed<TableColumn<DepositOrder>[]>(() => [
     {
       accessorKey: 'subOrder',
-      header: '訂單編號',
+      header: t('transaction.orderNumber'),
       meta: { class: { th: 'text-center', td: 'text-center font-mono text-[12px] text-white/60' } },
     },
     {
       accessorKey: 'paymentMethod',
-      header: '支付方式',
+      header: t('transaction.paymentMethod'),
       meta: { class: { th: 'text-center', td: 'text-center' } },
       cell: ({ row }) => {
         const method = row.getValue('paymentMethod') as string;
         return h(
           UBadge,
           { variant: 'subtle', color: 'neutral' },
-          () => PAYMENT_METHOD_MAP[method] || method,
+          () => PAYMENT_METHOD_MAP.value[method] || method,
         );
       },
     },
     {
       accessorKey: 'currency',
-      header: '幣別',
+      header: t('transaction.currency'),
       meta: { class: { th: 'text-center', td: 'text-center font-semibold' } },
     },
     {
       accessorKey: 'orderAmount',
-      header: '訂單金額',
+      header: t('transaction.orderAmount'),
       meta: { class: { th: 'text-center', td: 'text-center tabular-nums' } },
       cell: ({ row }) => formatAmount(row.getValue('orderAmount')),
     },
     {
       accessorKey: 'payAmount',
-      header: '實付金額',
+      header: t('transaction.payAmount'),
       meta: { class: { th: 'text-center', td: 'text-center tabular-nums' } },
       cell: ({ row }) => formatAmount(row.getValue('payAmount')),
     },
     {
       accessorKey: 'usdAmount',
-      header: 'USD 金額',
+      header: 'USD',
       meta: {
         class: { th: 'text-center', td: 'text-center tabular-nums text-amber-400 font-medium' },
       },
@@ -209,10 +209,10 @@
     },
     {
       accessorKey: 'status',
-      header: '狀態',
+      header: t('transaction.statusLabel'),
       meta: { class: { th: 'text-center', td: 'text-center' } },
       cell: ({ row }) => {
-        const s = STATUS_MAP[row.getValue('status') as string] ?? {
+        const s = STATUS_MAP.value[row.getValue('status') as string] ?? {
           label: row.getValue('status'),
           color: 'neutral' as const,
         };
@@ -221,13 +221,13 @@
     },
     {
       accessorKey: 'createdAt',
-      header: '建立時間',
+      header: t('transaction.createdAt'),
       meta: {
         class: { th: 'text-center', td: 'text-center text-white/50 text-[12px] tabular-nums' },
       },
       cell: ({ row }) => formatDate(row.getValue('createdAt') as string),
     },
-  ];
+  ]);
 
   // ==================== Fetch ====================
 

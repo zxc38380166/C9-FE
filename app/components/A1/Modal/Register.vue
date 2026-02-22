@@ -2,13 +2,13 @@
   <UModal
     v-model:open="open"
     close-icon="i-lucide-arrow-right"
-    title="登入"
+    :title="$t('auth.login')"
     :ui="{ title: 'text-[20px]' }">
     <button
       v-if="showBtn"
       class="group flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[13px] sm:text-[14px] font-bold text-white bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 shadow-[0_0_16px_-2px_rgba(16,185,129,0.4)] hover:shadow-[0_0_24px_-2px_rgba(16,185,129,0.5)] transition-all duration-200 cursor-pointer">
       <Icon name="i-lucide-user-plus" class="size-3.5 sm:size-4" />
-      註冊
+      {{ $t('auth.register') }}
     </button>
     <template #body>
       <UStepper
@@ -25,22 +25,22 @@
           icon: '!text-[white]',
         }" />
       <div v-if="currentStep === 0" class="pt-10">
-        <div class="text-xl font-extrabold tracking-wide">选择您的首选语言</div>
+        <div class="text-xl font-extrabold tracking-wide">{{ $t('auth.selectLang') }}</div>
         <div class="text-sm text-white/70 leading-relaxed pb-6">
-          我们支持多种语言。请通过以下选项在网站上个性化您的语言。
+          {{ $t('auth.selectLangDesc') }}
         </div>
         <ULocaleSelect size="xl" v-model="locale" :locales="[en, zh_tw]" />
         <button
           @click="toggleStepper('next')"
           class="mt-8 h-11 w-full rounded-xl font-bold tracking-wide transition disabled:opacity-70 disabled:cursor-not-allowed bg-linear-to-b from-[#77cbac] to-[#1a6b52] text-white hover:brightness-110 active:brightness-95">
-          確認
+          {{ $t('common.confirm') }}
         </button>
         <div class="pt-1 mt-3 flex items-center justify-center gap-2">
-          <span class="text-sm text-white/55">已有账户？</span>
+          <span class="text-sm text-white/55">{{ $t('auth.hasAccount') }}</span>
           <button
             type="button"
             class="text-sm font-semibold text-white/90 hover:underline underline-offset-2 disabled:opacity-70 disabled:cursor-not-allowed">
-            登录
+            {{ $t('auth.login') }}
           </button>
         </div>
       </div>
@@ -49,7 +49,7 @@
           ref="UAuthFormRef"
           :validate-on="[]"
           :schema
-          description="請輸入您的帳號資訊以存取您的帳戶。"
+          :description="$t('auth.loginDesc')"
           icon="i-lucide-user"
           :fields
           :providers
@@ -58,7 +58,7 @@
             <button
               type="submit"
               class="h-11 w-full rounded-xl font-bold tracking-wide transition disabled:opacity-70 disabled:cursor-not-allowed bg-linear-to-b from-[#77cbac] to-[#1a6b52] text-white hover:brightness-110 active:brightness-95">
-              確認
+              {{ $t('common.confirm') }}
             </button>
           </template>
         </UAuthForm>
@@ -71,16 +71,16 @@
               class="h-16 w-16 rounded-full bg-linear-to-b from-[#77cbac] to-[#1a6b52] flex items-center justify-center shadow-lg">
               <Icon name="i-lucide-check" class="text-white text-3xl" />
             </div>
-            <div class="mt-5 text-2xl font-extrabold tracking-wide text-white">註冊成功！</div>
+            <div class="mt-5 text-2xl font-extrabold tracking-wide text-white">{{ $t('auth.registerSuccessTitle') }}</div>
             <div class="mt-2 text-sm text-white/70 leading-relaxed">
-              歡迎加入，我們已為你完成帳號建立。<br />
+              {{ $t('auth.registerWelcome') }}<br />
             </div>
             <div class="mt-6 w-full space-y-3">
               <button
                 type="button"
                 @click="closeModal"
                 class="h-11 w-full rounded-xl font-bold tracking-wide transition bg-linear-to-b from-[#77cbac] to-[#1a6b52] text-white hover:brightness-110 active:brightness-95">
-                立即開始
+                {{ $t('auth.startNow') }}
               </button>
             </div>
           </div>
@@ -97,6 +97,7 @@
 
   const { showBtn = true } = defineProps<{ showBtn?: boolean }>();
 
+  const { t } = useI18n();
   const toast = useToast();
   const { setToken, refreshUserData } = useAuth();
 
@@ -109,17 +110,17 @@
   const currentStep = ref(0);
   const stepperItem: Ref<StepperItem[]> = ref([
     {
-      title: '客製化您的喜好',
+      title: t('auth.step1'),
       description: '',
       icon: 'i-material-icon-theme:folder-i18n',
     },
     {
-      title: '輸入您的資料',
+      title: t('auth.step2'),
       description: '',
       icon: 'i-material-symbols:article-person-rounded',
     },
     {
-      title: '確認送出資料',
+      title: t('auth.step3'),
       description: '',
       icon: 'i-material-symbols:check-circle-rounded',
     },
@@ -141,7 +142,7 @@
     {
       name: 'account',
       type: 'text',
-      label: '帳號',
+      label: t('auth.account'),
       placeholder: 'Enter your account',
       required: true,
     },
@@ -189,7 +190,7 @@
       .then(async (res) => {
         if (res.code === 200) {
           toggleStepper('next');
-          toast.add({ title: '通知', description: '註冊成功' });
+          toast.add({ title: t('common.notify'), description: t('auth.registerSuccess') });
           await setToken(res.result.token);
           await refreshUserData();
         }

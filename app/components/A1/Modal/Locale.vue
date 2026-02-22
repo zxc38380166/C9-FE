@@ -17,17 +17,17 @@
             <Icon name="i-lucide-languages" class="text-emerald-300/90 text-[18px]" />
           </div>
           <div class="space-y-1">
-            <div class="text-[18px] font-semibold tracking-tight">根據你喜好的語言來顯示</div>
+            <div class="text-[18px] font-semibold tracking-tight">{{ $t('locale.title') }}</div>
             <div class="flex items-center gap-2 text-sm text-white/60">
               <UBadge
                 size="sm"
                 color="neutral"
                 variant="soft"
                 class="rounded-full ring-1 ring-white/10">
-                <span class="mr-1">目前：</span>
+                <span class="mr-1">{{ $t('locale.current') }}</span>
                 <span class="font-medium text-white/80">{{ locale }}</span>
               </UBadge>
-              <span class="hidden sm:inline">｜快捷鍵：</span>
+              <span class="hidden sm:inline">｜{{ $t('locale.shortcut') }}</span>
               <div class="flex items-center gap-1">
                 <UKbd>Shift</UKbd>
                 <span class="text-white/40">+</span>
@@ -55,7 +55,7 @@
       <div class="space-y-4">
         <div
           class="rounded-2xl px-4 py-3 text-sm text-white/60 bg-white/5 ring-1 ring-white/10 backdrop-blur">
-          切換語言後，介面會立即套用。若你有多語系內容，可在此快速切換。
+          {{ $t('locale.hint') }}
         </div>
         <URadioGroup
           v-model="locale"
@@ -97,7 +97,7 @@
                 color="primary"
                 variant="soft"
                 class="rounded-full ring-1 ring-white/10">
-                使用中
+                {{ $t('common.inUse') }}
               </UBadge>
             </div>
           </template>
@@ -109,7 +109,7 @@
             class="rounded-xl"
             icon="i-lucide-undo-2"
             @click="resetToCurrentLocale">
-            還原
+            {{ $t('common.reset') }}
           </UButton>
           <UButton
             color="primary"
@@ -117,7 +117,7 @@
             class="rounded-xl shadow-[0_18px_40px_-28px_rgba(0,0,0,0.9)]"
             icon="i-lucide-check"
             @click="open = false">
-            完成
+            {{ $t('common.done') }}
           </UButton>
         </div>
       </div>
@@ -158,8 +158,8 @@
     i18n.setLocale(newValue);
     resetLocale.value = oldValue;
     toast.add({
-      title: '語言已切換',
-      description: `已切換至 ${newValue}`,
+      title: i18n.t('locale.switched'),
+      description: i18n.t('locale.switchedTo', { locale: newValue }),
       icon: 'i-lucide-languages',
       color: 'primary',
     });

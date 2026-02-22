@@ -1,7 +1,7 @@
 <template>
   <div class="w-full space-y-4">
     <div class="flex items-center justify-between gap-2">
-      <div class="text-[16px] sm:text-[20px] font-bold text-white">我的銀行卡</div>
+      <div class="text-[16px] sm:text-[20px] font-bold text-white">{{ $t('bankCard.myBankCards') }}</div>
       <UButton
         size="xs"
         icon="i-lucide-plus"
@@ -10,8 +10,8 @@
           base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
         }"
         @click="openAddBankCard">
-        <span class="hidden sm:inline">新增銀行卡</span>
-        <span class="sm:hidden">新增</span>
+        <span class="hidden sm:inline">{{ $t('bankCard.addBankCard') }}</span>
+        <span class="sm:hidden">{{ $t('common.add') }}</span>
       </UButton>
     </div>
     <USeparator />
@@ -20,9 +20,9 @@
     <template v-if="!bankCards.length">
       <div class="flex flex-col items-center justify-center py-12 space-y-3">
         <Icon name="i-lucide-landmark" class="text-[48px] text-white/20" />
-        <div class="text-[14px] text-white/40">尚未綁定銀行卡</div>
+        <div class="text-[14px] text-white/40">{{ $t('bankCard.noBankCards') }}</div>
         <UButton size="xs" variant="soft" class="cursor-pointer" @click="openAddBankCard">
-          立即新增
+          {{ $t('common.addNow') }}
         </UButton>
       </div>
     </template>
@@ -52,6 +52,7 @@
     UBadge,
   } from '#components';
 
+  const { t } = useI18n();
   const toast = useToast();
   const overlay = useOverlay();
   const { STATUS_MAP } = utsBankCard();
@@ -100,20 +101,20 @@
   const bankCardColumns: TableColumn<BankCard>[] = [
     {
       accessorKey: 'bankCode',
-      header: '銀行',
+      header: t('bankCard.bank'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
       cell: ({ row }) =>
         bankNameMap.value[row.getValue('bankCode') as string] || row.getValue('bankCode'),
     },
     {
       accessorKey: 'bankAccount',
-      header: '帳號',
+      header: t('bankCard.account'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
       cell: ({ row }) => maskAccount(row.getValue('bankAccount') as string),
     },
     {
       accessorKey: 'branch',
-      header: '分行',
+      header: t('bankCard.branch'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
       cell: ({ row }) =>
         branchNameMap.value[row.original.bankCode]?.[row.getValue('branch') as string] ||
@@ -121,12 +122,12 @@
     },
     {
       accessorKey: 'holderName',
-      header: '姓名',
+      header: t('bankCard.name'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
     },
     {
       accessorKey: 'status',
-      header: '狀態',
+      header: t('bankCard.statusLabel'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center w-1/6' } },
       cell: ({ row }) => {
         const s = STATUS_MAP[row.getValue('status') as number] ?? STATUS_MAP[0]!;
@@ -135,7 +136,7 @@
     },
     {
       id: 'actions',
-      header: '操作',
+      header: t('bankCard.actions'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center w-1/6' } },
       cell: ({ row }) =>
         h('div', { class: 'flex items-center justify-center gap-1.5' }, [
@@ -148,7 +149,7 @@
               class: 'cursor-pointer',
               onClick: () => openBankCardDetail(row.original),
             },
-            () => '詳情',
+            () => t('common.detail'),
           ),
           h(
             UButton,
@@ -160,7 +161,7 @@
               class: 'cursor-pointer',
               onClick: () => onDeleteBankCard(row.original.id),
             },
-            () => '刪除',
+            () => t('common.delete'),
           ),
         ]),
     },
@@ -177,7 +178,7 @@
     try {
       const { code } = await useApi().deleteBankCard(id);
       if (code === 200) {
-        toast.add({ title: '通知', description: '銀行卡已刪除' });
+        toast.add({ title: t('common.notify'), description: t('bankCard.deleted') });
         bankCards.value = bankCards.value.filter((c) => c.id !== id);
       }
     } catch {}
@@ -186,9 +187,9 @@
   const onDeleteBankCard = (id: number) => {
     const modal = overlay.create(CommonConfirmDialog, {
       props: {
-        title: '刪除銀行卡',
-        description: '確定要刪除此銀行卡嗎？此操作無法復原。',
-        confirmLabel: '確認刪除',
+        title: t('bankCard.deleteTitle'),
+        description: t('bankCard.deleteDesc'),
+        confirmLabel: t('bankCard.confirmDelete'),
         confirmColor: 'error',
         onSuccess: () => doDeleteBankCard(id),
       },

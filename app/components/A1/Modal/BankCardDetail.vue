@@ -1,10 +1,10 @@
 <template>
-  <UModal title="銀行卡審核詳情" :ui="{ title: 'text-[20px]' }">
+  <UModal :title="$t('bankCard.detailTitle')" :ui="{ title: 'text-[20px]' }">
     <template #body>
       <div class="space-y-4">
         <!-- 狀態 -->
         <div class="flex items-center justify-between">
-          <span class="text-[14px] text-white/60">審核狀態</span>
+          <span class="text-[14px] text-white/60">{{ $t('bankCard.reviewStatus') }}</span>
           <UBadge v-if="statusConfig?.color" :color="statusConfig.color" variant="subtle">
             {{ statusConfig?.label || '' }}
           </UBadge>
@@ -25,7 +25,7 @@
 
         <!-- 上傳圖片 -->
         <div class="space-y-3">
-          <div class="text-[14px] font-bold text-white">上傳文件</div>
+          <div class="text-[14px] font-bold text-white">{{ $t('common.uploadedFiles') }}</div>
           <div v-for="img in imageFields" :key="img.key" class="space-y-1.5">
             <div class="text-[13px] text-white/60">{{ img.label }}</div>
             <div
@@ -40,7 +40,7 @@
                 crossorigin="anonymous" />
               <div v-else class="flex flex-col items-center gap-1 py-4">
                 <Icon name="i-lucide-image-off" class="text-[20px] text-white/20" />
-                <span class="text-[12px] text-white/40">未上傳</span>
+                <span class="text-[12px] text-white/40">{{ $t('common.notUploaded') }}</span>
               </div>
             </div>
           </div>
@@ -49,7 +49,7 @@
 
         <!-- 時間 -->
         <div class="flex items-center justify-between text-[13px] text-white/40">
-          <span>建立時間</span>
+          <span>{{ $t('common.createdAt') }}</span>
           <span>{{ formatDateTime(card.createdAt) }}</span>
         </div>
       </div>
@@ -57,6 +57,7 @@
   </UModal>
 </template>
 <script setup lang="ts">
+  const { t } = useI18n();
   const { formatDateTime } = utsFormat();
   const { STATUS_MAP } = utsBankCard();
 
@@ -99,16 +100,16 @@
   });
 
   const infoFields = computed(() => [
-    { label: '銀行', value: bankLabel.value },
-    { label: '銀行帳號', value: card.bankAccount },
-    { label: '分行', value: branchLabel.value },
-    { label: '持卡人姓名', value: card.holderName },
+    { label: t('bankCard.bank'), value: bankLabel.value },
+    { label: t('bankCard.bankAccount'), value: card.bankAccount },
+    { label: t('bankCard.branch'), value: branchLabel.value },
+    { label: t('bankCard.holderName'), value: card.holderName },
   ]);
 
   const imageFields = computed(() => [
-    { key: 'idCardFront', label: '身分證正面', url: card.idCardFront },
-    { key: 'idCardBack', label: '身分證反面', url: card.idCardBack },
-    { key: 'passbookCover', label: '銀行存摺封面', url: card.passbookCover },
+    { key: 'idCardFront', label: t('bankCard.idCardFront'), url: card.idCardFront },
+    { key: 'idCardBack', label: t('bankCard.idCardBack'), url: card.idCardBack },
+    { key: 'passbookCover', label: t('bankCard.passbookCover'), url: card.passbookCover },
   ]);
 
   const openImage = (url: string) => {

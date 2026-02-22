@@ -12,7 +12,7 @@
         :ui="{ body: 'w-full', header: 'w-full space-y-4' }"
         description="Nuxt UI integrates with latest Tailwind CSS, bringing significant improvements.">
         <template #header>
-          <div class="text-[20px] font-bold">個人資料</div>
+          <div class="text-[20px] font-bold">{{ $t('setting.profile') }}</div>
           <USeparator />
         </template>
         <template #title>
@@ -21,19 +21,19 @@
             <UUser
               :name="store.getUserDetail?.name"
               :ui="{ description: 'text-[14px] sm:text-[16px] text-white' }"
-              :description="`帳號 : ${store.getUserDetail?.account}`"
+              :description="`${$t('setting.accountLabel')} : ${store.getUserDetail?.account}`"
               :avatar="{
                 src: 'https://github.com/benjamincanac.png',
                 icon: 'i-lucide-image',
                 class: 'size-10 sm:size-[50px]',
               }" />
-            <UButton size="sm" class="cursor-pointer">編輯頭像</UButton>
+            <UButton size="sm" class="cursor-pointer">{{ $t('setting.editAvatar') }}</UButton>
           </div>
         </template>
       </UPageCard>
       <UPageCard class="w-full" :ui="{ body: 'w-full', header: 'w-full space-y-4' }">
         <template #header>
-          <div class="text-[20px] font-bold">聯絡資訊</div>
+          <div class="text-[20px] font-bold">{{ $t('setting.contact') }}</div>
           <USeparator />
         </template>
         <template #title>
@@ -77,7 +77,7 @@
                 <div class="flex items-center">
                   <template v-if="isVerify[field.name]">
                     <Icon :name="'icon-park:success'" class="text-[24px] text-[red]" />
-                    <span class="text-[14px] text-white/50"> 已驗證 </span>
+                    <span class="text-[14px] text-white/50"> {{ $t('common.verified') }} </span>
                   </template>
                   <template v-else>
                     <UButton
@@ -86,7 +86,7 @@
                       class="cursor-pointer"
                       loading-auto
                       @click="onVerify(field.name)">
-                      立即驗證
+                      {{ $t('common.verifyNow') }}
                     </UButton>
                   </template>
                 </div>
@@ -97,7 +97,7 @@
       </UPageCard>
       <UPageCard class="w-full" :ui="{ body: 'w-full', header: 'w-full space-y-4' }">
         <template #header>
-          <div class="text-[20px] font-bold">帳戶連結</div>
+          <div class="text-[20px] font-bold">{{ $t('setting.accountLink') }}</div>
           <USeparator />
         </template>
         <template #title>
@@ -126,7 +126,7 @@
                           : 'file-icons:binder'
                       "
                       class="font-bold rounded-full">
-                      {{ isVerify[field.name] ? '斷開' : '綁定' }}
+                      {{ isVerify[field.name] ? $t('common.unbind') : $t('common.bind') }}
                     </UButton>
                   </template>
                 </UInput>
@@ -137,24 +137,24 @@
       </UPageCard>
       <UPageCard class="w-full" :ui="{ body: ' w-full', header: 'w-full space-y-4' }">
         <template #header>
-          <div class="text-[20px] font-bold">隱私管理</div>
+          <div class="text-[20px] font-bold">{{ $t('setting.privacy') }}</div>
           <USeparator />
         </template>
         <template #title>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
-            <UPageCard title="變更密碼" description="定期變更密碼，以保持密碼的唯一性和安全性。">
+            <UPageCard :title="$t('setting.changePassword')" :description="$t('setting.changePasswordDesc')">
               <template #leading>
                 <div class="flex">
                   <Icon name="icon-park:exchange-three" size="40px" />
                 </div>
               </template>
               <template #footer>
-                <UButton @click="modals.editPassword.open()" class="w-full">變更密碼</UButton>
+                <UButton @click="modals.editPassword.open()" class="w-full">{{ $t('setting.changePassword') }}</UButton>
               </template>
             </UPageCard>
             <UPageCard
-              title="雙因素認證"
-              description="啟用雙重因素保護您的帳戶，防止未經授權的存取。"
+              :title="$t('setting.twoFactor')"
+              :description="$t('setting.twoFactorDesc')"
               icon="i-simple-icons-tailwindcss">
               <template #leading>
                 <div class="flex">
@@ -166,7 +166,7 @@
                   :disabled="store.getUserDetail.googleAuthEnabled"
                   @click="modals.googleAuth.open()"
                   class="w-full">
-                  {{ store.getUserDetail.googleAuthEnabled ? '已啟用' : '啟用 2FA' }}
+                  {{ store.getUserDetail.googleAuthEnabled ? $t('auth.enabled') : $t('auth.enable2FA') }}
                 </UButton>
               </template>
             </UPageCard>
@@ -178,11 +178,11 @@
         class="w-full space-y-4 pb-4 bg-slate-900 rounded-lg">
         <div
           class="flex flex-col sm:flex-row sm:justify-between gap-2 px-3 sm:px-4 py-3 sm:py-3.5 border-b border-accented">
-          <div class="text-[16px] sm:text-[20px] px-0 sm:px-2 font-bold">登入位置 (最近20筆)</div>
+          <div class="text-[16px] sm:text-[20px] px-0 sm:px-2 font-bold">{{ $t('setting.loginLocations') }}</div>
           <UInput
             v-model="globalFilter"
             class="w-full sm:max-w-sm sm:w-[50%]"
-            placeholder="查詢裝置、IP 或動作紀錄" />
+            :placeholder="$t('setting.searchPlaceholder')" />
         </div>
         <div class="overflow-x-auto scrollbar-hide">
           <UTable
@@ -220,6 +220,8 @@
     A1ModalEditPassword,
   } from '#components';
 
+  const { t } = useI18n();
+
   useApi()
     .getUserDetailCsr({ RELATED: ['LOGIN_LOG'] })
     .then((res) => store.setUserDetail(res.result));
@@ -232,8 +234,8 @@
 
   const schema = z.object({
     country: z.object({ label: z.string(), icon: z.string() }),
-    email: z.string().min(3).email('信箱格式錯誤'),
-    mobile: z.string('請輸入電話').regex(/^\d+$/, '手機號碼只能輸入數字'),
+    email: z.string().min(3).email(t('validation.emailFormat')),
+    mobile: z.string(t('validation.enterPhone')).regex(/^\d+$/, t('validation.phoneDigitOnly')),
     telegram: z.string().nullable(),
     google: z.string().nullable(),
   });
@@ -241,7 +243,7 @@
   type Schema = z.output<typeof schema>;
 
   const state = reactive<Partial<Schema>>({
-    country: { label: '886-台灣', icon: 'cif:tw' },
+    country: { label: t('setting.countryTaiwan'), icon: 'cif:tw' },
     email: store.getUserDetail?.email,
     mobile: store.getUserDetail?.mobile,
     telegram: store.getUserDetail?.telegram,
@@ -262,14 +264,14 @@
     {
       name: 'email',
       type: 'email',
-      label: '電子信箱驗證',
-      placeholder: '尚未綁定',
+      label: t('setting.emailVerify'),
+      placeholder: t('common.notBound'),
     },
     {
       name: 'mobile',
       type: 'mobile',
-      label: '電話驗證',
-      placeholder: '尚未綁定',
+      label: t('setting.phoneVerify'),
+      placeholder: t('common.notBound'),
     },
   ] as const;
 
@@ -279,14 +281,14 @@
       type: 'text',
       label: 'Telegram',
       icon: 'logos:telegram',
-      placeholder: '尚未綁定',
+      placeholder: t('common.notBound'),
     },
     {
       name: 'google',
       type: 'text',
       label: 'Google',
       icon: 'devicon:google',
-      placeholder: '尚未綁定',
+      placeholder: t('common.notBound'),
     },
   ] as const;
 
@@ -384,12 +386,12 @@
   const columns: TableColumn<LoginLog>[] = [
     {
       accessorKey: 'ip',
-      header: 'IP地址',
+      header: t('setting.ipAddress'),
       meta: { class: { th: 'text-center w-1/4', td: 'text-center font-medium w-1/4' } },
     },
     {
       accessorKey: 'device',
-      header: '裝置',
+      header: t('setting.device'),
       meta: { class: { th: 'text-center w-1/4', td: 'text-center font-medium w-1/4' } },
       cell: ({ row }) => {
         const device = String(row.getValue('device') ?? '');
@@ -402,7 +404,7 @@
     },
     {
       accessorKey: 'lastUse',
-      header: '最後使用',
+      header: t('setting.lastUsed'),
       meta: { class: { th: 'text-center w-1/4', td: 'text-center font-medium w-1/4' } },
       cell: ({ row }) => {
         const s = moment(row.getValue('lastUse')).tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss');
@@ -415,7 +417,7 @@
     },
     {
       accessorKey: 'action',
-      header: '動作',
+      header: t('setting.action'),
       meta: { class: { th: 'text-center w-1/4', td: 'text-center font-medium w-1/4' } },
       cell: ({ row }) => {
         const color = {

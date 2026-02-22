@@ -110,6 +110,7 @@ let bankCodeFetched = false;
 // ==================== Composable ====================
 
 export default function () {
+  const { t } = useI18n();
   const toast = useToast();
   const store = useStore();
   const router = useRouter();
@@ -249,9 +250,9 @@ export default function () {
     if (!user?.email || !user?.mobile) {
       const modal = overlay.create(CommonConfirmDialog, {
         props: {
-          title: '請先完成身份驗證',
-          description: '存款前需先綁定手機號碼與電子信箱，請前往帳戶設定完成綁定。',
-          confirmLabel: '前往設定',
+          title: t('deposit.verifyRequired'),
+          description: t('deposit.verifyDesc'),
+          confirmLabel: t('deposit.goSetting'),
           confirmColor: 'primary',
           onSuccess: () => router.push('/user/setting'),
         },
@@ -271,8 +272,8 @@ export default function () {
         channelId: input.channelId,
         paymentMethod: 'fiat',
         orderAmount: input.orderAmount,
-        productDes: '存款',
-        msg: '存款',
+        productDes: t('deposit.title'),
+        msg: t('deposit.title'),
         payerName: input.bankCard.holderName,
         payerMobile: input.mobile,
         payerEmail: input.email,
@@ -284,8 +285,8 @@ export default function () {
         channelId: input.channelId,
         paymentMethod: 'credit',
         orderAmount: input.orderAmount,
-        productDes: '存款',
-        msg: '存款',
+        productDes: t('deposit.title'),
+        msg: t('deposit.title'),
         payerName: input.creditCard.holderName,
         payerMobile: input.mobile,
         payerEmail: input.email,
@@ -297,14 +298,14 @@ export default function () {
         const payload: Record<string, any> = { ...params, subOrder };
         const resp = await useApi().deposit(payload);
 
-        if (resp?.code !== 200) throw new Error(resp?.message || '存款失敗');
+        if (resp?.code !== 200) throw new Error(resp?.message || t('deposit.failed'));
 
         const resultUrl = resp.result?.data?.result_url;
         if (!resultUrl) {
-          throw new Error('未取得付款頁面連結');
+          throw new Error(t('deposit.noPaymentLink'));
         }
 
-        toast.add({ title: '通知', description: '存款訂單建立成功，正在開啟付款頁面…' });
+        toast.add({ title: t('common.notify'), description: t('deposit.orderCreatedFiat') });
         window.open(resultUrl, '_blank');
       },
     },
@@ -321,9 +322,9 @@ export default function () {
         const payload: Record<string, any> = { ...params, subOrder };
         const resp = await useApi().deposit(payload);
 
-        if (resp?.code !== 200) throw new Error(resp?.message || '存款失敗');
+        if (resp?.code !== 200) throw new Error(resp?.message || t('deposit.failed'));
 
-        toast.add({ title: '通知', description: '存款訂單建立成功，請依照繳費資訊完成轉帳' });
+        toast.add({ title: t('common.notify'), description: t('deposit.orderCreatedCrypto') });
         return resp.result as CryptoDepositResult;
       },
     },
@@ -332,14 +333,14 @@ export default function () {
   /** 根據 channel name 取得對應 vendor handler */
   const getVendor = (channelName: string) => {
     const handler = vendor[channelName as keyof typeof vendor];
-    if (!handler) throw new Error(`不支援的支付商: ${channelName}`);
+    if (!handler) throw new Error(`${t('deposit.unsupportedVendor')}: ${channelName}`);
     return handler;
   };
 
   /** 根據 channel id 取得對應 vendor handler */
   const getVendorByChannelId = (channelId: number | string) => {
     const channel = channels.value.find((c) => String(c.id) === String(channelId));
-    if (!channel) throw new Error('找不到對應的支付通道');
+    if (!channel) throw new Error(t('deposit.channelNotFound'));
     return getVendor(channel.name);
   };
 

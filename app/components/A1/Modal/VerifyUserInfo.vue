@@ -1,5 +1,5 @@
 <template>
-  <UModal close-icon="i-lucide-arrow-right" title="輸入 OTP 密碼" :ui="{ title: 'text-[20px]' }">
+  <UModal close-icon="i-lucide-arrow-right" :title="$t('auth.otpTitle')" :ui="{ title: 'text-[20px]' }">
     <template #body>
       <UPageCard class="w-full max-w-md">
         <UAuthForm
@@ -7,7 +7,7 @@
           :schema
           :loading
           :validate-on="['input']"
-          :title="`已發送驗證碼至以下${actionType}: `"
+          :title="$t('auth.otpSentTo', { type: actionType })"
           :description="info"
           icon="material-symbols:key-outline-rounded"
           :fields
@@ -15,7 +15,7 @@
           @submit="onSubmit">
           <template #submit="{ loading }">
             <UButton type="submit" block :loading="loading">
-              {{ loading ? '綁定中…' : '確認綁定' }}
+              {{ loading ? $t('auth.binding') : $t('auth.confirmBind') }}
             </UButton>
           </template>
         </UAuthForm>
@@ -39,6 +39,7 @@
     onSuccess: Function;
   }>();
 
+  const { t } = useI18n();
   const toast = useToast();
   const { refreshUserData } = useAuth();
   const { resendOtp } = useAuth();
@@ -60,7 +61,7 @@
 
   const providers = computed(() => [
     {
-      label: canResend.value ? '重新發送驗證碼' : `倒數 ${format.value} 後才能再次發送`,
+      label: canResend.value ? t('auth.resendOtp') : t('auth.resendCountdown', { time: format.value }),
       icon: 'ic:outline-restart-alt',
       disabled: !canResend.value,
       async onClick() {
@@ -73,8 +74,8 @@
   const schema = z.object({
     otp: z
       .array(z.string())
-      .length(6, '請輸入 6 位數驗證碼')
-      .refine((arr) => arr.every((v) => v !== ''), '請輸入 6 位數驗證碼'),
+      .length(6, t('validation.enterOtp6'))
+      .refine((arr) => arr.every((v) => v !== ''), t('validation.enterOtp6')),
   });
 
   const loading = ref(false);
@@ -89,7 +90,7 @@
         });
 
         if (code === 200) {
-          toast.add({ title: '通知', description: '綁定成功' });
+          toast.add({ title: t('common.notify'), description: t('auth.bindSuccess') });
           await refreshUserData();
           onSuccess();
         }

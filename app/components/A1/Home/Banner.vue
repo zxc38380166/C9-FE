@@ -41,12 +41,12 @@
             <div class="flex items-center justify-between mb-4">
               <h2 class="font-bold text-[22px] sm:text-[26px] text-white flex items-center gap-2">
                 <Icon :name="vipTierIcon" class="text-[24px] sm:text-[28px]" />
-                VIP 進度
+                {{ $t('banner.vipProgress') }}
               </h2>
               <NuxtLink
                 to="/user/vip"
                 class="text-[12px] text-white/40 hover:text-emerald-400 transition-colors flex items-center gap-1">
-                查看詳情
+                {{ $t('banner.viewDetail') }}
                 <Icon name="i-lucide-chevron-right" class="size-3.5" />
               </NuxtLink>
             </div>
@@ -68,7 +68,7 @@
                   </UBadge>
                 </div>
                 <div class="text-[11px] sm:text-[12px] text-white/40">
-                  {{ vipTierLabel }} · 累計存款 ${{ formatVipNumber(vipStatus.currentChip) }}
+                  {{ vipTierLabel }} · {{ $t('banner.totalDeposit') }} ${{ formatVipNumber(vipStatus.currentChip) }}
                 </div>
               </div>
             </div>
@@ -76,7 +76,7 @@
             <!-- 進度條 -->
             <div class="space-y-2 mb-4">
               <div class="flex items-center justify-between text-[11px] sm:text-[12px]">
-                <span class="text-white/40">升級進度</span>
+                <span class="text-white/40">{{ $t('banner.upgradeProgress') }}</span>
                 <span class="font-bold" :class="vipTextClass">{{ vipProgressPercent }}%</span>
               </div>
               <div class="w-full h-2.5 rounded-full bg-white/6 overflow-hidden">
@@ -89,13 +89,13 @@
                 class="flex items-center justify-between text-[10px] sm:text-[11px] text-white/30">
                 <span>${{ formatVipNumber(vipStatus.currentChip) }}</span>
                 <span v-if="vipNextLevel">
-                  下一級: {{ vipNextLevel.name }} (${{
+                  {{ $t('banner.nextLevel') }}: {{ vipNextLevel.name }} (${{
                     formatVipNumber(vipStatus.nextLevelMinChip)
                   }})
                 </span>
                 <span v-else class="flex items-center gap-1">
                   <Icon name="i-lucide-sparkles" class="size-3 text-amber-400" />
-                  已達最高等級
+                  {{ $t('banner.maxLevel') }}
                 </span>
               </div>
             </div>
@@ -103,19 +103,19 @@
             <!-- 快速數據 -->
             <div class="grid grid-cols-3 gap-2">
               <div class="rounded-lg bg-white/5 ring-1 ring-white/6 px-3 py-2.5 text-center">
-                <div class="text-[10px] text-white/35 mb-0.5">當前等級</div>
+                <div class="text-[10px] text-white/35 mb-0.5">{{ $t('banner.currentLevel') }}</div>
                 <div class="text-[14px] sm:text-[15px] font-bold" :class="vipTextClass">
                   {{ vipTierLabel }}
                 </div>
               </div>
               <div class="rounded-lg bg-white/5 ring-1 ring-white/6 px-3 py-2.5 text-center">
-                <div class="text-[10px] text-white/35 mb-0.5">最高返水</div>
+                <div class="text-[10px] text-white/35 mb-0.5">{{ $t('banner.maxRebate') }}</div>
                 <div class="text-[14px] sm:text-[15px] font-bold text-emerald-400">
                   {{ vipMaxRebate }}%
                 </div>
               </div>
               <div class="rounded-lg bg-white/5 ring-1 ring-white/6 px-3 py-2.5 text-center">
-                <div class="text-[10px] text-white/35 mb-0.5">保級門檻</div>
+                <div class="text-[10px] text-white/35 mb-0.5">{{ $t('banner.relegation') }}</div>
                 <div class="text-[14px] sm:text-[15px] font-bold text-rose-400">
                   ${{ formatVipNumber(vipStatus.relegationChip) }}
                 </div>
@@ -128,27 +128,27 @@
             <h2
               class="font-bold text-[22px] sm:text-[26px] text-white mb-3 flex items-center gap-2">
               <Icon name="noto:crown" class="text-[24px]" />
-              VIP 進度
+              {{ $t('banner.vipProgress') }}
             </h2>
-            <div class="text-[13px] text-white/40 mb-4">無法載入 VIP 資料</div>
+            <div class="text-[13px] text-white/40 mb-4">{{ $t('banner.loadFailed') }}</div>
             <button
               class="px-4 py-2 rounded-lg text-[13px] font-medium bg-white/8 hover:bg-white/12 text-white/70 transition-colors cursor-pointer"
               @click="fetchVipData">
-              重新載入
+              {{ $t('banner.reload') }}
             </button>
           </template>
         </template>
         <template v-else>
           <h2 class="text-[30px] leading-[1.15] font-extrabold tracking-wide">
-            世界上最大的在线赌场和体<br />育博彩
+            {{ $t('banner.heroTitle') }}
           </h2>
           <button
             type="button"
             class="mt-6 inline-flex items-center justify-center rounded-xl bg-linear-to-b from-[#77cbac] to-[#1a6b52] px-6 py-3 text-sm font-bold shadow-sm hover:brightness-110 active:brightness-95 transition"
             @click="onRegister">
-            注册
+            {{ $t('banner.register') }}
           </button>
-          <div class="mt-8 text-sm font-semibold text-white/70">通过其他方式注册</div>
+          <div class="mt-8 text-sm font-semibold text-white/70">{{ $t('banner.registerOther') }}</div>
           <div class="mt-3 flex items-center gap-3">
             <button
               v-for="p in providers"
@@ -202,7 +202,7 @@
               <div>
                 <div class="text-[15px] font-bold text-white tracking-wide">{{ item.title }}</div>
                 <div class="text-[11px] text-white/35 group-hover:text-white/50 transition-colors">
-                  進入遊戲大廳
+                  {{ $t('game.enterLobby') }}
                 </div>
               </div>
             </div>
@@ -225,6 +225,7 @@
 <script setup lang="ts">
   import { A1ModalRegister } from '#components';
 
+  const { t } = useI18n();
   const { formatNumber } = utsFormat();
   const { getStyle: getVipStyle, getLabel: getVipLabel } = utsVipTier();
 
@@ -241,7 +242,7 @@
     items = [
       {
         key: 'game',
-        title: '娱乐城',
+        title: t('banner.casino'),
         count: 54617,
         icon: 'twemoji:slot-machine',
         imageUrl:
@@ -250,7 +251,7 @@
       },
       {
         key: 'sport',
-        title: '体育',
+        title: t('banner.sports'),
         count: 9402,
         icon: 'fluent-color:sport-24',
         imageUrl:

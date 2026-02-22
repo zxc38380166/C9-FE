@@ -1,7 +1,7 @@
 <template>
   <div class="w-full space-y-4">
     <div class="flex items-center justify-between gap-2">
-      <div class="text-[16px] sm:text-[20px] font-bold text-white">我的加密貨幣錢包</div>
+      <div class="text-[16px] sm:text-[20px] font-bold text-white">{{ $t('wallet.myCryptoWallet') }}</div>
       <UButton
         size="xs"
         icon="i-lucide-plus"
@@ -10,7 +10,7 @@
           base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
         }"
         @click="openAddCryptoAddress">
-        新增錢包
+        {{ $t('wallet.addWallet') }}
       </UButton>
     </div>
     <USeparator />
@@ -19,9 +19,9 @@
     <template v-if="!cryptoAddresses.length">
       <div class="flex flex-col items-center justify-center py-12 space-y-3">
         <Icon name="i-lucide-wallet" class="text-[48px] text-white/20" />
-        <div class="text-[14px] text-white/40">尚未綁定加密貨幣錢包</div>
+        <div class="text-[14px] text-white/40">{{ $t('wallet.noCryptoWallet') }}</div>
         <UButton size="xs" variant="soft" class="cursor-pointer" @click="openAddCryptoAddress">
-          立即新增
+          {{ $t('common.addNow') }}
         </UButton>
       </div>
     </template>
@@ -51,6 +51,7 @@
     UTooltip,
   } from '#components';
 
+  const { t } = useI18n();
   const toast = useToast();
   const overlay = useOverlay();
   const { STATUS_MAP } = utsBankCard();
@@ -73,25 +74,25 @@
     return addr.slice(0, 6) + '...' + addr.slice(-4);
   };
 
-  const cryptoAddressColumns: TableColumn<CryptoAddress>[] = [
+  const cryptoAddressColumns = computed<TableColumn<CryptoAddress>[]>(() => [
     {
       accessorKey: 'walletName',
-      header: '錢包名稱',
+      header: t('wallet.walletName'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
     },
     {
       accessorKey: 'currency',
-      header: '幣種',
+      header: t('crypto.currency'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
     },
     {
       accessorKey: 'network',
-      header: '網路',
+      header: t('crypto.network'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
     },
     {
       accessorKey: 'address',
-      header: '地址',
+      header: t('crypto.address'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
       cell: ({ row }) => {
         const addr = row.getValue('address') as string;
@@ -103,7 +104,7 @@
     },
     {
       accessorKey: 'status',
-      header: '狀態',
+      header: t('common.status'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center w-1/6' } },
       cell: ({ row }) => {
         const s = STATUS_MAP[row.getValue('status') as number] ?? STATUS_MAP[0]!;
@@ -112,23 +113,12 @@
     },
     {
       id: 'actions',
-      header: '操作',
+      header: t('common.actions'),
       meta: { class: { th: 'text-center w-1/6', td: 'text-center w-1/6' } },
       cell: ({ row }) =>
-        h(
-          UButton,
-          {
-            size: 'xs',
-            color: 'error',
-            variant: 'soft',
-            icon: 'i-lucide-trash-2',
-            class: 'cursor-pointer',
-            onClick: () => onDeleteCryptoAddress(row.original.id),
-          },
-          () => '刪除',
-        ),
+        h(UButton, { size: 'xs', color: 'error', variant: 'soft', icon: 'i-lucide-trash-2', class: 'cursor-pointer', onClick: () => onDeleteCryptoAddress(row.original.id) }, () => t('common.delete')),
     },
-  ];
+  ]);
 
   const fetchCryptoAddresses = async () => {
     try {
@@ -141,7 +131,7 @@
     try {
       const { code } = await useApi().deleteCryptoAddress(id);
       if (code === 200) {
-        toast.add({ title: '通知', description: '加密貨幣錢包已刪除' });
+        toast.add({ title: t('common.notify'), description: t('wallet.cryptoWalletDeleted') });
         cryptoAddresses.value = cryptoAddresses.value.filter((c) => c.id !== id);
       }
     } catch {}
@@ -150,9 +140,9 @@
   const onDeleteCryptoAddress = (id: number) => {
     const modal = overlay.create(CommonConfirmDialog, {
       props: {
-        title: '刪除加密貨幣錢包',
-        description: '確定要刪除此錢包地址嗎？此操作無法復原。',
-        confirmLabel: '確認刪除',
+        title: t('wallet.deleteCryptoWallet'),
+        description: t('wallet.deleteCryptoWalletDesc'),
+        confirmLabel: t('wallet.confirmDelete'),
         confirmColor: 'error',
         onSuccess: () => doDeleteCryptoAddress(id),
       },

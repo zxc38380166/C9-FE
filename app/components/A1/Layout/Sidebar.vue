@@ -37,7 +37,7 @@
       <A1GameSearch />
       <UContentSearchButton
         :collapsed="collapsed"
-        :label="'搜尋遊戲...'"
+        :label="i18n.t('game.searchPlaceholder')"
         :kbds="['shift', 's']"
         color="neutral"
         variant="outline"
@@ -205,13 +205,13 @@
 
   const mainItems: ComputedRef<NavigationMenuItem[]> = computed(() => [
     {
-      label: '首頁',
+      label: i18n.t('nav.home'),
       icon: 'i-lucide-house',
       to: '/',
       active: isActive('/'),
     },
     {
-      label: '娛樂城',
+      label: i18n.t('nav.casino'),
       icon: 'i-lucide-gamepad-2',
       to: '/game',
       active: isGameActive(),
@@ -219,7 +219,7 @@
       children: gameChildren.value,
     },
     {
-      label: '活動中心',
+      label: i18n.t('nav.promoCenter'),
       icon: 'i-lucide-party-popper',
       to: '/promo',
       active: route.path.startsWith('/promo'),
@@ -239,7 +239,7 @@
       children: helpChildren.value,
     },
     {
-      label: '近期遊戲紀錄',
+      label: i18n.t('nav.recentGames'),
       icon: 'i-lucide-history',
       badge: '4',
     },
@@ -247,7 +247,7 @@
 
   const bottomItems: ComputedRef<NavigationMenuItem[]> = computed(() => [
     {
-      label: collapsed.value ? '展開' : '收合側欄',
+      label: collapsed.value ? i18n.t('nav.expand') : i18n.t('nav.collapseSidebar'),
       icon: collapsed.value
         ? 'i-tabler:layout-sidebar-right-collapse'
         : 'i-tabler:layout-sidebar-left-collapse',

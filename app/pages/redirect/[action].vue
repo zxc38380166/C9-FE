@@ -1,6 +1,6 @@
 <template>
   <div class="p-6">
-    <div class="text-sm opacity-70">處理第三方登入中...</div>
+    <div class="text-sm opacity-70">{{ $t('auth.processingThirdParty') }}</div>
     <div v-if="errMsg" class="mt-3 text-red-600 text-sm">{{ errMsg }}</div>
   </div>
 </template>

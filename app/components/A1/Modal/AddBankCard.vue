@@ -1,5 +1,5 @@
 <template>
-  <UModal title="新增銀行卡" :ui="{ title: 'text-[20px]' }">
+  <UModal :title="$t('bankCard.addTitle')" :ui="{ title: 'text-[20px]' }">
     <template #body>
       <UForm
         ref="formRef"
@@ -8,7 +8,7 @@
         :state
         :validate-on="['blur', 'input']"
         @submit="onSubmit">
-        <UFormField label="銀行代碼" name="bankCode" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('bankCard.bankCode')" name="bankCode" :ui="{ label: 'text-white/70 mb-1' }">
           <USelectMenu
             v-model="state.bankCode"
             :items="bankOptions"
@@ -19,21 +19,21 @@
               content: 'w-full bg-slate-900 ring-1 ring-white/10',
             }"
             icon="i-lucide-landmark"
-            placeholder="請選擇銀行"
+            :placeholder="$t('bankCard.selectBank')"
             value-key="value" />
         </UFormField>
 
-        <UFormField label="銀行帳戶" name="bankAccount" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('bankCard.bankAccount')" name="bankAccount" :ui="{ label: 'text-white/70 mb-1' }">
           <UInput
             v-model="state.bankAccount"
-            placeholder="請輸入銀行帳號"
+            :placeholder="$t('bankCard.enterAccount')"
             icon="i-lucide-hash"
             :ui="{
               base: 'w-full h-[44px] rounded-[10px] bg-slate-900 ring-1 ring-white/10 text-white',
             }" />
         </UFormField>
 
-        <UFormField label="分行" name="branch" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('bankCard.branch')" name="branch" :ui="{ label: 'text-white/70 mb-1' }">
           <USelectMenu
             v-model="state.branch"
             :items="branchOptions"
@@ -45,14 +45,14 @@
               content: 'w-full bg-slate-900 ring-1 ring-white/10',
             }"
             icon="i-lucide-building"
-            placeholder="請先選擇銀行"
+            :placeholder="$t('bankCard.selectBankFirst')"
             value-key="value" />
         </UFormField>
 
-        <UFormField label="持卡人姓名" name="holderName" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('bankCard.holderName')" name="holderName" :ui="{ label: 'text-white/70 mb-1' }">
           <UInput
             v-model="state.holderName"
-            placeholder="請輸入持卡人姓名"
+            :placeholder="$t('bankCard.enterHolderName')"
             icon="i-lucide-user"
             :ui="{
               base: 'w-full h-[44px] rounded-[10px] bg-slate-900 ring-1 ring-white/10 text-white',
@@ -60,7 +60,7 @@
         </UFormField>
 
         <!-- 身分證正面 -->
-        <UFormField label="身分證正面" name="idCardFront" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('bankCard.idCardFront')" name="idCardFront" :ui="{ label: 'text-white/70 mb-1' }">
           <div
             class="relative flex flex-col items-center justify-center rounded-xl bg-slate-900/50 ring-1 ring-white/10 ring-dashed p-4 cursor-pointer hover:ring-[#00df72]/50 transition-colors min-h-30"
             @click="triggerUpload('idCardFront')"
@@ -68,11 +68,11 @@
             @drop.prevent="onDrop($event, 'idCardFront')">
             <template v-if="previews.idCardFront">
               <NuxtImg :src="previews.idCardFront" class="max-h-25 rounded-lg object-contain" />
-              <span class="mt-1 text-[12px] text-white/50">點擊重新選擇</span>
+              <span class="mt-1 text-[12px] text-white/50">{{ $t('common.clickReselect') }}</span>
             </template>
             <template v-else>
               <Icon name="i-lucide-upload" class="text-[24px] text-white/40" />
-              <span class="mt-1 text-[13px] text-white/50">拖放或點擊上傳</span>
+              <span class="mt-1 text-[13px] text-white/50">{{ $t('common.dragOrUpload') }}</span>
             </template>
             <input
               ref="idCardFrontInput"
@@ -84,7 +84,7 @@
         </UFormField>
 
         <!-- 身分證反面 -->
-        <UFormField label="身分證反面" name="idCardBack" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('bankCard.idCardBack')" name="idCardBack" :ui="{ label: 'text-white/70 mb-1' }">
           <div
             class="relative flex flex-col items-center justify-center rounded-xl bg-slate-900/50 ring-1 ring-white/10 ring-dashed p-4 cursor-pointer hover:ring-[#00df72]/50 transition-colors min-h-30"
             @click="triggerUpload('idCardBack')"
@@ -92,11 +92,11 @@
             @drop.prevent="onDrop($event, 'idCardBack')">
             <template v-if="previews.idCardBack">
               <NuxtImg :src="previews.idCardBack" class="max-h-25 rounded-lg object-contain" />
-              <span class="mt-1 text-[12px] text-white/50">點擊重新選擇</span>
+              <span class="mt-1 text-[12px] text-white/50">{{ $t('common.clickReselect') }}</span>
             </template>
             <template v-else>
               <Icon name="i-lucide-upload" class="text-[24px] text-white/40" />
-              <span class="mt-1 text-[13px] text-white/50">拖放或點擊上傳</span>
+              <span class="mt-1 text-[13px] text-white/50">{{ $t('common.dragOrUpload') }}</span>
             </template>
             <input
               ref="idCardBackInput"
@@ -108,7 +108,7 @@
         </UFormField>
 
         <!-- 銀行存摺封面 -->
-        <UFormField label="銀行存摺封面" name="passbookCover" :ui="{ label: 'text-white/70 mb-1' }">
+        <UFormField :label="$t('bankCard.passbookCover')" name="passbookCover" :ui="{ label: 'text-white/70 mb-1' }">
           <div
             class="relative flex flex-col items-center justify-center rounded-xl bg-slate-900/50 ring-1 ring-white/10 ring-dashed p-4 cursor-pointer hover:ring-[#00df72]/50 transition-colors min-h-30"
             @click="triggerUpload('passbookCover')"
@@ -116,11 +116,11 @@
             @drop.prevent="onDrop($event, 'passbookCover')">
             <template v-if="previews.passbookCover">
               <NuxtImg :src="previews.passbookCover" class="max-h-25 rounded-lg object-contain" />
-              <span class="mt-1 text-[12px] text-white/50">點擊重新選擇</span>
+              <span class="mt-1 text-[12px] text-white/50">{{ $t('common.clickReselect') }}</span>
             </template>
             <template v-else>
               <Icon name="i-lucide-upload" class="text-[24px] text-white/40" />
-              <span class="mt-1 text-[13px] text-white/50">拖放或點擊上傳</span>
+              <span class="mt-1 text-[13px] text-white/50">{{ $t('common.dragOrUpload') }}</span>
             </template>
             <input
               ref="passbookCoverInput"
@@ -140,7 +140,7 @@
           :ui="{
             base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
           }">
-          {{ loading ? '提交中…' : '確認新增' }}
+          {{ loading ? $t('common.submitting') : $t('common.confirmAdd') }}
         </UButton>
       </UForm>
     </template>
@@ -154,6 +154,7 @@
     onSuccess: Function;
   }>();
 
+  const { t } = useI18n();
   const toast = useToast();
   const loading = ref(false);
 
@@ -181,13 +182,13 @@
   });
 
   const schema = z.object({
-    bankCode: z.string().min(1, '請選擇銀行'),
-    bankAccount: z.string().regex(/^\d+$/, '銀行帳號只能輸入數字').min(8, '帳號至少 8 碼'),
-    branch: z.string().min(1, '請輸入分行名稱'),
-    holderName: z.string().min(2, '請輸入持卡人姓名'),
-    idCardFront: z.instanceof(File, { message: '請上傳身分證正面' }),
-    idCardBack: z.instanceof(File, { message: '請上傳身分證反面' }),
-    passbookCover: z.instanceof(File, { message: '請上傳存摺封面' }),
+    bankCode: z.string().min(1, t('validation.selectBank')),
+    bankAccount: z.string().regex(/^\d+$/, t('validation.bankAccountDigitOnly')).min(8, t('validation.accountMin8')),
+    branch: z.string().min(1, t('validation.enterBranch')),
+    holderName: z.string().min(2, t('validation.enterHolderName')),
+    idCardFront: z.instanceof(File, { message: t('validation.uploadIdFront') }),
+    idCardBack: z.instanceof(File, { message: t('validation.uploadIdBack') }),
+    passbookCover: z.instanceof(File, { message: t('validation.uploadPassbook') }),
   });
 
   type Schema = z.output<typeof schema>;
@@ -263,7 +264,7 @@
 
       const { code } = await useApi().addBankCard(formData);
       if (code === 200) {
-        toast.add({ title: '通知', description: '銀行卡新增成功' });
+        toast.add({ title: t('common.notify'), description: t('bankCard.addSuccess') });
         onSuccess();
       }
     } catch {

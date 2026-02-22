@@ -26,6 +26,7 @@
 <script setup lang="ts">
   import type { GameListBarExposed } from './ListBar.vue';
 
+  const { t } = useI18n();
   const store = useStore();
 
   const TITLE_BAR_UI_NOCAN = 'text-slate-500 border-slate-700';
@@ -34,21 +35,21 @@
   const sections = reactive([
     {
       key: 'continue',
-      leftText: '繼續遊戲',
+      leftText: t('game.continuePlay'),
       leftIcon: 'material-symbols:settings-backup-restore',
       items: store.getGameList?.mapping?.slot?.[3]?.childGame || [],
       ui: { left: TITLE_BAR_UI_NOCAN, right: TITLE_BAR_UI_CAN },
     },
     {
       key: 'hot',
-      leftText: '熱門遊戲',
+      leftText: t('game.hotGames'),
       leftIcon: 'twemoji:slot-machine',
       items: store.getGameList?.mapping?.slot?.[6]?.childGame || [],
       ui: { left: TITLE_BAR_UI_NOCAN, right: TITLE_BAR_UI_CAN },
     },
     {
       key: 'sport',
-      leftText: '熱門體育賽事',
+      leftText: t('game.hotSports'),
       leftIcon: 'fluent-color:sport-24',
       items: store.getGameList?.mapping?.live || [],
       ui: { left: TITLE_BAR_UI_NOCAN, right: TITLE_BAR_UI_CAN },

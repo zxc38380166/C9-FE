@@ -12,7 +12,7 @@
           'max-w-[350px] lg:max-w-[500px] whitespace-pre-line text-center text-[12px] text-white/60',
         logo: '!size-[15px] cursor-pointer',
       }"
-      :title="'© 2025 C9.com | 版权所有 \n C9 由 Medium Rare N.V. 运营，如需协助请联系 support@C9.com \n C9 致力于负责任博彩，了解更多请访问 Gamblingtherapy.org'"
+      :title="$t('footer.copyright')"
       :items="[
         'i-simple-icons-github',
         'i-simple-icons-discord',

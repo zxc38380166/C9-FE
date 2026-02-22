@@ -8,8 +8,8 @@
         <Icon name="i-lucide-arrow-down-to-line" class="size-4 sm:size-5 text-emerald-400" />
       </div>
       <div>
-        <div class="text-[18px] sm:text-[22px] font-bold text-white tracking-wide">存款</div>
-        <div class="text-[11px] sm:text-[12px] text-white/40">選擇支付方式進行存款</div>
+        <div class="text-[18px] sm:text-[22px] font-bold text-white tracking-wide">{{ $t('deposit.title') }}</div>
+        <div class="text-[11px] sm:text-[12px] text-white/40">{{ $t('deposit.subtitle') }}</div>
       </div>
     </div>
 
@@ -41,13 +41,15 @@
 </template>
 
 <script setup lang="ts">
+  const { t } = useI18n();
+
   type TabValue = 'fiat' | 'credit' | 'crypto';
 
-  const tabs: Array<{ label: string; value: TabValue; icon: string }> = [
-    { label: '法幣', value: 'fiat', icon: 'i-lucide-banknote' },
-    { label: '信用卡', value: 'credit', icon: 'i-lucide-credit-card' },
-    { label: '虛擬貨幣', value: 'crypto', icon: 'i-lucide-bitcoin' },
-  ];
+  const tabs = computed<Array<{ label: string; value: TabValue; icon: string }>>(() => [
+    { label: t('deposit.fiat'), value: 'fiat', icon: 'i-lucide-banknote' },
+    { label: t('deposit.credit'), value: 'credit', icon: 'i-lucide-credit-card' },
+    { label: t('deposit.crypto'), value: 'crypto', icon: 'i-lucide-bitcoin' },
+  ]);
   const activeTab = ref<TabValue>('fiat');
 
   const { init } = useCash();
