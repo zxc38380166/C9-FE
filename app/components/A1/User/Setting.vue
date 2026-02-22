@@ -16,17 +16,17 @@
           <USeparator />
         </template>
         <template #title>
-          <div class="flex justify-between items-center w-full">
+          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
             <UUser
               :name="store.getUserDetail?.name"
-              :ui="{ description: 'text-[16px] text-white' }"
+              :ui="{ description: 'text-[14px] sm:text-[16px] text-white' }"
               :description="`帳號 : ${store.getUserDetail?.account}`"
               :avatar="{
                 src: 'https://github.com/benjamincanac.png',
                 icon: 'i-lucide-image',
-                class: 'size-[50px]',
+                class: 'size-10 sm:size-[50px]',
               }" />
-            <UButton size="xl" class="cursor-pointer">編輯頭像</UButton>
+            <UButton size="sm" class="cursor-pointer">編輯頭像</UButton>
           </div>
         </template>
       </UPageCard>
@@ -140,7 +140,7 @@
           <USeparator />
         </template>
         <template #title>
-          <div class="grid grid-cols-2 gap-4 w-full">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full">
             <UPageCard title="變更密碼" description="定期變更密碼，以保持密碼的唯一性和安全性。">
               <template #leading>
                 <div class="flex">
@@ -175,23 +175,26 @@
       <div
         v-if="store.getUserDetail.loginLogs"
         class="w-full space-y-4 pb-4 bg-slate-900 rounded-lg">
-        <div class="flex justify-between px-4 py-3.5 border-b border-accented">
-          <div class="text-[20px] px-2 font-bold">登入位置 (最近20筆)</div>
+        <div class="flex flex-col sm:flex-row sm:justify-between gap-2 px-3 sm:px-4 py-3 sm:py-3.5 border-b border-accented">
+          <div class="text-[16px] sm:text-[20px] px-0 sm:px-2 font-bold">登入位置 (最近20筆)</div>
           <UInput
             v-model="globalFilter"
-            class="max-w-sm w-[50%]"
-            :placeholder="'您可以查詢指定裝置或ip或最後登入時間或動作紀錄'" />
+            class="w-full sm:max-w-sm sm:w-[50%]"
+            placeholder="查詢裝置、IP 或動作紀錄" />
         </div>
-        <UTable
-          ref="UTableRef"
-          v-model:pagination="pagination"
-          v-model:global-filter="globalFilter"
-          :data="store.getUserDetail.loginLogs"
-          :columns="columns"
-          :pagination-options="{
-            getPaginationRowModel: getPaginationRowModel(),
-          }"
-          class="flex-1" />
+        <div class="overflow-x-auto">
+          <UTable
+            ref="UTableRef"
+            v-model:pagination="pagination"
+            v-model:global-filter="globalFilter"
+            :data="store.getUserDetail.loginLogs"
+            :columns="columns"
+            :pagination-options="{
+              getPaginationRowModel: getPaginationRowModel(),
+            }"
+            :ui="{ root: 'min-w-[560px]' }"
+            class="flex-1" />
+        </div>
         <div class="flex justify-center border-t border-default pt-4 px-4">
           <UPagination
             :page="(UTableRef?.tableApi?.getState().pagination.pageIndex || 0) + 1"

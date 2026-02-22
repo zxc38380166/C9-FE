@@ -1,37 +1,40 @@
 <template>
-  <div class="pt-6">
-    <A1LayoutTitleBar :leftText="'排行榜'" :leftIcon="'fa7-solid:ranking-star'">
-      <template #right>
-        <div>
-          <UTabs
-            :ui="{ list: 'bg-slate-800', trigger: 'cursor-pointer' }"
-            :items="rankingTabs"
-            class="w-full" />
-        </div>
-      </template>
-    </A1LayoutTitleBar>
+  <div class="space-y-3 sm:space-y-4">
+    <!-- 標題列 -->
+    <div class="flex items-center justify-between gap-3 px-1">
+      <div class="flex items-center gap-2">
+        <Icon name="noto:trophy" class="text-[20px] sm:text-[24px]" />
+        <span class="text-[16px] sm:text-[20px] font-bold text-white">排行榜</span>
+      </div>
+    </div>
+    <!-- Tabs -->
+    <div class="flex items-center gap-1.5 sm:gap-2">
+      <button
+        v-for="(tab, idx) in rankingTabs"
+        :key="idx"
+        type="button"
+        class="flex-1 min-w-0 py-2 rounded-lg text-[11px] sm:text-[13px] font-medium transition-all duration-200 cursor-pointer whitespace-nowrap text-center"
+        :class="
+          activeTab === idx
+            ? 'bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/25'
+            : 'bg-white/5 text-white/50 ring-1 ring-white/8 hover:bg-white/8 hover:text-white/70'
+        "
+        @click="activeTab = idx">
+        {{ tab.label }}
+      </button>
+    </div>
     <CommonRankList :items="rankingList" :interval="2000" />
   </div>
 </template>
 <script setup lang="ts">
-  import type { TabsItem } from '@nuxt/ui';
+  const activeTab = ref(0);
 
-  const rankingTabs: TabsItem[] = [
-    {
-      label: '最近即時投注',
-    },
-    {
-      label: '每日投注排行榜',
-    },
-    {
-      label: '每週投注排行榜',
-    },
-    {
-      label: '每月投注排行榜',
-    },
-    {
-      label: '累積提領排行榜',
-    },
+  const rankingTabs = [
+    { label: '即時投注' },
+    { label: '每日排行' },
+    { label: '每週排行' },
+    { label: '每月排行' },
+    { label: '累積提領' },
   ];
 
   const rankingList = [

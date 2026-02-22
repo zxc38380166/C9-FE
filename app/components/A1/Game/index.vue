@@ -1,5 +1,6 @@
 <template>
   <div class="space-y-4">
+    <A1HomePromo />
     <ClientOnly>
       <LazyUContentSearch
         v-model:search-term="searchTerm"
@@ -9,14 +10,13 @@
         :links="searchLinks"
         :color-mode="false"
         :fuse="{ resultLimit: 40 }" />
-      <A1LayoutCarousel />
       <UContentSearchButton
         :collapsed="false"
         :label="'快速查詢遊戲'"
         :kbds="['shift', 's']"
         :ui="{
           base: [
-            'w-full h-[50px]',
+            'w-full h-[44px] sm:h-[50px]',
             'rounded-[10px]',
             'bg-slate-900/70 ring-1 ring-white/10 backdrop-blur',
             'px-4 cursor-pointer',
@@ -26,63 +26,70 @@
             'focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00df72]/35',
             'shadow-[0_14px_50px_-26px_rgba(0,0,0,0.65)]',
           ],
-          label: 'text-[13px] font-semibold tracking-wide',
-          leadingIcon: 'text-[16px] opacity-90',
+          label: 'text-[12px] sm:text-[13px] font-semibold tracking-wide',
+          leadingIcon: 'text-[14px] sm:text-[16px] opacity-90',
         }" />
-      <UTabs
-        v-model="activeTab"
-        :ui="{
-          root: 'w-full items-start',
-          list: 'rounded-[10px] max-w-[900px] w-full bg-slate-900/70 ring-1 ring-white/10 backdrop-blur',
-          trigger: 'cursor-pointer h-10 text-white/70 hover:bg-white/[0.06] hover:text-white h-10',
-          leadingIcon: 'text-[16px] opacity-90',
-          content: 'mt-2',
-        }"
-        :items="tabs"
-        :unmount-on-hide="false"
-        class="w-full">
-        <template #content>
-          <div>
-            <div v-show="activeTab === GAME_CUSTOM.KEY">
-              <A1GameLobby />
-            </div>
-            <div v-show="activeTab === GAME_PROVIDER.KEY">
-              <A1GameProvider />
-            </div>
+
+      <!-- 遊戲類別 Tabs -->
+      <div
+        class="-mx-3.5 px-3.5 lg:mx-0 lg:px-0 overflow-x-auto"
+        style="-ms-overflow-style: none; scrollbar-width: none">
+        <div class="flex items-center gap-1.5 sm:gap-2 w-max lg:w-full lg:flex-wrap">
+          <button
+            v-for="tab in tabs"
+            :key="tab.value"
+            type="button"
+            class="shrink-0 flex items-center gap-1.5 px-3 sm:px-4 py-2 sm:py-2.5 rounded-lg text-[12px] sm:text-[13px] font-medium transition-all duration-200 cursor-pointer whitespace-nowrap"
+            :class="
+              activeTab === tab.value
+                ? 'bg-emerald-500/15 text-emerald-400 ring-1 ring-emerald-500/25'
+                : 'bg-white/5 text-white/50 ring-1 ring-white/8 hover:bg-white/8 hover:text-white/70'
+            "
+            @click="activeTab = tab.value">
+            <UIcon v-if="tab.icon" :name="tab.icon" class="size-3.5 sm:size-4" />
+            {{ tab.label }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Tab 內容 -->
+      <div>
+        <div v-if="activeTab === GAME_CUSTOM.KEY">
+          <A1GameLobby />
+        </div>
+        <div v-else-if="activeTab === GAME_PROVIDER.KEY">
+          <A1GameProvider />
+        </div>
+        <div v-else class="space-y-4">
+          <template v-if="visibleGames.length">
             <div
-              v-show="![GAME_CUSTOM.KEY, GAME_PROVIDER.KEY].includes(activeTab)"
-              class="space-y-4">
-              <template v-if="visibleGames.length">
-                <div
-                  class="grid w-full gap-3 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-7 xl:grid-cols-10 2xl:grid-cols-12">
-                  <template v-for="game in visibleGames" :key="getGameMappingImg(game)">
-                    <button
-                      v-if="!errImg.isErr(getGameMappingImg(game))"
-                      type="button"
-                      class="group w-full overflow-hidden rounded-2xl"
-                      @click="onClickGame(game)">
-                      <div class="relative cursor-pointer">
-                        <NuxtImg
-                          :src="getGameMappingImg(game)"
-                          :alt="getGameMappingImg(game)"
-                          @error="errImg.onError(getGameMappingImg(game))"
-                          class="w-full h-auto group-hover:scale-[1.06] transition-transform duration-300"
-                          loading="lazy" />
-                      </div>
-                    </button>
-                  </template>
-                </div>
-                <A1GameLoadMore
-                  v-model="shownCount"
-                  :total="totalCount"
-                  :step="STEP"
-                  @load="onLoadMore" />
+              class="grid w-full gap-3 grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 xl:grid-cols-10 2xl:grid-cols-12">
+              <template v-for="game in visibleGames" :key="getGameMappingImg(game)">
+                <button
+                  v-if="!errImg.isErr(getGameMappingImg(game))"
+                  type="button"
+                  class="group w-full overflow-hidden rounded-2xl"
+                  @click="onClickGame(game)">
+                  <div class="relative cursor-pointer">
+                    <NuxtImg
+                      :src="getGameMappingImg(game)"
+                      :alt="getGameMappingImg(game)"
+                      @error="errImg.onError(getGameMappingImg(game))"
+                      class="w-full h-auto group-hover:scale-[1.06] transition-transform duration-300"
+                      loading="lazy" />
+                  </div>
+                </button>
               </template>
-              <A1GameEmpty v-else />
             </div>
-          </div>
-        </template>
-      </UTabs>
+            <A1GameLoadMore
+              v-model="shownCount"
+              :total="totalCount"
+              :step="STEP"
+              @load="onLoadMore" />
+          </template>
+          <A1GameEmpty v-else />
+        </div>
+      </div>
     </ClientOnly>
     <A1GameRankList v-show="activeTab !== GAME_PROVIDER.KEY" />
   </div>
@@ -98,7 +105,7 @@
   const GAME_CUSTOM = { KEY: 'gameLobby', VALUE: 0 };
   const GAME_PROVIDER = { KEY: 'gameProvider', VALUE: -1 };
 
-  const tabIconMap = reactive({
+  const tabIconMap: Record<number, string> = {
     [GAME_CUSTOM.VALUE]: 'material-symbols:view-list-sharp',
     [GAME_PROVIDER.VALUE]: 'material-symbols:business-center-outline',
     [GAME_TYPE_VALUE_ENUM.sports]: 'material-symbols-light:sports-volleyball',
@@ -109,7 +116,7 @@
     [GAME_TYPE_VALUE_ENUM.esports]: 'material-symbols:sports-esports',
     [GAME_TYPE_VALUE_ENUM.crypto]: 'streamline-ultimate:virtual-coin-crypto-ethereum-bold',
     [GAME_TYPE_VALUE_ENUM.fish]: 'tdesign:fish-filled',
-  });
+  };
 
   const activeTab = ref<string>(GAME_CUSTOM.KEY);
   const tabs = computed(() => {
@@ -194,8 +201,10 @@
   const onClickGame = (game: ProviderItem & ChildGameItem) => {};
 
   const searchTerm = ref('');
-  const { data: searchNavigation } = await useAsyncData('navigation', () =>
-    queryCollectionNavigation('content'),
+  const { data: searchNavigation } = useLazyAsyncData(
+    'navigation',
+    () => queryCollectionNavigation('content'),
+    { server: false },
   );
   const { data: searchFiles } = useLazyAsyncData(
     'search',

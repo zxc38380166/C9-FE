@@ -2,16 +2,16 @@
   <div class="w-full space-y-4">
     <!-- 建單前：填寫表單 -->
     <template v-if="!depositResult">
-      <div class="flex items-center justify-between">
-        <div class="text-[20px] font-bold text-white">虛擬貨幣存款</div>
+      <div class="flex items-center justify-between gap-2">
+        <div class="text-[16px] sm:text-[20px] font-bold text-white">虛擬貨幣存款</div>
         <UButton
-          size="sm"
+          size="xs"
           variant="soft"
           icon="i-lucide-refresh-cw"
-          class="cursor-pointer"
+          class="cursor-pointer shrink-0"
           :loading="loadingChannels"
           @click="refreshAll">
-          重新整理
+          <span class="hidden sm:inline">重新整理</span>
         </UButton>
       </div>
       <USeparator />
@@ -77,13 +77,13 @@
 
     <!-- 建單後：顯示繳費資訊 + QR Code -->
     <template v-else>
-      <div class="flex items-center justify-between">
-        <div class="text-[20px] font-bold text-white">存款訂單已建立</div>
+      <div class="flex items-center justify-between gap-2">
+        <div class="text-[16px] sm:text-[20px] font-bold text-white">存款訂單已建立</div>
         <UButton
-          size="sm"
+          size="xs"
           variant="soft"
           icon="i-lucide-arrow-left"
-          class="cursor-pointer"
+          class="cursor-pointer shrink-0"
           @click="depositResult = null">
           返回
         </UButton>
@@ -99,8 +99,8 @@
 
       <div class="flex flex-col items-center space-y-5 py-4">
         <!-- QR Code -->
-        <div class="rounded-[16px] bg-white p-4">
-          <QrcodeVue :value="depositResult.paymentAddress" :size="200" level="H" />
+        <div class="rounded-[12px] sm:rounded-[16px] bg-white p-3 sm:p-4">
+          <QrcodeVue :value="depositResult.paymentAddress" :size="160" level="H" class="sm:size-50!" />
         </div>
 
         <!-- 繳費資訊 -->

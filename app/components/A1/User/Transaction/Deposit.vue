@@ -1,19 +1,19 @@
 <template>
   <div class="w-full space-y-4">
     <!-- Header -->
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div class="flex items-center gap-2.5">
-        <div class="size-8 rounded-[10px] bg-emerald-500/15 ring-1 ring-emerald-500/25 flex items-center justify-center">
-          <UIcon name="i-lucide-arrow-down-to-line" class="size-4 text-emerald-400" />
+        <div class="size-7 sm:size-8 rounded-[8px] sm:rounded-[10px] bg-emerald-500/15 ring-1 ring-emerald-500/25 flex items-center justify-center">
+          <UIcon name="i-lucide-arrow-down-to-line" class="size-3.5 sm:size-4 text-emerald-400" />
         </div>
-        <div class="text-[18px] font-bold text-white">存款紀錄</div>
+        <div class="text-[16px] sm:text-[18px] font-bold text-white">存款紀錄</div>
       </div>
       <div class="flex items-center gap-2">
         <USelectMenu
           v-model="statusFilter"
           :items="statusOptions"
           :ui="{
-            base: 'w-[140px] h-[36px] rounded-[10px] bg-slate-800 ring-1 ring-white/10 text-white text-[13px]',
+            base: 'w-full sm:w-[140px] h-[34px] sm:h-[36px] rounded-[10px] bg-slate-800 ring-1 ring-white/10 text-white text-[12px] sm:text-[13px]',
             content: 'bg-slate-800 ring-1 ring-white/10',
           }"
           icon="i-lucide-filter"
@@ -24,7 +24,7 @@
           variant="ghost"
           color="neutral"
           icon="i-lucide-refresh-cw"
-          class="cursor-pointer rounded-[10px] ring-1 ring-white/10"
+          class="cursor-pointer shrink-0 rounded-[10px] ring-1 ring-white/10"
           :loading="loading"
           @click="fetchOrders" />
       </div>
@@ -57,29 +57,29 @@
 
     <!-- Table -->
     <template v-else>
-      <div class="overflow-x-auto rounded-[12px] ring-1 ring-white/6">
+      <div class="-mx-3 sm:mx-0 overflow-x-auto sm:rounded-[12px] ring-1 ring-white/6">
         <UTable
           :data="orders"
           :columns="columns"
           :ui="{
-            root: 'min-w-full',
+            root: 'min-w-[640px]',
             thead: 'bg-white/3',
-            th: 'text-white/50 text-center text-[12px] font-semibold uppercase tracking-wider',
-            td: 'text-center text-white/80 text-[13px]',
+            th: 'text-white/50 text-center text-[11px] sm:text-[12px] font-semibold uppercase tracking-wider',
+            td: 'text-center text-white/80 text-[12px] sm:text-[13px]',
             tr: 'border-b border-white/5 last:border-0 hover:bg-white/3 transition-colors',
           }" />
       </div>
 
       <!-- Pagination -->
-      <div v-if="pagination.totalPages > 1" class="flex items-center justify-between pt-1">
-        <div class="text-[12px] text-white/35 tabular-nums">
+      <div v-if="pagination.totalPages > 1" class="flex flex-col sm:flex-row items-center sm:justify-between gap-2 pt-1">
+        <div class="text-[11px] sm:text-[12px] text-white/35 tabular-nums">
           共 <span class="text-white/60 font-medium">{{ pagination.total }}</span> 筆，第 {{ pagination.page }} / {{ pagination.totalPages }} 頁
         </div>
         <UPagination
           :model-value="pagination.page"
           :total="pagination.total"
           :items-per-page="pagination.pageSize"
-          :ui="{ root: 'gap-1' }"
+          :ui="{ root: 'gap-0.5 sm:gap-1' }"
           @update:page="onPageChange" />
       </div>
     </template>

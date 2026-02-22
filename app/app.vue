@@ -48,34 +48,37 @@
     if (enums) store.setEnums(enums);
     if (loginConfig) store.setLoginConfig(loginConfig);
     if (provider) {
-      const gameList: GameListResult = (provider as ProviderItem[]).reduce<GameListResult>(
-        (result, item) => {
-          result.provider.push(item);
-          if (item.enable) result.enable.push(item.gameCode);
-          if (item.areaBlock) result.areaBlock.push(item.gameCode);
-          if (item.maintain) result.maintain.push(item.gameCode);
+      // 建立 gameType value → key 的反查表，避免 O(n*m) 遍歷
+      const typeValueToKey = new Map<number, GameTypeKey>();
+      for (const [key, value] of Object.entries(GAME_TYPE_VALUE_ENUM)) {
+        typeValueToKey.set(value, key as GameTypeKey);
+      }
 
-          const isChild = isChildGameType(item.gameType);
+      const gameList: GameListResult = {
+        mapping: {},
+        areaBlock: [],
+        maintain: [],
+        enable: [],
+        provider: [],
+      };
 
-          Object.entries(GAME_TYPE_VALUE_ENUM).forEach(([key, value]) => {
-            const k = key as GameTypeKey;
-            if (!result.mapping[k]) result.mapping[k] = [];
-            if (value === item.gameType) {
-              if (isChild) {
-                const hasOwnProperty = Object.prototype.hasOwnProperty.call(
-                  childGame,
-                  item.gameCode,
-                );
-                item.childGame = hasOwnProperty ? childGame[item.gameCode as ChildGameKey] : [];
-              }
-              result.mapping[k]!.push(item);
-            }
-          });
+      for (const item of provider as ProviderItem[]) {
+        gameList.provider.push(item);
+        if (item.enable) gameList.enable.push(item.gameCode);
+        if (item.areaBlock) gameList.areaBlock.push(item.gameCode);
+        if (item.maintain) gameList.maintain.push(item.gameCode);
 
-          return result;
-        },
-        { mapping: {}, areaBlock: [], maintain: [], enable: [], provider: [] },
-      );
+        const k = typeValueToKey.get(item.gameType);
+        if (k) {
+          if (!gameList.mapping[k]) gameList.mapping[k] = [];
+          if (isChildGameType(item.gameType)) {
+            item.childGame = Object.prototype.hasOwnProperty.call(childGame, item.gameCode)
+              ? childGame[item.gameCode as ChildGameKey]
+              : [];
+          }
+          gameList.mapping[k]!.push(item);
+        }
+      }
 
       store.setGameList(gameList);
     }

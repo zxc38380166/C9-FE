@@ -1,16 +1,17 @@
 <template>
   <div class="w-full space-y-4">
-    <div class="flex items-center justify-between">
-      <div class="text-[20px] font-bold text-white">我的信用卡</div>
+    <div class="flex items-center justify-between gap-2">
+      <div class="text-[16px] sm:text-[20px] font-bold text-white">我的信用卡</div>
       <UButton
-        size="sm"
+        size="xs"
         icon="i-lucide-plus"
-        class="cursor-pointer rounded-[10px]"
+        class="cursor-pointer shrink-0 rounded-[10px]"
         :ui="{
           base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
         }"
         @click="openAddCreditCard">
-        新增信用卡
+        <span class="hidden sm:inline">新增信用卡</span>
+        <span class="sm:hidden">新增</span>
       </UButton>
     </div>
     <USeparator />
@@ -28,13 +29,16 @@
 
     <!-- 信用卡列表 -->
     <template v-else>
-      <UTable
-        :data="creditCards"
-        :columns="creditCardColumns"
-        :ui="{
-          th: 'text-white/60 text-center',
-          td: 'text-center text-white/80',
-        }" />
+      <div class="-mx-3 sm:mx-0 overflow-x-auto">
+        <UTable
+          :data="creditCards"
+          :columns="creditCardColumns"
+          :ui="{
+            root: 'min-w-[480px]',
+            th: 'text-white/60 text-center text-[11px] sm:text-[13px]',
+            td: 'text-center text-white/80 text-[12px] sm:text-[13px]',
+          }" />
+      </div>
     </template>
   </div>
 </template>

@@ -1,11 +1,11 @@
 <template>
   <div class="w-full space-y-4">
-    <div class="flex items-center justify-between">
-      <div class="text-[20px] font-bold text-white">我的加密貨幣錢包</div>
+    <div class="flex items-center justify-between gap-2">
+      <div class="text-[16px] sm:text-[20px] font-bold text-white">我的加密貨幣錢包</div>
       <UButton
-        size="sm"
+        size="xs"
         icon="i-lucide-plus"
-        class="cursor-pointer rounded-[10px]"
+        class="cursor-pointer shrink-0 rounded-[10px]"
         :ui="{
           base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
         }"
@@ -28,13 +28,16 @@
 
     <!-- 錢包列表 -->
     <template v-else>
-      <UTable
-        :data="cryptoAddresses"
-        :columns="cryptoAddressColumns"
-        :ui="{
-          th: 'text-white/60 text-center',
-          td: 'text-center text-white/80',
-        }" />
+      <div class="-mx-3 sm:mx-0 overflow-x-auto">
+        <UTable
+          :data="cryptoAddresses"
+          :columns="cryptoAddressColumns"
+          :ui="{
+            root: 'min-w-[560px]',
+            th: 'text-white/60 text-center text-[11px] sm:text-[13px]',
+            td: 'text-center text-white/80 text-[12px] sm:text-[13px]',
+          }" />
+      </div>
     </template>
   </div>
 </template>

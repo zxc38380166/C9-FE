@@ -6,19 +6,17 @@
       </div>
     </template>
     <template v-else>
-      <div class="flex items-center justify-between">
-        <div class="text-[20px] font-bold text-white">信用卡存款</div>
-        <div class="flex items-center gap-2">
-          <UButton
-            size="sm"
-            variant="soft"
-            icon="i-lucide-refresh-cw"
-            class="cursor-pointer"
-            :loading="loadingRate"
-            @click="refreshAll">
-            重新整理
-          </UButton>
-        </div>
+      <div class="flex items-center justify-between gap-2">
+        <div class="text-[16px] sm:text-[20px] font-bold text-white">信用卡存款</div>
+        <UButton
+          size="xs"
+          variant="soft"
+          icon="i-lucide-refresh-cw"
+          class="cursor-pointer shrink-0"
+          :loading="loadingRate"
+          @click="refreshAll">
+          <span class="hidden sm:inline">重新整理</span>
+        </UButton>
       </div>
       <USeparator />
 
