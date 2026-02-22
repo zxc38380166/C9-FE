@@ -29,12 +29,56 @@
 
     <!-- 信用卡列表 -->
     <template v-else>
-      <div class="-mx-3 sm:mx-0 overflow-x-auto scrollbar-hide">
+      <!-- 手機版：卡片展開 -->
+      <div class="sm:hidden space-y-2">
+        <div
+          v-for="item in creditCards"
+          :key="item.id"
+          class="rounded-[10px] bg-white/4 ring-1 ring-white/8 overflow-hidden">
+          <button
+            class="w-full flex items-center justify-between p-3 text-left cursor-pointer"
+            @click="mobileExpandedId = mobileExpandedId === item.id ? null : item.id">
+            <div class="flex items-center gap-2 min-w-0">
+              <Icon name="i-lucide-credit-card" class="size-4 text-violet-400 shrink-0" />
+              <span class="text-[13px] font-medium text-white font-mono">{{ maskAccount(item.cardNumber) }}</span>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[13px] text-white/60">{{ item.holderName }}</span>
+              <Icon
+                name="i-lucide-chevron-down"
+                class="size-4 text-white/40 transition-transform duration-200"
+                :class="mobileExpandedId === item.id ? 'rotate-180' : ''" />
+            </div>
+          </button>
+          <div v-show="mobileExpandedId === item.id" class="border-t border-white/6 p-3 space-y-2">
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('creditCard.expiryDate') }}</span>
+              <span class="text-white/80">{{ item.expiryDate }}</span>
+            </div>
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('common.status') }}</span>
+              <UBadge
+                :color="(STATUS_MAP[item.status] ?? STATUS_MAP[0])!.color"
+                variant="subtle"
+                size="xs">
+                {{ (STATUS_MAP[item.status] ?? STATUS_MAP[0])!.label }}
+              </UBadge>
+            </div>
+            <div class="flex items-center justify-end gap-2 mt-1">
+              <UButton size="xs" color="error" variant="soft" icon="i-lucide-trash-2" class="cursor-pointer" @click="onDeleteCreditCard(item.id)">
+                {{ $t('common.delete') }}
+              </UButton>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 桌面版：UTable -->
+      <div class="hidden sm:block">
         <UTable
           :data="creditCards"
           :columns="creditCardColumns"
           :ui="{
-            root: 'min-w-[480px]',
             th: 'text-white/60 text-center text-[11px] sm:text-[13px]',
             td: 'text-center text-white/80 text-[12px] sm:text-[13px]',
           }" />
@@ -63,6 +107,7 @@
   };
 
   const creditCards = ref<CreditCard[]>([]);
+  const mobileExpandedId = ref<number | null>(null);
 
   const maskAccount = (account: string) => {
     if (account.length <= 4) return account;

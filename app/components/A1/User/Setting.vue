@@ -184,7 +184,48 @@
             class="w-full sm:max-w-sm sm:w-[50%]"
             :placeholder="$t('setting.searchPlaceholder')" />
         </div>
-        <div class="overflow-x-auto scrollbar-hide">
+        <!-- 手機版：卡片展開 -->
+        <div class="sm:hidden space-y-2 px-3">
+          <div
+            v-for="(item, idx) in paginatedLogs"
+            :key="idx"
+            class="rounded-[10px] bg-white/4 ring-1 ring-white/8 overflow-hidden">
+            <button
+              class="w-full flex items-center justify-between p-3 text-left cursor-pointer"
+              @click="mobileExpandedId = mobileExpandedId === idx ? null : idx">
+              <div class="flex items-center gap-2 min-w-0">
+                <Icon name="i-lucide-globe" class="size-4 text-cyan-400 shrink-0" />
+                <span class="text-[13px] font-medium text-white font-mono">{{ item.ip }}</span>
+              </div>
+              <div class="flex items-center gap-2 shrink-0">
+                <UBadge
+                  :color="({ LOGIN: 'success' as const, DEL: 'error' as const, LOGOUT: 'error' as const, UNCAPTURED: 'neutral' as const }[item.action as string] ?? 'neutral')"
+                  variant="subtle"
+                  size="xs"
+                  class="capitalize">
+                  {{ store.getEnums.AUTH_ENUM?.LOGIN_LOG?.ACTION?.[item.action as string] ?? '' }}
+                </UBadge>
+                <Icon
+                  name="i-lucide-chevron-down"
+                  class="size-4 text-white/40 transition-transform duration-200"
+                  :class="mobileExpandedId === idx ? 'rotate-180' : ''" />
+              </div>
+            </button>
+            <div v-show="mobileExpandedId === idx" class="border-t border-white/6 p-3 space-y-2">
+              <div class="flex justify-between text-[12px]">
+                <span class="text-white/40">{{ $t('setting.device') }}</span>
+                <span class="text-white/80 text-right max-w-50 wrap-break-word line-clamp-2">{{ item.device }}</span>
+              </div>
+              <div class="flex justify-between text-[12px]">
+                <span class="text-white/40">{{ $t('setting.lastUsed') }}</span>
+                <span class="text-white/50 tabular-nums">{{ formatLastUse(item.lastUse) }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 桌面版：UTable -->
+        <div class="hidden sm:block overflow-x-auto scrollbar-hide">
           <UTable
             ref="UTableRef"
             v-model:pagination="pagination"
@@ -194,7 +235,6 @@
             :pagination-options="{
               getPaginationRowModel: getPaginationRowModel(),
             }"
-            :ui="{ root: 'min-w-[560px]' }"
             class="flex-1" />
         </div>
         <div class="flex justify-center border-t border-default pt-4 px-4">
@@ -376,6 +416,23 @@
   });
 
   const globalFilter = ref('');
+  const mobileExpandedId = ref<number | null>(null);
+
+  const formatLastUse = (v: string) => moment(v).tz('Asia/Seoul').format('YYYY-MM-DD HH:mm:ss');
+
+  const filteredLogs = computed(() => {
+    const logs = store.getUserDetail.loginLogs ?? [];
+    if (!globalFilter.value) return logs;
+    const q = globalFilter.value.toLowerCase();
+    return logs.filter((log: LoginLog) =>
+      [log.ip, log.device, log.action].some((v) => String(v ?? '').toLowerCase().includes(q)),
+    );
+  });
+
+  const paginatedLogs = computed(() => {
+    const start = pagination.value.pageIndex * pagination.value.pageSize;
+    return filteredLogs.value.slice(start, start + pagination.value.pageSize);
+  });
 
   const columns: TableColumn<LoginLog>[] = [
     {

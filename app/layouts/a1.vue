@@ -158,6 +158,8 @@
       {
         label: t('nav.betRecord'),
         icon: 'i-lucide-scroll-text',
+        to: '/user/bet-record',
+        active: isActive('/user/bet-record'),
       },
       {
         label: t('nav.promoCenter'),

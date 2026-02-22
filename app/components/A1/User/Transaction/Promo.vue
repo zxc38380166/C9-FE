@@ -53,13 +53,55 @@
 
     <!-- Table -->
     <template v-else>
-      <div
-        class="-mx-3 sm:mx-0 overflow-x-auto scrollbar-hide sm:rounded-[12px] ring-1 ring-white/6">
+      <!-- 手機版：卡片展開 -->
+      <div class="sm:hidden space-y-2">
+        <div
+          v-for="item in claims"
+          :key="item.id"
+          class="rounded-[10px] bg-white/4 ring-1 ring-white/8 overflow-hidden">
+          <button
+            class="w-full flex items-center justify-between p-3 text-left cursor-pointer"
+            @click="mobileExpandedId = mobileExpandedId === item.id ? null : item.id">
+            <div class="min-w-0 flex-1 mr-2">
+              <div class="text-[13px] font-medium text-white truncate">{{ item.promoTitle }}</div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <span class="text-[13px] font-bold text-amber-400 tabular-nums">{{ fmtAmount(item.rewardAmount) }}</span>
+              <Icon
+                name="i-lucide-chevron-down"
+                class="size-4 text-white/40 transition-transform duration-200"
+                :class="mobileExpandedId === item.id ? 'rotate-180' : ''" />
+            </div>
+          </button>
+          <div v-show="mobileExpandedId === item.id" class="border-t border-white/6 p-3 space-y-2">
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('transaction.promoTag') }}</span>
+              <UBadge :color="TAG_COLOR_MAP[item.promoTag] || 'neutral'" variant="subtle" size="xs">
+                {{ item.promoTag }}
+              </UBadge>
+            </div>
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('transaction.turnoverProgress') }}</span>
+              <span
+                class="tabular-nums"
+                :class="item.turnoverCompleted === 1 ? 'text-emerald-400' : 'text-white/60'">
+                {{ Number(item.requiredTurnover || 0) ? `${fmtAmount(item.completedTurnover || 0)} / ${fmtAmount(item.requiredTurnover)}` : '—' }}
+              </span>
+            </div>
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('transaction.claimedAt') }}</span>
+              <span class="text-white/50 tabular-nums">{{ formatDateTime(item.claimedAt) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 桌面版：UTable -->
+      <div class="hidden sm:block rounded-[12px] ring-1 ring-white/6">
         <UTable
           :data="claims"
           :columns="columns"
           :ui="{
-            root: 'min-w-[640px]',
             thead: 'bg-white/3',
             th: 'text-white/50 text-center text-[11px] sm:text-[12px] font-semibold uppercase tracking-wider',
             td: 'text-center text-white/80 text-[12px] sm:text-[13px]',
@@ -96,6 +138,7 @@
 
   const claims = ref<PromoClaim[]>([]);
   const loading = ref(false);
+  const mobileExpandedId = ref<number | string | null>(null);
   const pagination = reactive({
     page: 1,
     pageSize: 10,

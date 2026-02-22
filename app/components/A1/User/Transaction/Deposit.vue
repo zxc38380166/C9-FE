@@ -7,9 +7,11 @@
           class="size-7 sm:size-8 rounded-[8px] sm:rounded-[10px] bg-emerald-500/15 ring-1 ring-emerald-500/25 flex items-center justify-center">
           <Icon name="i-lucide-arrow-down-to-line" class="size-3.5 sm:size-4 text-emerald-400" />
         </div>
-        <div class="text-[16px] sm:text-[18px] font-bold text-white">{{ $t('transaction.depositRecord') }}</div>
+        <div class="text-[16px] sm:text-[18px] font-bold text-white">
+          {{ $t('transaction.depositRecord') }}
+        </div>
       </div>
-      <div class="flex items-center gap-2">
+      <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3">
         <USelectMenu
           v-model="statusFilter"
           :items="statusOptions"
@@ -20,6 +22,31 @@
           icon="i-lucide-filter"
           value-key="value"
           @update:model-value="onStatusChange" />
+        <div class="flex items-center gap-2 flex-1">
+          <div class="relative flex-1 sm:flex-none sm:w-40">
+            <Icon
+              name="i-lucide-calendar"
+              class="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-white/40 pointer-events-none z-1" />
+            <input
+              v-model="startDate"
+              type="date"
+              class="w-full h-[34px] sm:h-[36px] rounded-[10px] bg-slate-800 ring-1 ring-white/10 text-white text-[12px] sm:text-[13px] pl-8 pr-2 outline-none focus:ring-emerald-500/50 transition-shadow scheme-dark"
+              :placeholder="$t('common.startDate')"
+              @change="onDateChange" />
+          </div>
+          <span class="text-white/30 text-[12px]">~</span>
+          <div class="relative flex-1 sm:flex-none sm:w-40">
+            <Icon
+              name="i-lucide-calendar"
+              class="absolute left-2.5 top-1/2 -translate-y-1/2 size-3.5 text-white/40 pointer-events-none z-1" />
+            <input
+              v-model="endDate"
+              type="date"
+              class="w-full h-[34px] sm:h-[36px] rounded-[10px] bg-slate-800 ring-1 ring-white/10 text-white text-[12px] sm:text-[13px] pl-8 pr-2 outline-none focus:ring-emerald-500/50 transition-shadow scheme-dark"
+              :placeholder="$t('common.endDate')"
+              @change="onDateChange" />
+          </div>
+        </div>
         <UButton
           size="sm"
           variant="ghost"
@@ -60,13 +87,74 @@
 
     <!-- Table -->
     <template v-else>
-      <div
-        class="-mx-3 sm:mx-0 overflow-x-auto scrollbar-hide sm:rounded-[12px] ring-1 ring-white/6">
+      <!-- 手機版：卡片展開 -->
+      <div class="sm:hidden space-y-2">
+        <div
+          v-for="item in orders"
+          :key="item.subOrder"
+          class="rounded-[10px] bg-white/4 ring-1 ring-white/8 overflow-hidden">
+          <button
+            class="w-full flex items-center justify-between p-3 text-left cursor-pointer"
+            @click="mobileExpandedId = mobileExpandedId === item.subOrder ? null : item.subOrder">
+            <div class="min-w-0">
+              <div class="text-[13px] font-medium text-white truncate font-mono">
+                {{ item.subOrder }}
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <UBadge
+                :color="(STATUS_MAP[item.status as string] ?? { color: 'neutral' as const }).color"
+                variant="subtle"
+                size="xs">
+                {{ (STATUS_MAP[item.status as string] ?? { label: item.status }).label }}
+              </UBadge>
+              <Icon
+                name="i-lucide-chevron-down"
+                class="size-4 text-white/40 transition-transform duration-200"
+                :class="mobileExpandedId === item.subOrder ? 'rotate-180' : ''" />
+            </div>
+          </button>
+          <div
+            v-show="mobileExpandedId === item.subOrder"
+            class="border-t border-white/6 p-3 space-y-2">
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('transaction.paymentMethod') }}</span>
+              <span class="text-white/80">{{
+                PAYMENT_METHOD_MAP[item.paymentMethod] || item.paymentMethod
+              }}</span>
+            </div>
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('transaction.currency') }}</span>
+              <span class="text-white/80 font-semibold">{{ item.currency }}</span>
+            </div>
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('transaction.orderAmount') }}</span>
+              <span class="text-white/80 tabular-nums">{{ formatAmount(item.orderAmount) }}</span>
+            </div>
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('transaction.payAmount') }}</span>
+              <span class="text-white/80 tabular-nums">{{ formatAmount(item.payAmount) }}</span>
+            </div>
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">USD</span>
+              <span class="text-amber-400 font-medium tabular-nums">{{
+                formatAmount(item.usdAmount)
+              }}</span>
+            </div>
+            <div class="flex justify-between text-[12px]">
+              <span class="text-white/40">{{ $t('transaction.createdAt') }}</span>
+              <span class="text-white/50 tabular-nums">{{ formatDate(item.createdAt) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 桌面版：UTable -->
+      <div class="hidden sm:block rounded-[12px] ring-1 ring-white/6">
         <UTable
           :data="orders"
           :columns="columns"
           :ui="{
-            root: 'min-w-[640px]',
             thead: 'bg-white/3',
             th: 'text-white/50 text-center text-[11px] sm:text-[12px] font-semibold uppercase tracking-wider',
             td: 'text-center text-white/80 text-[12px] sm:text-[13px]',
@@ -79,7 +167,13 @@
         v-if="pagination.totalPages > 1"
         class="flex flex-col sm:flex-row items-center sm:justify-between gap-2 pt-1">
         <div class="text-[11px] sm:text-[12px] text-white/35 tabular-nums">
-          {{ $t('transaction.paginationInfo', { total: pagination.total, page: pagination.page, totalPages: pagination.totalPages }) }}
+          {{
+            $t('transaction.paginationInfo', {
+              total: pagination.total,
+              page: pagination.page,
+              totalPages: pagination.totalPages,
+            })
+          }}
         </div>
         <UPagination
           :model-value="pagination.page"
@@ -132,6 +226,12 @@
   const orders = ref<DepositOrder[]>([]);
   const loading = ref(false);
   const statusFilter = ref('');
+  const today = new Date();
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(today.getDate() - 30);
+  const startDate = ref(sevenDaysAgo.toISOString().slice(0, 10));
+  const endDate = ref(today.toISOString().slice(0, 10));
+  const mobileExpandedId = ref<string | null>(null);
   const pagination = reactive({
     page: 1,
     pageSize: 10,
@@ -225,6 +325,8 @@
         pageSize: pagination.pageSize,
       };
       if (statusFilter.value) params.status = statusFilter.value;
+      if (startDate.value) params.startDate = startDate.value;
+      if (endDate.value) params.endDate = endDate.value;
 
       const resp = await useApi().getDepositOrders(params);
       if (resp?.code === 200 && resp.result) {
@@ -242,6 +344,11 @@
   };
 
   const onStatusChange = () => {
+    pagination.page = 1;
+    fetchOrders();
+  };
+
+  const onDateChange = () => {
     pagination.page = 1;
     fetchOrders();
   };
