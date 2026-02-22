@@ -101,7 +101,8 @@
         toast.add({ title: '通知', description: '信用卡新增成功' });
         onSuccess();
       }
-    } catch {} finally {
+    } catch {
+    } finally {
       loading.value = false;
     }
   };

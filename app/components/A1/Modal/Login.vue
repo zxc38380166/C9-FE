@@ -6,7 +6,9 @@
     :ui="{ title: 'text-[20px]' }">
     <button
       class="group flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[13px] sm:text-[14px] font-bold text-white/80 hover:text-white bg-white/5 ring-1 ring-white/12 hover:ring-white/25 hover:bg-white/10 transition-all duration-200 cursor-pointer">
-      <Icon name="i-lucide-log-in" class="size-3.5 sm:size-4 text-white/50 group-hover:text-emerald-400 transition-colors" />
+      <Icon
+        name="i-lucide-log-in"
+        class="size-3.5 sm:size-4 text-white/50 group-hover:text-emerald-400 transition-colors" />
       登入
     </button>
     <template #body>

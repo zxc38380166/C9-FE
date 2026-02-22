@@ -11,7 +11,6 @@
   </ClientOnly>
 </template>
 <script setup lang="ts">
-
   const i18n = useI18n();
   const store = useStore();
   const { GAME_TYPE_VALUE_ENUM, getGameName } = useGame();

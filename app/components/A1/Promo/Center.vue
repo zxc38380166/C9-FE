@@ -16,8 +16,7 @@
 
     <!-- 篩選列 -->
     <div>
-      <div
-        class="flex items-center gap-2 overflow-x-auto scrollbar-hide">
+      <div class="flex items-center gap-2 overflow-x-auto scrollbar-hide">
         <button
           v-for="filter in filters"
           :key="filter.value"
@@ -90,7 +89,7 @@
                 </div>
                 <!-- tag -->
                 <div class="absolute top-3 left-3">
-                  <UBadge :color="getPromoTagColor(item.tag)" variant="solid" size="xs">
+                  <UBadge :color="getTagColor(item.tag)" variant="solid" size="xs">
                     {{ item.tag }}
                   </UBadge>
                 </div>
@@ -154,7 +153,10 @@
                     class="relative z-10 flex items-center gap-1 px-3 py-1 rounded-lg text-[12px] sm:text-[13px] font-bold bg-linear-to-r from-emerald-500 to-emerald-600 text-white shadow-[0_0_12px_-2px_rgba(16,185,129,0.4)] hover:from-emerald-400 hover:to-emerald-500 transition-all cursor-pointer disabled:opacity-50"
                     :disabled="claimingId === item.id"
                     @click.prevent="onQuickClaim(item)">
-                    <Icon v-if="claimingId === item.id" name="i-lucide-loader-2" class="size-3.5 animate-spin" />
+                    <Icon
+                      v-if="claimingId === item.id"
+                      name="i-lucide-loader-2"
+                      class="size-3.5 animate-spin" />
                     <Icon v-else name="i-lucide-gift" class="size-3.5" />
                     {{ claimingId === item.id ? '領取中' : '立即領取' }}
                   </button>
@@ -220,6 +222,9 @@
   </div>
 </template>
 <script setup lang="ts">
+  const { formatDateShort } = utsFormat();
+  const { getTagColor, CONDITION_MAP } = utsPromo();
+
   interface PromoItem {
     id: number;
     title: string;
@@ -259,20 +264,14 @@
     { label: 'VIP', value: 'VIP' },
   ];
 
-
-
-
   const getConditionLabel = (item: PromoItem) => {
-    const base = PROMO_CONDITION_MAP[item.conditionType] || item.conditionType;
+    const base = CONDITION_MAP[item.conditionType] || item.conditionType;
     if (item.conditionType === 'deposit_threshold' && Number(item.conditionValue))
       return `${base} $${Number(item.conditionValue).toLocaleString()}`;
     if (item.conditionType === 'vip_level' && Number(item.conditionValue))
       return `${base} Lv.${item.conditionValue}`;
     return base;
   };
-
-
-
 
   const filteredItems = computed(() => {
     if (activeFilter.value === 'all') return promoItems.value;
@@ -359,9 +358,18 @@
   }
 
   @keyframes card-wobble {
-    0%, 100% { transform: translateY(0) scale(1); }
-    25% { transform: translateY(-2px) scale(1.008); }
-    50% { transform: translateY(0) scale(1); }
-    75% { transform: translateY(-1px) scale(1.004); }
+    0%,
+    100% {
+      transform: translateY(0) scale(1);
+    }
+    25% {
+      transform: translateY(-2px) scale(1.008);
+    }
+    50% {
+      transform: translateY(0) scale(1);
+    }
+    75% {
+      transform: translateY(-1px) scale(1.004);
+    }
   }
 </style>

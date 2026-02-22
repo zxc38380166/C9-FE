@@ -83,10 +83,13 @@
     currentLevel: number;
   }>();
 
-  // ---- Tier 樣式 (from utils/vipTier.ts) ----
-  const getTierBgClass = (tier: string) => getVipTierStyle(tier).bg;
-  const getTierRingClass = (tier: string) => getVipTierStyle(tier).ring;
-  const getTierBadgeColor = (tier: string) => getVipTierStyle(tier).badgeColor as any;
+  const { formatNumber } = utsFormat();
+  const { getStyle } = utsVipTier();
+
+  // ---- Tier 樣式 ----
+  const getTierBgClass = (tier: string) => getStyle(tier).bg;
+  const getTierRingClass = (tier: string) => getStyle(tier).ring;
+  const getTierBadgeColor = (tier: string) => getStyle(tier).badgeColor as any;
 
   // ---- 捲動 ----
   const levelScrollRef = useTemplateRef<HTMLElement>('levelScrollRef');

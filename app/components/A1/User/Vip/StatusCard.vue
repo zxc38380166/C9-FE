@@ -116,13 +116,16 @@
     allLevels: VipLevel[];
   }
 
+  const { formatNumber, formatDate } = utsFormat();
+  const { getStyle, getLabel } = utsVipTier();
+
   const props = defineProps<{
     status: VipStatus;
     createdAt?: string;
   }>();
 
-  // ---- Tier 樣式 (from utils/vipTier.ts) ----
-  const style = computed(() => getVipTierStyle(props.status.tier));
+  // ---- Tier 樣式 ----
+  const style = computed(() => getStyle(props.status.tier));
 
   const tierBgClass = computed(() => style.value.bg);
   const tierBadgeClass = computed(() => style.value.badge);
@@ -131,7 +134,7 @@
   const tierIcon = computed(() => style.value.icon);
   const tierBadgeColor = computed(() => style.value.badgeColor as any);
 
-  const tierLabel = computed(() => getVipTierLabel(props.status.tier));
+  const tierLabel = computed(() => getLabel(props.status.tier));
 
   const progressPercent = computed(() => {
     const p = Number(props.status.progress || 0);

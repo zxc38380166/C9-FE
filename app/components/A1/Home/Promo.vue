@@ -24,7 +24,10 @@
 
     <!-- Loading skeleton -->
     <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-      <div v-for="i in 3" :key="i" class="rounded-xl bg-[#131f30] ring-1 ring-white/8 h-30 sm:h-40 md:h-45 animate-pulse" />
+      <div
+        v-for="i in 3"
+        :key="i"
+        class="rounded-xl bg-[#131f30] ring-1 ring-white/8 h-30 sm:h-40 md:h-45 animate-pulse" />
     </div>
 
     <!-- Promo cards -->
@@ -51,10 +54,14 @@
             class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
           <div class="absolute bottom-0 inset-x-0 p-3 sm:p-4">
             <div class="flex items-center gap-1.5 mb-1.5">
-              <UBadge :color="getPromoTagColor(item.tag)" variant="solid" size="xs">
+              <UBadge :color="getTagColor(item.tag)" variant="solid" size="xs">
                 {{ item.tag }}
               </UBadge>
-              <UBadge v-if="item.isClaimable && !item.isClaimed" color="success" variant="solid" size="xs">
+              <UBadge
+                v-if="item.isClaimable && !item.isClaimed"
+                color="success"
+                variant="solid"
+                size="xs">
                 可領取
               </UBadge>
             </div>
@@ -73,20 +80,22 @@
     </div>
 
     <!-- 頁碼指示器 -->
-    <div v-if="promoItems.length > PROMO_PER_PAGE" class="flex items-center justify-center gap-1.5 pt-1">
+    <div
+      v-if="promoItems.length > PROMO_PER_PAGE"
+      class="flex items-center justify-center gap-1.5 pt-1">
       <button
         v-for="i in promoMaxPage + 1"
         :key="i"
         type="button"
         class="h-1.5 rounded-full transition-all duration-300"
-        :class="
-          promoPage === i - 1 ? 'w-6 bg-emerald-400' : 'w-1.5 bg-white/20 hover:bg-white/40'
-        "
+        :class="promoPage === i - 1 ? 'w-6 bg-emerald-400' : 'w-1.5 bg-white/20 hover:bg-white/40'"
         @click="promoPage = i - 1" />
     </div>
   </div>
 </template>
 <script setup lang="ts">
+  const { getTagColor } = utsPromo();
+
   const loading = ref(true);
 
   interface PromoItem {
@@ -107,9 +116,6 @@
   }
 
   const promoItems = ref<PromoItem[]>([]);
-
-
-
 
   const fetchPromos = async () => {
     loading.value = true;

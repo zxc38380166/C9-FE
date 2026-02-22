@@ -108,7 +108,8 @@
         toast.add({ title: '通知', description: '加密貨幣錢包新增成功' });
         onSuccess();
       }
-    } catch {} finally {
+    } catch {
+    } finally {
       loading.value = false;
     }
   };

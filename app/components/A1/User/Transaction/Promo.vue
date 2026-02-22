@@ -3,7 +3,8 @@
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div class="flex items-center gap-2.5">
-        <div class="size-7 sm:size-8 rounded-[8px] sm:rounded-[10px] bg-amber-500/15 ring-1 ring-amber-500/25 flex items-center justify-center">
+        <div
+          class="size-7 sm:size-8 rounded-[8px] sm:rounded-[10px] bg-amber-500/15 ring-1 ring-amber-500/25 flex items-center justify-center">
           <Icon name="i-lucide-party-popper" class="size-3.5 sm:size-4 text-amber-400" />
         </div>
         <div class="text-[16px] sm:text-[18px] font-bold text-white">優惠紀錄</div>
@@ -23,7 +24,8 @@
     <!-- Loading -->
     <template v-if="loading && !claims.length">
       <div class="flex flex-col items-center justify-center py-16 space-y-3">
-        <div class="size-12 rounded-full bg-amber-500/10 ring-1 ring-amber-500/20 flex items-center justify-center">
+        <div
+          class="size-12 rounded-full bg-amber-500/10 ring-1 ring-amber-500/20 flex items-center justify-center">
           <Icon name="i-lucide-loader-2" class="size-6 text-amber-400 animate-spin" />
         </div>
         <div class="text-[13px] text-white/40">載入中...</div>
@@ -33,7 +35,8 @@
     <!-- Empty -->
     <template v-else-if="!claims.length">
       <div class="flex flex-col items-center justify-center py-16 space-y-4">
-        <div class="size-16 rounded-full bg-white/5 ring-1 ring-white/8 flex items-center justify-center">
+        <div
+          class="size-16 rounded-full bg-white/5 ring-1 ring-white/8 flex items-center justify-center">
           <Icon name="i-lucide-inbox" class="size-8 text-white/20" />
         </div>
         <div class="text-center">
@@ -50,7 +53,8 @@
 
     <!-- Table -->
     <template v-else>
-      <div class="-mx-3 sm:mx-0 overflow-x-auto scrollbar-hide sm:rounded-[12px] ring-1 ring-white/6">
+      <div
+        class="-mx-3 sm:mx-0 overflow-x-auto scrollbar-hide sm:rounded-[12px] ring-1 ring-white/6">
         <UTable
           :data="claims"
           :columns="columns"
@@ -64,9 +68,12 @@
       </div>
 
       <!-- Pagination -->
-      <div v-if="pagination.totalPages > 1" class="flex flex-col sm:flex-row items-center sm:justify-between gap-2 pt-1">
+      <div
+        v-if="pagination.totalPages > 1"
+        class="flex flex-col sm:flex-row items-center sm:justify-between gap-2 pt-1">
         <div class="text-[11px] sm:text-[12px] text-white/35 tabular-nums">
-          共 <span class="text-white/60 font-medium">{{ pagination.total }}</span> 筆，第 {{ pagination.page }} / {{ pagination.totalPages }} 頁
+          共 <span class="text-white/60 font-medium">{{ pagination.total }}</span> 筆，第
+          {{ pagination.page }} / {{ pagination.totalPages }} 頁
         </div>
         <UPagination
           :model-value="pagination.page"
@@ -83,6 +90,9 @@
   import type { TableColumn } from '@nuxt/ui';
   import { UBadge } from '#components';
 
+  const { formatNumber, formatDateTime } = utsFormat();
+  const { TAG_COLOR_MAP } = utsPromo();
+
   type PromoClaim = {
     id: number;
     promoId: number;
@@ -91,8 +101,6 @@
     rewardAmount: string;
     claimedAt: string;
   };
-
-
 
   const claims = ref<PromoClaim[]>([]);
   const loading = ref(false);
@@ -120,20 +128,24 @@
       meta: { class: { th: 'text-center', td: 'text-center' } },
       cell: ({ row }) => {
         const tag = row.getValue('promoTag') as string;
-        const color = PROMO_TAG_COLOR_MAP[tag] || 'neutral';
+        const color = TAG_COLOR_MAP[tag] || 'neutral';
         return h(UBadge, { color, variant: 'subtle' }, () => tag);
       },
     },
     {
       accessorKey: 'rewardAmount',
       header: '獎勵金額',
-      meta: { class: { th: 'text-center', td: 'text-center tabular-nums text-amber-400 font-medium' } },
+      meta: {
+        class: { th: 'text-center', td: 'text-center tabular-nums text-amber-400 font-medium' },
+      },
       cell: ({ row }) => fmtAmount(row.getValue('rewardAmount')),
     },
     {
       accessorKey: 'claimedAt',
       header: '領取時間',
-      meta: { class: { th: 'text-center', td: 'text-center text-white/50 text-[12px] tabular-nums' } },
+      meta: {
+        class: { th: 'text-center', td: 'text-center text-white/50 text-[12px] tabular-nums' },
+      },
       cell: ({ row }) => formatDateTime(row.getValue('claimedAt') as string),
     },
   ];

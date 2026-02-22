@@ -139,6 +139,8 @@
 <script setup lang="ts">
   import { useIntervalFn, useResizeObserver, useEventListener } from '@vueuse/core';
 
+  const { formatAmount, formatTime } = utsFormat();
+
   // ---- API response types ----
   interface RankingBet {
     id: number;
@@ -219,9 +221,6 @@
     }
     return 'mdi mdi-gamepad-variant';
   };
-
-
-
 
   // ---- 轉換 API 回應 → RankingItem ----
   const transformBet = (item: RankingBet): RankingItem => {

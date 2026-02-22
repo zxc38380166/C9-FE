@@ -100,7 +100,11 @@
       <div class="flex flex-col items-center space-y-5 py-4">
         <!-- QR Code -->
         <div class="rounded-[12px] sm:rounded-[16px] bg-white p-3 sm:p-4">
-          <QrcodeVue :value="depositResult.paymentAddress" :size="160" level="H" class="sm:size-50!" />
+          <QrcodeVue
+            :value="depositResult.paymentAddress"
+            :size="160"
+            level="H"
+            class="sm:size-50!" />
         </div>
 
         <!-- 繳費資訊 -->

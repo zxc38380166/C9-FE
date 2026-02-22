@@ -53,9 +53,7 @@
 
   const toast = useToast();
   const overlay = useOverlay();
-
-
-
+  const { STATUS_MAP } = utsBankCard();
 
   type CryptoAddress = {
     id: number;
@@ -98,7 +96,9 @@
       cell: ({ row }) => {
         const addr = row.getValue('address') as string;
         if (addr.length <= 10) return addr;
-        return h(UTooltip, { text: addr, 'delay-duration': 0 }, () => h('span', { class: 'cursor-default' }, maskAddress(addr)));
+        return h(UTooltip, { text: addr, 'delay-duration': 0 }, () =>
+          h('span', { class: 'cursor-default' }, maskAddress(addr)),
+        );
       },
     },
     {
@@ -106,7 +106,7 @@
       header: '狀態',
       meta: { class: { th: 'text-center w-1/6', td: 'text-center w-1/6' } },
       cell: ({ row }) => {
-        const s = BANK_CARD_STATUS_MAP[row.getValue('status') as number] ?? BANK_CARD_STATUS_MAP[0]!;
+        const s = STATUS_MAP[row.getValue('status') as number] ?? STATUS_MAP[0]!;
         return h(UBadge, { color: s!.color, variant: 'subtle' }, () => s!.label);
       },
     },
@@ -115,14 +115,18 @@
       header: '操作',
       meta: { class: { th: 'text-center w-1/6', td: 'text-center w-1/6' } },
       cell: ({ row }) =>
-        h(UButton, {
-          size: 'xs',
-          color: 'error',
-          variant: 'soft',
-          icon: 'i-lucide-trash-2',
-          class: 'cursor-pointer',
-          onClick: () => onDeleteCryptoAddress(row.original.id),
-        }, () => '刪除'),
+        h(
+          UButton,
+          {
+            size: 'xs',
+            color: 'error',
+            variant: 'soft',
+            icon: 'i-lucide-trash-2',
+            class: 'cursor-pointer',
+            onClick: () => onDeleteCryptoAddress(row.original.id),
+          },
+          () => '刪除',
+        ),
     },
   ];
 

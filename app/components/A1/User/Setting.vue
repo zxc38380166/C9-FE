@@ -16,7 +16,8 @@
           <USeparator />
         </template>
         <template #title>
-          <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
+          <div
+            class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 w-full">
             <UUser
               :name="store.getUserDetail?.name"
               :ui="{ description: 'text-[14px] sm:text-[16px] text-white' }"
@@ -175,7 +176,8 @@
       <div
         v-if="store.getUserDetail.loginLogs"
         class="w-full space-y-4 pb-4 bg-slate-900 rounded-lg">
-        <div class="flex flex-col sm:flex-row sm:justify-between gap-2 px-3 sm:px-4 py-3 sm:py-3.5 border-b border-accented">
+        <div
+          class="flex flex-col sm:flex-row sm:justify-between gap-2 px-3 sm:px-4 py-3 sm:py-3.5 border-b border-accented">
           <div class="text-[16px] sm:text-[20px] px-0 sm:px-2 font-bold">登入位置 (最近20筆)</div>
           <UInput
             v-model="globalFilter"
@@ -253,7 +255,7 @@
         mobile: !!store.getUserDetail?.mobile,
         telegram: !!store.getUserDetail?.telegram,
         google: !!store.getUserDetail?.google,
-      } as const),
+      }) as const,
   );
 
   const vertifyInfoFields = [

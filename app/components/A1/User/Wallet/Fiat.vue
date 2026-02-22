@@ -54,9 +54,7 @@
 
   const toast = useToast();
   const overlay = useOverlay();
-
-
-
+  const { STATUS_MAP } = utsBankCard();
 
   type BankCard = {
     id: number;
@@ -104,7 +102,8 @@
       accessorKey: 'bankCode',
       header: '銀行',
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
-      cell: ({ row }) => bankNameMap.value[row.getValue('bankCode') as string] || row.getValue('bankCode'),
+      cell: ({ row }) =>
+        bankNameMap.value[row.getValue('bankCode') as string] || row.getValue('bankCode'),
     },
     {
       accessorKey: 'bankAccount',
@@ -116,7 +115,9 @@
       accessorKey: 'branch',
       header: '分行',
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
-      cell: ({ row }) => branchNameMap.value[row.original.bankCode]?.[row.getValue('branch') as string] || row.getValue('branch'),
+      cell: ({ row }) =>
+        branchNameMap.value[row.original.bankCode]?.[row.getValue('branch') as string] ||
+        row.getValue('branch'),
     },
     {
       accessorKey: 'holderName',
@@ -128,7 +129,7 @@
       header: '狀態',
       meta: { class: { th: 'text-center w-1/6', td: 'text-center w-1/6' } },
       cell: ({ row }) => {
-        const s = BANK_CARD_STATUS_MAP[row.getValue('status') as number] ?? BANK_CARD_STATUS_MAP[0]!;
+        const s = STATUS_MAP[row.getValue('status') as number] ?? STATUS_MAP[0]!;
         return h(UBadge, { color: s!.color, variant: 'subtle' }, () => s!.label);
       },
     },
@@ -138,8 +139,29 @@
       meta: { class: { th: 'text-center w-1/6', td: 'text-center w-1/6' } },
       cell: ({ row }) =>
         h('div', { class: 'flex items-center justify-center gap-1.5' }, [
-          h(UButton, { size: 'xs', variant: 'soft', icon: 'i-lucide-eye', class: 'cursor-pointer', onClick: () => openBankCardDetail(row.original) }, () => '詳情'),
-          h(UButton, { size: 'xs', color: 'error', variant: 'soft', icon: 'i-lucide-trash-2', class: 'cursor-pointer', onClick: () => onDeleteBankCard(row.original.id) }, () => '刪除'),
+          h(
+            UButton,
+            {
+              size: 'xs',
+              variant: 'soft',
+              icon: 'i-lucide-eye',
+              class: 'cursor-pointer',
+              onClick: () => openBankCardDetail(row.original),
+            },
+            () => '詳情',
+          ),
+          h(
+            UButton,
+            {
+              size: 'xs',
+              color: 'error',
+              variant: 'soft',
+              icon: 'i-lucide-trash-2',
+              class: 'cursor-pointer',
+              onClick: () => onDeleteBankCard(row.original.id),
+            },
+            () => '刪除',
+          ),
         ]),
     },
   ];

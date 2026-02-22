@@ -33,18 +33,15 @@
           :src="promo.imgPc"
           :alt="promo.title"
           class="hidden sm:block w-full h-72 object-cover" />
-        <div class="absolute inset-0 bg-linear-to-t from-[#131f30] via-[#131f30]/40 to-transparent" />
+        <div
+          class="absolute inset-0 bg-linear-to-t from-[#131f30] via-[#131f30]/40 to-transparent" />
         <div class="absolute bottom-0 inset-x-0 p-5 sm:p-8">
           <div class="flex flex-wrap items-center gap-2 mb-3">
-            <UBadge :color="getPromoTagColor(promo.tag)" variant="solid">
+            <UBadge :color="getTagColor(promo.tag)" variant="solid">
               {{ promo.tag }}
             </UBadge>
-            <UBadge v-if="promo.isActive" color="success" variant="solid">
-              進行中
-            </UBadge>
-            <UBadge v-else color="neutral" variant="solid">
-              已結束
-            </UBadge>
+            <UBadge v-if="promo.isActive" color="success" variant="solid"> 進行中 </UBadge>
+            <UBadge v-else color="neutral" variant="solid"> 已結束 </UBadge>
           </div>
           <h1 class="text-[22px] sm:text-[32px] font-bold text-white leading-tight">
             {{ promo.title }}
@@ -108,14 +105,20 @@
               已領取 {{ promo.claimedCount || 0 }} / {{ promo.maxClaims || '∞' }} 次
             </div>
             <!-- 進度條 -->
-            <div v-if="promo.maxClaims" class="w-full sm:w-60 h-2 rounded-full bg-white/5 overflow-hidden">
+            <div
+              v-if="promo.maxClaims"
+              class="w-full sm:w-60 h-2 rounded-full bg-white/5 overflow-hidden">
               <div
                 class="h-full rounded-full bg-linear-to-r from-emerald-500 to-emerald-400 transition-all duration-500"
-                :style="{ width: `${Math.min(100, ((promo.claimedCount || 0) / promo.maxClaims) * 100)}%` }" />
+                :style="{
+                  width: `${Math.min(100, ((promo.claimedCount || 0) / promo.maxClaims) * 100)}%`,
+                }" />
             </div>
           </div>
           <button
-            :disabled="isLogin && (!promo.isActive || promo.isClaimed || !promo.isClaimable || claiming)"
+            :disabled="
+              isLogin && (!promo.isActive || promo.isClaimed || !promo.isClaimable || claiming)
+            "
             class="w-full sm:w-auto px-8 py-3 rounded-xl text-[14px] sm:text-[15px] font-bold transition-all duration-200 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
             :class="claimButtonClass"
             @click="isLogin ? onClaim() : openLoginModal()">
@@ -143,7 +146,9 @@
           v-if="promo.actionHtml"
           class="promo-content prose prose-invert max-w-none text-[13px] sm:text-[15px] leading-relaxed text-white/70"
           v-html="promo.actionHtml" />
-        <div v-if="!promo.content && !promo.actionHtml" class="text-center py-6 text-white/30 text-[14px]">
+        <div
+          v-if="!promo.content && !promo.actionHtml"
+          class="text-center py-6 text-white/30 text-[14px]">
           暫無詳細說明
         </div>
       </div>
@@ -162,6 +167,9 @@
   </div>
 </template>
 <script setup lang="ts">
+  const { formatDate } = utsFormat();
+  const { getTagColor, CONDITION_MAP } = utsPromo();
+
   const route = useRoute();
   const router = useRouter();
   const toast = useToast();
@@ -197,17 +205,14 @@
     if (!promo.value) return '';
     const type = promo.value.conditionType;
     const value = promo.value.conditionValue;
-    const base = PROMO_CONDITION_MAP[type] || type;
-    if (type === 'deposit_threshold' && Number(value)) return `${base} $${Number(value).toLocaleString()}`;
+    const base = CONDITION_MAP[type] || type;
+    if (type === 'deposit_threshold' && Number(value))
+      return `${base} $${Number(value).toLocaleString()}`;
     if (type === 'vip_level' && Number(value)) return `${base} Lv.${value}`;
     return base;
   });
 
-
-
-
-  const formatPromoDate = (dateStr: string) =>
-    formatDate(dateStr, { hour: '2-digit', minute: '2-digit' });
+  const formatPromoDate = (dateStr: string) => formatDate(dateStr, 'YYYY/MM/DD HH:mm');
 
   const claimButtonText = computed(() => {
     if (!isLogin.value) return '登入參加';

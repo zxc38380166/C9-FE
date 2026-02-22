@@ -9,11 +9,8 @@
         <div
           class="absolute inset-0"
           style="
-            background: radial-gradient(
-                circle at 20% 20%,
-                rgba(255, 255, 255, 0.06),
-                transparent 55%
-              ),
+            background:
+              radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.06), transparent 55%),
               radial-gradient(circle at 55% 10%, rgba(255, 255, 255, 0.05), transparent 60%),
               radial-gradient(circle at 70% 75%, rgba(0, 0, 0, 0.35), transparent 55%);
           " />
@@ -88,10 +85,13 @@
                   :class="vipBarClass"
                   :style="{ width: `${vipProgressPercent}%` }" />
               </div>
-              <div class="flex items-center justify-between text-[10px] sm:text-[11px] text-white/30">
+              <div
+                class="flex items-center justify-between text-[10px] sm:text-[11px] text-white/30">
                 <span>${{ formatVipNumber(vipStatus.currentChip) }}</span>
                 <span v-if="vipNextLevel">
-                  下一級: {{ vipNextLevel.name }} (${{ formatVipNumber(vipStatus.nextLevelMinChip) }})
+                  下一級: {{ vipNextLevel.name }} (${{
+                    formatVipNumber(vipStatus.nextLevelMinChip)
+                  }})
                 </span>
                 <span v-else class="flex items-center gap-1">
                   <Icon name="i-lucide-sparkles" class="size-3 text-amber-400" />
@@ -125,7 +125,8 @@
 
           <!-- VIP 載入失敗 fallback -->
           <template v-else>
-            <h2 class="font-bold text-[22px] sm:text-[26px] text-white mb-3 flex items-center gap-2">
+            <h2
+              class="font-bold text-[22px] sm:text-[26px] text-white mb-3 flex items-center gap-2">
               <Icon name="noto:crown" class="text-[24px]" />
               VIP 進度
             </h2>
@@ -181,11 +182,14 @@
               :alt="item.title"
               class="h-full w-full object-cover object-top" />
             <!-- 底部融合漸層 -->
-            <div class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-[#131f30] to-transparent" />
+            <div
+              class="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-linear-to-t from-[#131f30] to-transparent" />
             <!-- hover 光暈 -->
             <div
               class="pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-400"
-              :style="{ background: `radial-gradient(ellipse at 50% 0%, ${item.accentColor}15, transparent 65%)` }" />
+              :style="{
+                background: `radial-gradient(ellipse at 50% 0%, ${item.accentColor}15, transparent 65%)`,
+              }" />
           </div>
           <!-- 底部資訊 -->
           <div class="flex items-center justify-between px-5 py-3.5 bg-[#131f30]">
@@ -197,12 +201,15 @@
               </div>
               <div>
                 <div class="text-[15px] font-bold text-white tracking-wide">{{ item.title }}</div>
-                <div class="text-[11px] text-white/35 group-hover:text-white/50 transition-colors">進入遊戲大廳</div>
+                <div class="text-[11px] text-white/35 group-hover:text-white/50 transition-colors">
+                  進入遊戲大廳
+                </div>
               </div>
             </div>
             <div class="flex items-center gap-2">
               <span class="relative flex size-2">
-                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                <span
+                  class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                 <span class="relative inline-flex size-2 rounded-full bg-emerald-500" />
               </span>
               <span class="text-[14px] font-bold text-white/80">
@@ -217,6 +224,9 @@
 </template>
 <script setup lang="ts">
   import { A1ModalRegister } from '#components';
+
+  const { formatNumber } = utsFormat();
+  const { getStyle: getVipStyle, getLabel: getVipLabel } = utsVipTier();
 
   type CategoryItem = {
     key: string;
@@ -296,7 +306,7 @@
   const vipStatus = ref<VipHomeStatus | null>(null);
 
   const vipTier = computed(() => vipStatus.value?.tier || 'bronze');
-  const vipStyle = computed(() => getVipTierStyle(vipTier.value));
+  const vipStyle = computed(() => getVipStyle(vipTier.value));
 
   const vipTierIcon = computed(() => vipStyle.value.icon);
   const vipBadgeClass = computed(() => vipStyle.value.badge);
@@ -304,7 +314,7 @@
   const vipTextClass = computed(() => vipStyle.value.text);
   const vipBadgeColor = computed(() => vipStyle.value.badgeColor as any);
 
-  const vipTierLabel = computed(() => getVipTierLabel(vipTier.value));
+  const vipTierLabel = computed(() => getVipLabel(vipTier.value));
 
   const vipProgressPercent = computed(() => {
     const p = Number(vipStatus.value?.progress || 0);

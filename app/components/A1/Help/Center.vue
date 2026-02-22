@@ -1,7 +1,8 @@
 <template>
   <div class="space-y-5 sm:space-y-8">
     <!-- 頁面標題 -->
-    <div class="flex items-center gap-3 rounded-2xl bg-[#131f30] ring-1 ring-white/8 px-5 py-4 sm:px-6 sm:py-5">
+    <div
+      class="flex items-center gap-3 rounded-2xl bg-[#131f30] ring-1 ring-white/8 px-5 py-4 sm:px-6 sm:py-5">
       <div
         class="size-10 sm:size-12 rounded-xl bg-linear-to-br from-emerald-500/20 to-emerald-700/10 ring-1 ring-emerald-500/30 flex items-center justify-center">
         <Icon name="noto:books" class="text-[20px] sm:text-[24px]" />
@@ -16,7 +17,8 @@
     <div class="flex flex-col lg:flex-row gap-5 sm:gap-6">
       <!-- 左側固定導航 (桌面版) -->
       <nav class="hidden lg:block lg:w-52 shrink-0">
-        <div class="lg:sticky lg:top-20 rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-2.5 space-y-0.5">
+        <div
+          class="lg:sticky lg:top-20 rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-2.5 space-y-0.5">
           <button
             v-for="tab in tabs"
             :key="tab.key"
@@ -56,7 +58,9 @@
       <!-- 右側內容 -->
       <div class="flex-1 min-w-0 space-y-5 sm:space-y-6">
         <!-- gambling -->
-        <div v-if="activeTab === 'gambling'" class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8">
+        <div
+          v-if="activeTab === 'gambling'"
+          class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8">
           <SectionTitle :icon="'i-lucide-alert-triangle'" :color="'amber'">
             {{ $t('help.gambling.title') }}
           </SectionTitle>
@@ -69,7 +73,9 @@
         </div>
 
         <!-- fair -->
-        <div v-if="activeTab === 'fair'" class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8">
+        <div
+          v-if="activeTab === 'fair'"
+          class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8">
           <SectionTitle :icon="'i-lucide-scale'" :color="'emerald'">
             {{ $t('help.fair.title', { site }) }}
           </SectionTitle>
@@ -82,7 +88,9 @@
         </div>
 
         <!-- privacy -->
-        <div v-if="activeTab === 'privacy'" class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8">
+        <div
+          v-if="activeTab === 'privacy'"
+          class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8">
           <SectionTitle :icon="'i-lucide-shield'" :color="'blue'">
             {{ $t('help.privacy.title') }}
           </SectionTitle>
@@ -122,7 +130,9 @@
         </template>
 
         <!-- terms -->
-        <div v-if="activeTab === 'terms'" class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8">
+        <div
+          v-if="activeTab === 'terms'"
+          class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8">
           <SectionTitle :icon="'i-lucide-file-text'" :color="'rose'">
             {{ $t('help.terms.title') }}
           </SectionTitle>

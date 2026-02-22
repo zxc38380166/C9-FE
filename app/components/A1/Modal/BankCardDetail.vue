@@ -57,6 +57,9 @@
   </UModal>
 </template>
 <script setup lang="ts">
+  const { formatDateTime } = utsFormat();
+  const { STATUS_MAP } = utsBankCard();
+
   const { card } = defineProps<{
     card: {
       id: number;
@@ -73,10 +76,7 @@
     };
   }>();
 
-
-
-
-  const statusConfig = computed(() => BANK_CARD_STATUS_MAP[card.status] || BANK_CARD_STATUS_MAP[0]);
+  const statusConfig = computed(() => STATUS_MAP[card.status] || STATUS_MAP[0]);
 
   type BankCodeItem = { value: string; label: string; child?: { value: string; label: string }[] };
   const bankCodeData = ref<BankCodeItem[]>([]);
@@ -110,9 +110,6 @@
     { key: 'idCardBack', label: '身分證反面', url: card.idCardBack },
     { key: 'passbookCover', label: '銀行存摺封面', url: card.passbookCover },
   ]);
-
-
-
 
   const openImage = (url: string) => {
     window.open(url, '_blank');
