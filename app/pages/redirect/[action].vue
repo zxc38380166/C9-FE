@@ -35,12 +35,9 @@
         const code = str(route.query.code);
         const state = str(route.query.state);
 
-        console.log(code, state, 'code, state ');
-
         await useApi()
           .loginGoogle({ code, state })
           .then(async (res) => {
-            console.log(res, 'res');
             await setToken(res.result.token);
             await refreshUserData();
             const to = safePath(String(res?.redirectAfter || '/'));
@@ -50,9 +47,6 @@
       line: async () => {},
     };
 
-    console.log(action, 'action');
-
     handlers[action]?.();
-    console.log(handlers[action], 'handlers[action]');
   });
 </script>

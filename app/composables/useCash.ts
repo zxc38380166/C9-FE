@@ -152,9 +152,6 @@ export default function () {
     try {
       const resp = await useApi().getDepositChannels();
       let parsed = resp?.code === 200 ? parseChannelsResult(resp.result) : [];
-
-      console.log(parsed, 'parsed');
-
       channels.value = parsed;
     } catch {
     } finally {

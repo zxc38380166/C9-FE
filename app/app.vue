@@ -41,8 +41,6 @@
     const provider = gameProviderRes?.data?.value?.result;
     const loginConfig = loginConfigRes?.data?.value?.result;
 
-    console.log(loginConfig, 'loginConfig');
-
     if (userDetail) store.setUserDetail(userDetail);
     if (countryCodes) store.setCountryCodes(countryCodes);
     if (enums) store.setEnums(enums);

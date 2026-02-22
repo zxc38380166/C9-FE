@@ -42,5 +42,6 @@ export default function () {
       getVipLevels: (payload?: any, opts?: Opts) => useHttp('/api/vip/levels', { method: HTTP_METHOD.GET, body: payload, ...opts }),
       getVipRebates: (payload?: any, opts?: Opts) => useHttp('/api/vip/rebates', { method: HTTP_METHOD.GET, body: payload, ...opts }),
       getVipStatus: (payload?: any, opts?: Opts) => useHttp('/api/vip/status', { method: HTTP_METHOD.GET, body: payload, ...opts }),
+      getRanking: (payload?: any, opts?: Opts) => useHttp('/api/ranking', { method: HTTP_METHOD.GET, body: payload, ...opts }),
     };
   }
