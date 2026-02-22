@@ -38,7 +38,7 @@
                 : 'bg-white/5 text-white/50 ring-1 ring-white/8 hover:bg-white/8 hover:text-white/70'
             "
             @click="activeTab = tab.value">
-            <UIcon v-if="tab.icon" :name="tab.icon" class="size-3.5 sm:size-4" />
+            <Icon v-if="tab.icon" :name="tab.icon" class="size-3.5 sm:size-4" />
             {{ tab.label }}
           </button>
         </div>

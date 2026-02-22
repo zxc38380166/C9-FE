@@ -4,7 +4,7 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div class="flex items-center gap-2.5">
         <div class="size-7 sm:size-8 rounded-[8px] sm:rounded-[10px] bg-emerald-500/15 ring-1 ring-emerald-500/25 flex items-center justify-center">
-          <UIcon name="i-lucide-arrow-down-to-line" class="size-3.5 sm:size-4 text-emerald-400" />
+          <Icon name="i-lucide-arrow-down-to-line" class="size-3.5 sm:size-4 text-emerald-400" />
         </div>
         <div class="text-[16px] sm:text-[18px] font-bold text-white">存款紀錄</div>
       </div>
@@ -36,7 +36,7 @@
     <template v-if="loading && !orders.length">
       <div class="flex flex-col items-center justify-center py-16 space-y-3">
         <div class="size-12 rounded-full bg-emerald-500/10 ring-1 ring-emerald-500/20 flex items-center justify-center">
-          <UIcon name="i-lucide-loader-2" class="size-6 text-emerald-400 animate-spin" />
+          <Icon name="i-lucide-loader-2" class="size-6 text-emerald-400 animate-spin" />
         </div>
         <div class="text-[13px] text-white/40">載入中...</div>
       </div>
@@ -46,7 +46,7 @@
     <template v-else-if="!orders.length">
       <div class="flex flex-col items-center justify-center py-16 space-y-4">
         <div class="size-16 rounded-full bg-white/5 ring-1 ring-white/8 flex items-center justify-center">
-          <UIcon name="i-lucide-inbox" class="size-8 text-white/20" />
+          <Icon name="i-lucide-inbox" class="size-8 text-white/20" />
         </div>
         <div class="text-center">
           <div class="text-[15px] font-medium text-white/50">暫無存款紀錄</div>

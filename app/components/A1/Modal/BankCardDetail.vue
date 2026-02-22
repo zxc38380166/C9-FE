@@ -32,7 +32,7 @@
               class="rounded-xl bg-slate-900/50 ring-1 ring-white/10 p-2 flex items-center justify-center min-h-20"
               :class="img.url ? 'cursor-pointer hover:ring-white/20 transition-colors' : ''"
               @click="img.url && openImage(img.url)">
-              <img
+              <NuxtImg
                 v-if="img.url"
                 :src="img.url"
                 class="max-h-40 rounded-lg object-contain"

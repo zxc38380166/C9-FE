@@ -4,7 +4,7 @@
     <NuxtLink
       to="/promo"
       class="inline-flex items-center gap-1.5 text-[13px] text-white/50 hover:text-white transition-colors">
-      <UIcon name="i-lucide-arrow-left" class="size-4" />
+      <Icon name="i-lucide-arrow-left" class="size-4" />
       返回活動列表
     </NuxtLink>
 
@@ -57,7 +57,7 @@
         <!-- 獎勵金額 -->
         <div class="rounded-xl bg-[#131f30] ring-1 ring-white/8 p-3.5 sm:p-4 space-y-1.5">
           <div class="flex items-center gap-1.5 text-[11px] sm:text-[12px] text-white/40">
-            <UIcon name="i-lucide-gift" class="size-3.5 text-amber-400" />
+            <Icon name="i-lucide-gift" class="size-3.5 text-amber-400" />
             獎勵金額
           </div>
           <div class="text-[18px] sm:text-[22px] font-bold text-amber-400">
@@ -67,7 +67,7 @@
         <!-- 活動條件 -->
         <div class="rounded-xl bg-[#131f30] ring-1 ring-white/8 p-3.5 sm:p-4 space-y-1.5">
           <div class="flex items-center gap-1.5 text-[11px] sm:text-[12px] text-white/40">
-            <UIcon name="i-lucide-target" class="size-3.5 text-emerald-400" />
+            <Icon name="i-lucide-target" class="size-3.5 text-emerald-400" />
             活動條件
           </div>
           <div class="text-[14px] sm:text-[16px] font-semibold text-white/80">
@@ -77,7 +77,7 @@
         <!-- 開始時間 -->
         <div class="rounded-xl bg-[#131f30] ring-1 ring-white/8 p-3.5 sm:p-4 space-y-1.5">
           <div class="flex items-center gap-1.5 text-[11px] sm:text-[12px] text-white/40">
-            <UIcon name="i-lucide-calendar" class="size-3.5 text-blue-400" />
+            <Icon name="i-lucide-calendar" class="size-3.5 text-blue-400" />
             開始時間
           </div>
           <div class="text-[13px] sm:text-[14px] font-medium text-white/70">
@@ -87,7 +87,7 @@
         <!-- 結束時間 -->
         <div class="rounded-xl bg-[#131f30] ring-1 ring-white/8 p-3.5 sm:p-4 space-y-1.5">
           <div class="flex items-center gap-1.5 text-[11px] sm:text-[12px] text-white/40">
-            <UIcon name="i-lucide-clock" class="size-3.5 text-rose-400" />
+            <Icon name="i-lucide-clock" class="size-3.5 text-rose-400" />
             結束時間
           </div>
           <div class="text-[13px] sm:text-[14px] font-medium text-white/70">
@@ -101,7 +101,7 @@
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div class="space-y-2">
             <div class="flex items-center gap-2">
-              <UIcon name="i-lucide-trophy" class="size-5 text-amber-400" />
+              <Icon name="i-lucide-trophy" class="size-5 text-amber-400" />
               <span class="text-[16px] sm:text-[18px] font-bold text-white">領取獎勵</span>
             </div>
             <div class="text-[12px] sm:text-[13px] text-white/50">
@@ -115,11 +115,12 @@
             </div>
           </div>
           <button
-            :disabled="!promo.isActive || promo.isClaimed || !promo.isClaimable || claiming"
-            class="w-full sm:w-auto px-8 py-3 rounded-xl text-[14px] sm:text-[15px] font-bold transition-all duration-200 cursor-pointer disabled:cursor-not-allowed"
+            :disabled="isLogin && (!promo.isActive || promo.isClaimed || !promo.isClaimable || claiming)"
+            class="w-full sm:w-auto px-8 py-3 rounded-xl text-[14px] sm:text-[15px] font-bold transition-all duration-200 cursor-pointer disabled:cursor-not-allowed flex items-center justify-center gap-1.5"
             :class="claimButtonClass"
-            @click="onClaim">
-            <UIcon v-if="claiming" name="i-lucide-loader-2" class="size-4 animate-spin mr-1.5" />
+            @click="isLogin ? onClaim() : openLoginModal()">
+            <Icon v-if="!isLogin" name="i-lucide-log-in" class="size-4" />
+            <Icon v-else-if="claiming" name="i-lucide-loader-2" class="size-4 animate-spin" />
             {{ claimButtonText }}
           </button>
         </div>
@@ -128,7 +129,7 @@
       <!-- 活動內容 -->
       <div class="rounded-2xl bg-[#131f30] ring-1 ring-white/8 p-5 sm:p-8 space-y-4">
         <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-file-text" class="size-5 text-emerald-400" />
+          <Icon name="i-lucide-file-text" class="size-5 text-emerald-400" />
           <span class="text-[16px] sm:text-[18px] font-bold text-white">活動詳情</span>
         </div>
         <div class="h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
@@ -151,7 +152,7 @@
     <!-- Error / Not found -->
     <template v-else>
       <div class="flex flex-col items-center justify-center py-20 text-white/40 space-y-3">
-        <UIcon name="i-lucide-search-x" class="size-12" />
+        <Icon name="i-lucide-search-x" class="size-12" />
         <span class="text-[16px] font-medium">找不到該活動</span>
         <NuxtLink to="/" class="text-emerald-400 hover:text-emerald-300 text-[14px]">
           返回首頁
@@ -164,7 +165,8 @@
   const route = useRoute();
   const router = useRouter();
   const toast = useToast();
-  const { refreshUserData } = useAuth();
+  const { isLogin, refreshUserData } = useAuth();
+  const { openLoginModal } = useLayout();
 
   interface PromoDetail {
     id: number;
@@ -239,6 +241,7 @@
   };
 
   const claimButtonText = computed(() => {
+    if (!isLogin.value) return '登入參加';
     if (claiming.value) return '領取中...';
     if (!promo.value?.isActive) return '活動已結束';
     if (promo.value?.isClaimed) return '已領取';
@@ -247,6 +250,9 @@
   });
 
   const claimButtonClass = computed(() => {
+    if (!isLogin.value) {
+      return 'bg-linear-to-r from-amber-500 to-amber-600 text-white shadow-[0_0_24px_-4px_rgba(245,158,11,0.4)] hover:from-amber-400 hover:to-amber-500 hover:shadow-[0_0_30px_-4px_rgba(245,158,11,0.5)]';
+    }
     if (!promo.value?.isActive || promo.value?.isClaimed || !promo.value?.isClaimable) {
       return 'bg-white/5 text-white/30 ring-1 ring-white/8';
     }

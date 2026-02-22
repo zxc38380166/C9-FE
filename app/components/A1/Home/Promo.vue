@@ -11,13 +11,13 @@
           type="button"
           class="size-7 sm:size-8 flex items-center justify-center rounded-lg bg-white/5 ring-1 ring-white/10 text-white/50 hover:bg-white/10 hover:text-white transition-colors"
           @click="promoPage > 0 && promoPage--">
-          <UIcon name="i-lucide-chevron-left" class="size-4" />
+          <Icon name="i-lucide-chevron-left" class="size-4" />
         </button>
         <button
           type="button"
           class="size-7 sm:size-8 flex items-center justify-center rounded-lg bg-white/5 ring-1 ring-white/10 text-white/50 hover:bg-white/10 hover:text-white transition-colors"
           @click="promoPage < promoMaxPage && promoPage++">
-          <UIcon name="i-lucide-chevron-right" class="size-4" />
+          <Icon name="i-lucide-chevron-right" class="size-4" />
         </button>
       </div>
     </div>
@@ -68,7 +68,7 @@
 
     <!-- Empty state -->
     <div v-else class="flex flex-col items-center justify-center py-10 text-white/40">
-      <UIcon name="i-lucide-party-popper" class="size-10 mb-2" />
+      <Icon name="i-lucide-party-popper" class="size-10 mb-2" />
       <span class="text-[14px]">暫無活動</span>
     </div>
 

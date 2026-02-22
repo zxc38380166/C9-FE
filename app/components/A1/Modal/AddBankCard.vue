@@ -67,7 +67,7 @@
             @dragover.prevent
             @drop.prevent="onDrop($event, 'idCardFront')">
             <template v-if="previews.idCardFront">
-              <img :src="previews.idCardFront" class="max-h-25 rounded-lg object-contain" />
+              <NuxtImg :src="previews.idCardFront" class="max-h-25 rounded-lg object-contain" />
               <span class="mt-1 text-[12px] text-white/50">點擊重新選擇</span>
             </template>
             <template v-else>
@@ -91,7 +91,7 @@
             @dragover.prevent
             @drop.prevent="onDrop($event, 'idCardBack')">
             <template v-if="previews.idCardBack">
-              <img :src="previews.idCardBack" class="max-h-25 rounded-lg object-contain" />
+              <NuxtImg :src="previews.idCardBack" class="max-h-25 rounded-lg object-contain" />
               <span class="mt-1 text-[12px] text-white/50">點擊重新選擇</span>
             </template>
             <template v-else>
@@ -115,7 +115,7 @@
             @dragover.prevent
             @drop.prevent="onDrop($event, 'passbookCover')">
             <template v-if="previews.passbookCover">
-              <img :src="previews.passbookCover" class="max-h-[100px] rounded-lg object-contain" />
+              <NuxtImg :src="previews.passbookCover" class="max-h-[100px] rounded-lg object-contain" />
               <span class="mt-1 text-[12px] text-white/50">點擊重新選擇</span>
             </template>
             <template v-else>

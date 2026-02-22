@@ -38,6 +38,7 @@
     "zod": "^4.3.5"
   },
   "devDependencies": {
+    "@iconify-json/lucide": "^1.2.93",
     "@playwright/test": "^1.57.0",
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^20.3.1",

@@ -2,7 +2,7 @@
   <div class="w-full space-y-4">
     <template v-if="loadingCreditCards">
       <div class="flex items-center justify-center py-12">
-        <UIcon name="i-lucide-loader-2" class="size-8 text-white/40 animate-spin" />
+        <Icon name="i-lucide-loader-2" class="size-8 text-white/40 animate-spin" />
       </div>
     </template>
     <template v-else>

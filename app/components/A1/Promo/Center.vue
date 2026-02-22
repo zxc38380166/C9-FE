@@ -107,13 +107,13 @@
                 <!-- 獎勵 & 時間 -->
                 <div class="flex items-center justify-between">
                   <div class="flex items-center gap-1.5">
-                    <UIcon name="i-lucide-gift" class="size-3.5 text-amber-400" />
+                    <Icon name="i-lucide-gift" class="size-3.5 text-amber-400" />
                     <span class="text-[13px] sm:text-[14px] font-semibold text-amber-400">
                       ${{ Number(item.rewardAmount || 0).toLocaleString() }}
                     </span>
                   </div>
                   <div class="flex items-center gap-1 text-[11px] sm:text-[12px] text-white/35">
-                    <UIcon name="i-lucide-clock" class="size-3" />
+                    <Icon name="i-lucide-clock" class="size-3" />
                     {{ formatDateShort(item.endTime) }}
                   </div>
                 </div>
@@ -136,25 +136,35 @@
                 <!-- 底部操作 -->
                 <div class="flex items-center justify-between pt-1">
                   <div class="flex items-center gap-1.5">
-                    <UIcon name="i-lucide-target" class="size-3 text-white/30" />
+                    <Icon name="i-lucide-target" class="size-3 text-white/30" />
                     <span class="text-[11px] sm:text-[12px] text-white/40">{{
                       getConditionLabel(item)
                     }}</span>
                   </div>
+                  <!-- 未登入：登入參加 -->
                   <button
-                    v-if="item.isClaimable && !item.isClaimed && item.isActive"
+                    v-if="!isLogin"
+                    class="relative z-10 flex items-center gap-1 px-3 py-1 rounded-lg text-[12px] sm:text-[13px] font-bold bg-linear-to-r from-amber-500 to-amber-600 text-white shadow-[0_0_12px_-2px_rgba(245,158,11,0.4)] hover:from-amber-400 hover:to-amber-500 transition-all cursor-pointer"
+                    @click.prevent="openLoginModal()">
+                    <Icon name="i-lucide-log-in" class="size-3.5" />
+                    登入參加
+                  </button>
+                  <!-- 已登入 + 可領取 -->
+                  <button
+                    v-else-if="item.isClaimable && !item.isClaimed && item.isActive"
                     class="relative z-10 flex items-center gap-1 px-3 py-1 rounded-lg text-[12px] sm:text-[13px] font-bold bg-linear-to-r from-emerald-500 to-emerald-600 text-white shadow-[0_0_12px_-2px_rgba(16,185,129,0.4)] hover:from-emerald-400 hover:to-emerald-500 transition-all cursor-pointer disabled:opacity-50"
                     :disabled="claimingId === item.id"
                     @click.prevent="onQuickClaim(item)">
-                    <UIcon v-if="claimingId === item.id" name="i-lucide-loader-2" class="size-3.5 animate-spin" />
-                    <UIcon v-else name="i-lucide-gift" class="size-3.5" />
+                    <Icon v-if="claimingId === item.id" name="i-lucide-loader-2" class="size-3.5 animate-spin" />
+                    <Icon v-else name="i-lucide-gift" class="size-3.5" />
                     {{ claimingId === item.id ? '領取中' : '立即領取' }}
                   </button>
+                  <!-- 其他：查看詳情 -->
                   <div
                     v-else
                     class="flex items-center gap-1 text-emerald-400 text-[12px] sm:text-[13px] font-medium group-hover:gap-2 transition-all">
                     查看詳情
-                    <UIcon name="i-lucide-arrow-right" class="size-3.5" />
+                    <Icon name="i-lucide-arrow-right" class="size-3.5" />
                   </div>
                 </div>
               </div>
@@ -168,7 +178,7 @@
             :disabled="pagination.page <= 1"
             class="size-9 rounded-lg bg-white/5 ring-1 ring-white/8 flex items-center justify-center text-white/50 hover:bg-white/10 hover:text-white transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
             @click="goToPage(pagination.page - 1)">
-            <UIcon name="i-lucide-chevron-left" class="size-4" />
+            <Icon name="i-lucide-chevron-left" class="size-4" />
           </button>
           <template v-for="p in paginationRange" :key="p">
             <span v-if="p === '...'" class="px-1 text-white/30 text-[13px]">...</span>
@@ -188,7 +198,7 @@
             :disabled="pagination.page >= pagination.totalPages"
             class="size-9 rounded-lg bg-white/5 ring-1 ring-white/8 flex items-center justify-center text-white/50 hover:bg-white/10 hover:text-white transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
             @click="goToPage(pagination.page + 1)">
-            <UIcon name="i-lucide-chevron-right" class="size-4" />
+            <Icon name="i-lucide-chevron-right" class="size-4" />
           </button>
         </div>
       </template>
@@ -197,7 +207,7 @@
       <div v-else class="flex flex-col items-center justify-center py-20 space-y-3">
         <div
           class="size-16 rounded-2xl bg-white/5 ring-1 ring-white/8 flex items-center justify-center">
-          <UIcon name="i-lucide-search-x" class="size-8 text-white/20" />
+          <Icon name="i-lucide-search-x" class="size-8 text-white/20" />
         </div>
         <span class="text-[15px] font-medium text-white/40">沒有符合條件的活動</span>
         <button
@@ -231,7 +241,8 @@
   }
 
   const toast = useToast();
-  const { refreshUserData } = useAuth();
+  const { isLogin, refreshUserData } = useAuth();
+  const { openLoginModal } = useLayout();
 
   const loading = ref(true);
   const claimingId = ref<number | null>(null);

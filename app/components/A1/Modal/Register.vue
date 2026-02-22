@@ -4,15 +4,12 @@
     close-icon="i-lucide-arrow-right"
     title="登入"
     :ui="{ title: 'text-[20px]' }">
-    <UButton
+    <button
       v-if="showBtn"
-      icon="i-material-symbols:person-add-rounded"
-      color="secondary"
-      variant="solid"
-      size="xl"
-      aria-label="Settings"
-      class="bg-linear-to-b from-[#77cbac] to-[#1a6b52] text-[15px] font-bold cursor-pointer text-white hover:bg-slate-700 active:bg-slate-700"
-      label="註冊" />
+      class="group flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-1.5 sm:py-2 rounded-full text-[13px] sm:text-[14px] font-bold text-white bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 shadow-[0_0_16px_-2px_rgba(16,185,129,0.4)] hover:shadow-[0_0_24px_-2px_rgba(16,185,129,0.5)] transition-all duration-200 cursor-pointer">
+      <Icon name="i-lucide-user-plus" class="size-3.5 sm:size-4" />
+      註冊
+    </button>
     <template #body>
       <UStepper
         v-model="currentStep"
@@ -72,7 +69,7 @@
           <div class="flex flex-col items-center text-center">
             <div
               class="h-16 w-16 rounded-full bg-linear-to-b from-[#77cbac] to-[#1a6b52] flex items-center justify-center shadow-lg">
-              <UIcon name="i-lucide-check" class="text-white text-3xl" />
+              <Icon name="i-lucide-check" class="text-white text-3xl" />
             </div>
             <div class="mt-5 text-2xl font-extrabold tracking-wide text-white">註冊成功！</div>
             <div class="mt-2 text-sm text-white/70 leading-relaxed">

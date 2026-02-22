@@ -3,7 +3,7 @@
     <!-- 頁面標題 -->
     <div class="flex items-center gap-2.5 sm:gap-3">
       <div class="size-8 sm:size-10 rounded-[10px] sm:rounded-[12px] bg-linear-to-br from-emerald-500/20 to-emerald-700/10 ring-1 ring-emerald-500/30 flex items-center justify-center">
-        <UIcon name="i-lucide-receipt-text" class="size-4 sm:size-5 text-emerald-400" />
+        <Icon name="i-lucide-receipt-text" class="size-4 sm:size-5 text-emerald-400" />
       </div>
       <div>
         <div class="text-[18px] sm:text-[22px] font-bold text-white tracking-wide">交易紀錄</div>
@@ -23,7 +23,7 @@
           ? 'bg-linear-to-b from-emerald-500/25 to-emerald-600/10 text-emerald-400 ring-1 ring-emerald-500/30 shadow-[0_0_20px_-4px_rgba(16,185,129,0.25)]'
           : 'text-white/40 hover:bg-white/5 hover:text-white/60'"
         @click="activeTab = tab.value">
-        <UIcon :name="tab.icon" class="size-3.5 sm:size-4" />
+        <Icon :name="tab.icon" class="size-3.5 sm:size-4" />
         {{ tab.label }}
       </button>
     </div>

@@ -97,7 +97,7 @@
               height: `${imageHeight}px`,
             }" />
           <div class="relative" :style="{ height: `${imageHeight}px` }">
-            <img
+            <NuxtImg
               :src="item.imageUrl"
               :alt="item.title"
               class="h-full w-full object-cover object-top" />

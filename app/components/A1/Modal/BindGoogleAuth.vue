@@ -6,7 +6,7 @@
     <template #body>
       <UPageCard class="w-full max-w-md">
         <div class="w-full flex justify-center">
-          <img v-if="googleAuthData.qrCode" :src="googleAuthData.qrCode" class="w-50 h-50" />
+          <NuxtImg v-if="googleAuthData.qrCode" :src="googleAuthData.qrCode" class="w-50 h-50" />
           <USkeleton v-else class="w-50 h-50" />
         </div>
         <UAuthForm

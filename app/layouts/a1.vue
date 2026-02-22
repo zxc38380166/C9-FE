@@ -13,7 +13,7 @@
             <div v-if="isLogin" class="flex items-center gap-1.5 sm:gap-2.5">
               <!-- 餘額卡片 -->
               <div class="flex items-center gap-1.5 sm:gap-2 rounded-full bg-white/5 ring-1 ring-white/10 pl-2.5 sm:pl-3 pr-1 sm:pr-1.5 py-1 sm:py-1.5">
-                <UIcon name="i-lucide-coins" class="size-3.5 sm:size-4 text-amber-400" />
+                <Icon name="i-lucide-coins" class="size-3.5 sm:size-4 text-amber-400" />
                 <span class="text-[12px] sm:text-[13px] font-bold text-amber-400 tabular-nums">
                   $ {{ Number(store.getUserDetail?.balance ?? 0).toLocaleString() }}
                 </span>
@@ -21,7 +21,7 @@
                   class="size-6 sm:size-7 rounded-full bg-white/8 hover:bg-white/15 flex items-center justify-center transition-colors cursor-pointer"
                   :class="{ 'animate-spin': refreshingBalance }"
                   @click="onRefreshBalance">
-                  <UIcon name="i-lucide-refresh-cw" class="size-3 sm:size-3.5 text-white/50" />
+                  <Icon name="i-lucide-refresh-cw" class="size-3 sm:size-3.5 text-white/50" />
                 </button>
               </div>
 
@@ -29,14 +29,14 @@
               <button
                 class="sm:hidden flex items-center justify-center size-8 rounded-full bg-amber-500/15 ring-1 ring-amber-500/25 text-amber-400 hover:bg-amber-500/25 transition-colors cursor-pointer"
                 @click="router.push('/game?tab=gameLobby')">
-                <UIcon name="i-lucide-gamepad-2" class="size-4" />
+                <Icon name="i-lucide-gamepad-2" class="size-4" />
               </button>
 
               <!-- 存款快捷 -->
               <button
                 class="flex items-center justify-center gap-1.5 rounded-full bg-linear-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 size-8 sm:size-auto sm:px-4 sm:py-2 text-[13px] font-bold text-white shadow-[0_0_16px_-2px_rgba(16,185,129,0.4)] transition-all cursor-pointer"
                 @click="router.push('/user/deposit')">
-                <UIcon name="i-lucide-plus" class="size-3.5" />
+                <Icon name="i-lucide-plus" class="size-3.5" />
                 <span class="hidden sm:inline">存款</span>
               </button>
 
@@ -60,7 +60,7 @@
                     {{ store.getUserDetail?.account }}
                   </span>
                   <div class="relative">
-                    <img
+                    <NuxtImg
                       src="https://github.com/benjamincanac.png"
                       class="size-7 sm:size-8 rounded-full ring-2 ring-emerald-500/40" />
                     <div class="absolute -bottom-0.5 -right-0.5 size-2.5 sm:size-3 rounded-full bg-emerald-400 ring-2 ring-slate-900" />
@@ -68,16 +68,15 @@
                 </button>
               </UDropdownMenu>
             </div>
-            <template v-else>
-              <A1ModalRegister />
+            <div v-else class="flex items-center gap-2 sm:gap-3">
               <A1ModalLogin />
-            </template>
+              <A1ModalRegister />
+            </div>
           </template>
         </UDashboardNavbar>
       </template>
       <template #body>
         <div class="px-3.5 lg:px-10 xl:px-20">
-          <CommonModalBase />
           <slot />
         </div>
         <A1LayoutFooter />
