@@ -32,17 +32,17 @@
     <A1UserTransactionDeposit v-if="activeTab === 'deposit'" />
     <A1UserTransactionWithdrawal v-else-if="activeTab === 'withdrawal'" />
     <A1UserTransactionDividend v-else-if="activeTab === 'dividend'" />
-    <A1UserTransactionBonus v-else />
+    <A1UserTransactionPromo v-else />
   </div>
 </template>
 <script setup lang="ts">
-  type TabValue = 'deposit' | 'withdrawal' | 'dividend' | 'bonus';
+  type TabValue = 'deposit' | 'withdrawal' | 'dividend' | 'promo';
 
   const tabs: Array<{ label: string; value: TabValue; icon: string }> = [
     { label: '存款', value: 'deposit', icon: 'i-lucide-download' },
     { label: '提款', value: 'withdrawal', icon: 'i-lucide-upload' },
     { label: '紅利', value: 'dividend', icon: 'i-lucide-percent' },
-    { label: '獎金', value: 'bonus', icon: 'i-lucide-gift' },
+    { label: '優惠', value: 'promo', icon: 'i-lucide-party-popper' },
   ];
   const activeTab = ref<TabValue>('deposit');
 </script>

@@ -2,14 +2,6 @@
   <div class="space-y-4">
     <A1HomePromo />
     <ClientOnly>
-      <LazyUContentSearch
-        v-model:search-term="searchTerm"
-        shortcut="shift_s"
-        :files="searchFiles"
-        :navigation="searchNavigation"
-        :links="searchLinks"
-        :color-mode="false"
-        :fuse="{ resultLimit: 40 }" />
       <UContentSearchButton
         :collapsed="false"
         :label="'快速查詢遊戲'"
@@ -133,12 +125,14 @@
     }));
   });
 
+  const validTabs = computed(() => new Set(tabs.value.map((t) => t.value)));
+
   watch(
     () => route.query.tab,
     (tabRaw) => {
       const tab = Array.isArray(tabRaw) ? tabRaw[0] : tabRaw;
       if (typeof tab !== 'string') return;
-      if (tab in GAME_TYPE_VALUE_ENUM) activeTab.value = tab;
+      if (validTabs.value.has(tab)) activeTab.value = tab;
     },
     { immediate: true },
   );
@@ -200,39 +194,4 @@
   const onLoadMore = (payload: LoadMorePayload) => {};
   const onClickGame = (game: ProviderItem & ChildGameItem) => {};
 
-  const searchTerm = ref('');
-  const { data: searchNavigation } = useLazyAsyncData(
-    'navigation',
-    () => queryCollectionNavigation('content'),
-    { server: false },
-  );
-  const { data: searchFiles } = useLazyAsyncData(
-    'search',
-    () => queryCollectionSearchSections('content'),
-    { server: false },
-  );
-
-  const searchLinks = computed(() => {
-    const mapping = Object.entries(store.getGameList?.mapping ?? {}).map(([key, item]) => {
-      return {
-        label: i18n.t(`game.${key}`),
-        icon: tabIconMap[GAME_TYPE_VALUE_ENUM[key as GameTypeKey]],
-        to: { path: route.path, query: { ...route.query, tab: key } },
-        children: item?.map(({ childGame, gameCode }) => {
-          const hasChildGame = Array.isArray(childGame) && childGame.length;
-          const result = hasChildGame
-            ? childGame.map((gameItem: ChildGameItem) => {
-                return {
-                  label: getGameName(gameItem),
-                };
-              })
-            : [];
-
-          return { label: String(gameCode).toUpperCase(), children: result };
-        }),
-      };
-    });
-
-    return mapping;
-  });
 </script>

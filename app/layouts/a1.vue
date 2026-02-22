@@ -43,7 +43,18 @@
               <!-- 使用者頭像 + 下拉選單 -->
               <UDropdownMenu
                 :items="userActionItems"
-                :ui="{ viewport: 'w-[280px]', itemWrapper: 'text-[14px] font-medium' }">
+                :ui="{
+                  content: 'bg-[#131f30] ring-1 ring-white/10 shadow-[0_16px_48px_-8px_rgba(0,0,0,0.6)] rounded-xl overflow-hidden data-[state=open]:animate-[scale-in_100ms_ease-out] data-[state=closed]:animate-[scale-out_100ms_ease-in]',
+                  viewport: 'w-[260px] sm:w-[280px] divide-y divide-white/6 scroll-py-1 overflow-y-auto flex-1',
+                  group: 'p-1.5 isolate',
+                  separator: '-mx-1 my-0 h-px bg-white/6',
+                  label: 'w-full flex items-center font-semibold text-white',
+                  item: 'group relative w-full flex items-center select-none outline-none rounded-lg before:absolute before:z-[-1] before:inset-px before:rounded-lg data-disabled:cursor-not-allowed data-disabled:opacity-75 text-white/70 data-highlighted:text-white data-highlighted:before:bg-white/6',
+                  itemLeadingIcon: 'shrink-0 size-4 text-white/40 group-data-highlighted:text-emerald-400',
+                  itemWrapper: 'flex-1 flex flex-col text-start min-w-0',
+                  itemLabel: 'truncate text-[13px] font-medium p-1.5',
+                  itemTrailingKbds: 'hidden lg:inline-flex items-center shrink-0',
+                }">
                 <button class="relative flex items-center gap-2 rounded-full bg-white/5 ring-1 ring-white/10 hover:bg-white/8 p-1 sm:pl-3 sm:pr-2 sm:py-1.5 transition-colors cursor-pointer">
                   <span class="hidden sm:inline text-[13px] font-semibold text-white/80 max-w-20 truncate">
                     {{ store.getUserDetail?.account }}
@@ -76,6 +87,7 @@
 </template>
 <script setup lang="ts">
   const store = useStore();
+  const route = useRoute();
   const router = useRouter();
   const { isLogin, logout, refreshUserData } = useAuth();
 
@@ -89,87 +101,79 @@
     }
   };
 
-  const userActionItems = ref([
+  const isActive = (path: string) => route.path === path;
+
+  const userActionItems = computed(() => [
     [
       {
         label: store.getUserDetail?.account || '',
         avatar: {
           src: 'https://github.com/benjamincanac.png',
         },
-        type: 'label',
+        type: 'label' as const,
       },
     ],
     [
       {
         label: '個人設定',
-        icon: 'i-lucide-user',
+        icon: 'i-lucide-user-cog',
         to: '/user/setting',
+        active: isActive('/user/setting'),
       },
       {
         label: '個人驗證',
-        icon: 'i-lucide-credit-card',
+        icon: 'i-lucide-shield-check',
       },
       {
         label: '通知',
-        icon: 'i-lucide-cog',
+        icon: 'i-lucide-bell',
         kbds: [','],
-      },
-      {
-        label: '存款',
-        icon: 'i-lucide-monitor',
-        to: '/user/deposit',
-      },
-      {
-        label: '提款',
-        icon: 'i-lucide-monitor',
       },
     ],
     [
       {
-        label: '投注紀錄',
-        icon: 'i-lucide-users',
+        label: '存款',
+        icon: 'i-lucide-arrow-down-to-line',
+        to: '/user/deposit',
+        active: isActive('/user/deposit'),
       },
+      {
+        label: '提款',
+        icon: 'i-lucide-arrow-up-from-line',
+      },
+      {
+        label: '帳戶錢包管理',
+        icon: 'i-lucide-wallet',
+        to: '/user/wallet',
+        active: isActive('/user/wallet'),
+      },
+    ],
+    [
       {
         label: '交易紀錄',
         icon: 'i-lucide-receipt-text',
         to: '/user/transaction',
+        active: isActive('/user/transaction'),
       },
       {
-        label: '帳戶錢包管理',
-        icon: 'i-lucide-users',
-        to: '/user/wallet',
+        label: '投注紀錄',
+        icon: 'i-lucide-scroll-text',
       },
-      // {
-      //   label: 'test',
-      //   icon: 'i-lucide-user-plus',
-      //   children: [
-      //     [
-      //       {
-      //         label: 'Email',
-      //         icon: 'i-lucide-mail',
-      //       },
-      //       {
-      //         label: 'Message',
-      //         icon: 'i-lucide-message-square',
-      //       },
-      //     ],
-      //     [
-      //       {
-      //         label: 'More',
-      //         icon: 'i-lucide-circle-plus',
-      //       },
-      //     ],
-      //   ],
-      // },
+      {
+        label: '活動中心',
+        icon: 'i-lucide-party-popper',
+        to: '/promo',
+        active: isActive('/promo'),
+      },
     ],
     [
       {
         label: '獎金',
-        icon: 'i-lucide-users',
+        icon: 'i-lucide-trophy',
       },
       {
         label: '邀請好友',
-        icon: 'i-lucide-users',
+        icon: 'i-lucide-user-plus',
       },
     ],
     [

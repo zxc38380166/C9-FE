@@ -35,5 +35,9 @@ export default function () {
       addCryptoAddress: (payload: any, opts?: Opts) => useHttp('/api/wallet/crypto-address/add', { method: HTTP_METHOD.POST, body: payload, ...opts }),
       deleteCryptoAddress: (id: number, opts?: Opts) => useHttp(`/api/wallet/crypto-address/${id}`, { method: HTTP_METHOD.DELETE, ...opts }),
       getDepositOrders: (payload?: any, opts?: Opts) => useHttp('/api/deposit/orders', { method: HTTP_METHOD.GET, body: payload, ...opts }),
+      getPromos: (payload?: any, opts?: Opts) => useHttp('/api/promo', { method: HTTP_METHOD.GET, body: payload, ...opts }),
+      getPromoById: (id: number, opts?: Opts) => useHttp(`/api/promo/${id}`, { method: HTTP_METHOD.GET, ...opts }),
+      claimPromo: (id: number, opts?: Opts) => useHttp(`/api/promo/${id}/claim`, { method: HTTP_METHOD.POST, ...opts }),
+      getPromoClaims: (payload?: any, opts?: Opts) => useHttp('/api/promo/claims', { method: HTTP_METHOD.GET, body: payload, ...opts }),
     };
   }

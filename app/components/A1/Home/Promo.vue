@@ -21,30 +21,59 @@
         </button>
       </div>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-      <div v-for="item in currentPageItems" :key="item.title" class="group cursor-pointer">
+
+    <!-- Loading skeleton -->
+    <div v-if="loading" class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+      <div v-for="i in 3" :key="i" class="rounded-xl bg-[#131f30] ring-1 ring-white/8 h-30 sm:h-40 md:h-45 animate-pulse" />
+    </div>
+
+    <!-- Promo cards -->
+    <div v-else-if="promoItems.length" class="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+      <NuxtLink
+        v-for="item in currentPageItems"
+        :key="item.id"
+        :to="`/promo/${item.id}`"
+        class="group cursor-pointer">
         <div
           class="relative overflow-hidden rounded-xl ring-1 ring-white/10 transition-all duration-300 group-hover:ring-emerald-500/30 group-hover:shadow-[0_8px_30px_rgba(16,185,129,0.12)]">
+          <!-- 手機版用 imgMobile，桌面用 imgPc -->
           <NuxtImg
-            :src="item.img"
+            :src="item.imgMobile"
             :alt="item.title"
-            class="w-full h-30 sm:h-40 md:h-45 object-cover group-hover:scale-105 transition-transform duration-500"
+            class="sm:hidden w-full h-30 object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy" />
+          <NuxtImg
+            :src="item.imgPc"
+            :alt="item.title"
+            class="hidden sm:block w-full h-40 md:h-45 object-cover group-hover:scale-105 transition-transform duration-500"
             loading="lazy" />
           <div
             class="absolute inset-0 bg-linear-to-t from-black/70 via-transparent to-transparent" />
           <div class="absolute bottom-0 inset-x-0 p-3 sm:p-4">
-            <UBadge :color="item.badgeColor" variant="subtle" size="xs" class="mb-1.5">
-              {{ item.badge }}
-            </UBadge>
+            <div class="flex items-center gap-1.5 mb-1.5">
+              <UBadge :color="getTagColor(item.tag)" variant="solid" size="xs">
+                {{ item.tag }}
+              </UBadge>
+              <UBadge v-if="item.isClaimable && !item.isClaimed" color="success" variant="solid" size="xs">
+                可領取
+              </UBadge>
+            </div>
             <div class="text-[13px] sm:text-[15px] font-bold text-white leading-tight">
               {{ item.title }}
             </div>
           </div>
         </div>
-      </div>
+      </NuxtLink>
     </div>
+
+    <!-- Empty state -->
+    <div v-else class="flex flex-col items-center justify-center py-10 text-white/40">
+      <UIcon name="i-lucide-party-popper" class="size-10 mb-2" />
+      <span class="text-[14px]">暫無活動</span>
+    </div>
+
     <!-- 頁碼指示器 -->
-    <div class="flex items-center justify-center gap-1.5 pt-1">
+    <div v-if="promoItems.length > PROMO_PER_PAGE" class="flex items-center justify-center gap-1.5 pt-1">
       <button
         v-for="i in promoMaxPage + 1"
         :key="i"
@@ -58,44 +87,55 @@
   </div>
 </template>
 <script setup lang="ts">
-  const promoItems = ref([
-    {
-      title: '首儲加碼 100% 回饋',
-      badge: '限時',
-      badgeColor: 'error' as const,
-      img: 'https://api.gofun8.com/upload/activity/30115/pc/2c26dd392ae8695dd4a45258ef8068b273b32c18.webp?random=1',
-    },
-    {
-      title: '每日簽到領獎金',
-      badge: '每日',
-      badgeColor: 'warning' as const,
-      img: 'https://api.gofun8.com/upload/activity/30115/pc/2c26dd392ae8695dd4a45258ef8068b273b32c18.webp?random=2',
-    },
-    {
-      title: '好友推薦享紅利',
-      badge: '推薦',
-      badgeColor: 'success' as const,
-      img: 'https://api.gofun8.com/upload/activity/30115/pc/2c26dd392ae8695dd4a45258ef8068b273b32c18.webp?random=3',
-    },
-    {
-      title: 'VIP 專屬週返水',
-      badge: 'VIP',
-      badgeColor: 'info' as const,
-      img: 'https://api.gofun8.com/upload/activity/30115/pc/2c26dd392ae8695dd4a45258ef8068b273b32c18.webp?random=4',
-    },
-    {
-      title: '體育賽事加碼投注',
-      badge: '體育',
-      badgeColor: 'success' as const,
-      img: 'https://api.gofun8.com/upload/activity/30115/pc/2c26dd392ae8695dd4a45258ef8068b273b32c18.webp?random=5',
-    },
-    {
-      title: '老虎機錦標賽',
-      badge: '賽事',
-      badgeColor: 'warning' as const,
-      img: 'https://api.gofun8.com/upload/activity/30115/pc/2c26dd392ae8695dd4a45258ef8068b273b32c18.webp?random=6',
-    },
-  ]);
+  const loading = ref(true);
+
+  interface PromoItem {
+    id: number;
+    title: string;
+    imgPc: string;
+    imgMobile: string;
+    tag: string;
+    startTime: string;
+    endTime: string;
+    enabled: number;
+    isActive: boolean;
+    isClaimed: boolean;
+    isClaimable: boolean;
+    rewardAmount: string;
+    conditionType: string;
+    conditionValue: string;
+  }
+
+  const promoItems = ref<PromoItem[]>([]);
+
+  const tagColorMap: Record<string, string> = {
+    '限時': 'error',
+    '每日': 'warning',
+    '推薦': 'success',
+    'VIP': 'info',
+    '體育': 'success',
+    '賽事': 'warning',
+    '新手': 'info',
+    '存款': 'success',
+  };
+
+  const getTagColor = (tag: string) => {
+    return (tagColorMap[tag] || 'neutral') as any;
+  };
+
+  const fetchPromos = async () => {
+    loading.value = true;
+    try {
+      const res = await useApi().getPromos({ activeOnly: 1, limit: 12 });
+      if (res?.result?.items) {
+        promoItems.value = res.result.items;
+      }
+    } catch (e) {
+      console.error('[Promo] fetch failed', e);
+    } finally {
+      loading.value = false;
+    }
+  };
 
   const promoPage = ref(0);
   const PROMO_PER_PAGE = 3;
@@ -105,5 +145,9 @@
   const currentPageItems = computed(() => {
     const start = promoPage.value * PROMO_PER_PAGE;
     return promoItems.value.slice(start, start + PROMO_PER_PAGE);
+  });
+
+  onMounted(() => {
+    fetchPromos();
   });
 </script>

@@ -6,95 +6,205 @@
     :default-size="15"
     :max-size="15"
     :collapsed-size="0"
-    class="shadow-[10px_0_30px_-18px_rgba(0,0,0,0.65)] ring-1 ring-white/10"
-    :ui="{ footer: 'border-t border-default' }">
+    class="sidebar-root"
+    :ui="{
+      footer: 'border-t border-white/6',
+    }">
     <template #header="{ collapsed }">
-      <Logo v-if="!collapsed" class="h-5 w-auto shrink-0"> LOGO </Logo>
-      <UIcon v-else name="i-simple-icons-nuxtdotjs" class="size-5 text-primary mx-auto" />
+      <NuxtLink to="/" class="flex items-center gap-2.5 group">
+        <div v-if="!collapsed" class="flex items-center gap-2.5">
+          <div
+            class="size-9 rounded-xl bg-linear-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-[0_0_16px_-2px_rgba(16,185,129,0.5)]">
+            <Icon name="noto:gem-stone" class="text-[18px]" />
+          </div>
+          <div class="leading-none">
+            <span class="text-[16px] font-extrabold tracking-wide text-white">C9</span>
+            <span class="text-[10px] text-emerald-400/70 block font-medium tracking-widest"
+              >CASINO</span
+            >
+          </div>
+        </div>
+        <div
+          v-else
+          class="size-9 rounded-xl bg-linear-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-[0_0_16px_-2px_rgba(16,185,129,0.5)] mx-auto">
+          <Icon name="noto:gem-stone" class="text-[18px]" />
+        </div>
+      </NuxtLink>
     </template>
+
     <template #default="{ collapsed }">
-      <UButton
-        :label="collapsed ? undefined : 'Search...'"
-        icon="i-lucide-search"
+      <!-- 搜尋遊戲 (掛載 modal) -->
+      <A1GameSearch />
+      <UContentSearchButton
+        :collapsed="collapsed"
+        :label="'搜尋遊戲...'"
+        :kbds="['shift', 's']"
         color="neutral"
         variant="outline"
         block
-        :square="collapsed">
-        <template v-if="!collapsed" #trailing>
-          <div class="flex items-center gap-0.5 ms-auto">
-            <UKbd value="meta" variant="subtle" />
-            <UKbd @click="switchCollapsed" value="K" variant="subtle" />
-          </div>
-        </template>
-      </UButton>
+        :tooltip="collapsed ? { content: { side: 'right' } } : false" />
+
+      <!-- 主導航 -->
       <UNavigationMenu
         :collapsed="collapsed"
-        :items="items[0]"
+        :items="mainItems"
         orientation="vertical"
-        :ui="{ linkLabel: 'text-[16px]' }" />
+        highlight
+        highlight-color="success"
+        color="success"
+        variant="pill"
+        :ui="{
+          linkLabel: 'text-[14px] font-medium',
+          linkLeadingIcon: 'size-[18px]',
+          link: 'py-2 px-2.5 rounded-xl text-white/60 hover:text-white hover:bg-white/6 data-[active]:text-emerald-400 data-[active]:bg-emerald-500/10',
+          childLink:
+            'py-1.5 px-2.5 rounded-lg text-white/50 hover:text-white hover:bg-white/6 data-[active]:text-emerald-400',
+          childLinkLabel: 'text-[13px]',
+        }" />
+
+      <!-- 底部操作 -->
       <UNavigationMenu
         :collapsed="collapsed"
-        :items="items[1]"
+        :items="bottomItems"
         orientation="vertical"
         class="mt-auto"
-        :ui="{ linkLabel: 'text-[16px]' }" />
+        :ui="{
+          linkLabel: 'text-[14px] font-medium',
+          linkLeadingIcon: 'size-[18px]',
+          link: 'py-2 px-2.5 rounded-xl text-white/50 hover:text-white hover:bg-white/6',
+        }" />
     </template>
+
     <template #footer="{}">
       <A1ModalLocale />
     </template>
   </UDashboardSidebar>
 </template>
+
 <script setup lang="ts">
   import type { NavigationMenuItem } from '@nuxt/ui';
 
+  const route = useRoute();
+  const i18n = useI18n();
   const collapsed = ref(false);
   const switchCollapsed = () => (collapsed.value = !collapsed.value);
 
-  const items: ComputedRef<NavigationMenuItem[][]> = computed(() => {
-    return [
-      [
-        {
-          label: '首頁',
-          icon: 'i-lucide-house',
-          active: true,
-        },
-        {
-          label: '近期遊戲紀錄',
-          icon: 'i-lucide-inbox',
-          badge: '4',
-        },
-        {
-          label: '遊戲',
-          icon: 'i-lucide-settings',
-          defaultOpen: true,
-          children: [
-            {
-              label: '真人娛樂場',
-            },
-            {
-              label: '老虎機',
-            },
-            {
-              label: '棋牌',
-            },
-          ],
-        },
-      ],
-      [
-        {
-          label: '展開 / 收合 ',
-          icon: collapsed.value
-            ? 'i-tabler:layout-sidebar-right-collapse'
-            : 'i-tabler:layout-sidebar-left-collapse',
-          //   to: "https://github.com/nuxt-ui-templates/dashboard",
-          //   target: "_blank",
-          onSelect: () => {
-            switchCollapsed();
-          },
-        },
-      ],
-    ];
-  });
+  const isActive = (path: string) => route.path === path;
+  const isGameActive = () => route.path.startsWith('/game');
+  const isGameTabActive = (tab: string) => isGameActive() && route.query.tab === tab;
+
+  const gameChildren = computed<NavigationMenuItem[]>(() => [
+    {
+      label: i18n.t('game.gameLobby'),
+      icon: 'material-symbols:view-list-sharp',
+      to: '/game?tab=gameLobby',
+      active: isGameTabActive('gameLobby') || (isGameActive() && !route.query.tab),
+    },
+    {
+      label: i18n.t('game.live'),
+      icon: 'ic:twotone-live-tv',
+      to: '/game?tab=live',
+      active: isGameTabActive('live'),
+    },
+    {
+      label: i18n.t('game.slot'),
+      icon: 'mdi:slot-machine-outline',
+      to: '/game?tab=slot',
+      active: isGameTabActive('slot'),
+    },
+    {
+      label: i18n.t('game.chess'),
+      icon: 'fluent:chess-24-filled',
+      to: '/game?tab=chess',
+      active: isGameTabActive('chess'),
+    },
+    {
+      label: i18n.t('game.sports'),
+      icon: 'material-symbols-light:sports-volleyball',
+      to: '/game?tab=sports',
+      active: isGameTabActive('sports'),
+    },
+    {
+      label: i18n.t('game.lottery'),
+      icon: 'fluent:lottery-20-filled',
+      to: '/game?tab=lottery',
+      active: isGameTabActive('lottery'),
+    },
+    {
+      label: i18n.t('game.esports'),
+      icon: 'material-symbols:sports-esports',
+      to: '/game?tab=esports',
+      active: isGameTabActive('esports'),
+    },
+    {
+      label: i18n.t('game.crypto'),
+      icon: 'streamline-ultimate:virtual-coin-crypto-ethereum-bold',
+      to: '/game?tab=crypto',
+      active: isGameTabActive('crypto'),
+    },
+    {
+      label: i18n.t('game.fish'),
+      icon: 'tdesign:fish-filled',
+      to: '/game?tab=fish',
+      active: isGameTabActive('fish'),
+    },
+    {
+      label: i18n.t('game.gameProvider'),
+      icon: 'material-symbols:business-center-outline',
+      to: '/game?tab=gameProvider',
+      active: isGameTabActive('gameProvider'),
+    },
+  ]);
+
+  const mainItems: ComputedRef<NavigationMenuItem[]> = computed(() => [
+    {
+      label: '首頁',
+      icon: 'i-lucide-house',
+      to: '/',
+      active: isActive('/'),
+    },
+    {
+      label: '娛樂城',
+      icon: 'i-lucide-gamepad-2',
+      to: '/game',
+      active: isGameActive(),
+      defaultOpen: true,
+      children: gameChildren.value,
+    },
+    {
+      label: '活動中心',
+      icon: 'i-lucide-party-popper',
+      to: '/promo',
+      active: route.path.startsWith('/promo'),
+    },
+    {
+      label: '近期遊戲紀錄',
+      icon: 'i-lucide-history',
+      badge: '4',
+    },
+  ]);
+
+  const bottomItems: ComputedRef<NavigationMenuItem[]> = computed(() => [
+    {
+      label: collapsed.value ? '展開' : '收合側欄',
+      icon: collapsed.value
+        ? 'i-tabler:layout-sidebar-right-collapse'
+        : 'i-tabler:layout-sidebar-left-collapse',
+      onSelect: () => {
+        switchCollapsed();
+      },
+    },
+  ]);
 
   defineShortcuts({ c: () => (collapsed.value = !collapsed.value) });
 </script>
+
+<style scoped>
+  .sidebar-root {
+    background: linear-gradient(180deg, #0d1b2a 0%, #0a1628 40%, #071020 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    box-shadow:
+      10px 0 40px -15px rgba(0, 0, 0, 0.7),
+      inset -1px 0 0 rgba(255, 255, 255, 0.04);
+  }
+</style>
