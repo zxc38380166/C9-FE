@@ -4,7 +4,7 @@
       <template #right>
         <div>
           <UTabs
-            :ui="{ list: 'bg-[#1a2c38]', trigger: 'cursor-pointer' }"
+            :ui="{ list: 'bg-slate-800', trigger: 'cursor-pointer' }"
             :items="rankingTabs"
             class="w-full" />
         </div>

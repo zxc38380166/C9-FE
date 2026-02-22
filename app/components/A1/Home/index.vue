@@ -20,7 +20,7 @@
         :items="faqItems"
         :ui="{
           root: 'space-y-3',
-          item: 'rounded-2xl overflow-hidden bg-[#233b47]/55 ring-1 ring-white/10 backdrop-blur shadow-[0_12px_40px_-22px_rgba(0,0,0,0.55)]',
+          item: 'rounded-2xl overflow-hidden bg-slate-800/55 ring-1 ring-white/10 backdrop-blur shadow-[0_12px_40px_-22px_rgba(0,0,0,0.55)]',
           header: 'w-full',
           trigger:
             'group w-full flex items-center justify-between gap-4 px-5 py-4 text-left hover:bg-white/[0.04] transition-colors',

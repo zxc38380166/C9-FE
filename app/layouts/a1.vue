@@ -1,11 +1,11 @@
 <template>
   <UDashboardGroup storage="cookie" storage-key="c9-dashboard">
     <A1LayoutSidebar />
-    <UDashboardPanel :ui="{ body: 'bg-[#1a2c38] !px-0 !pb-0 !pt-8' }">
+    <UDashboardPanel :ui="{ body: 'bg-slate-800 !px-0 !pb-0 !pt-8' }">
       <template #header>
         <UDashboardNavbar
           :ui="{ root: 'lg:!px-20' }"
-          class="shadow-[0_6px_10px_-2px_rgba(0,0,0,0.4)] border-l-[#252b3a]! bg-linear-to-b from-[#1a2c38] to-[#0f212e] border-b border-white/5">
+          class="shadow-[0_6px_10px_-2px_rgba(0,0,0,0.4)] border-l-slate-800! bg-linear-to-b from-slate-800 to-slate-900 border-b border-white/5">
           <template #title>
             <div @click="router.push('/')" class="cursor-pointer">LOGO</div>
           </template>
@@ -80,6 +80,7 @@
       {
         label: '存款',
         icon: 'i-lucide-monitor',
+        to: '/user/deposit',
       },
       {
         label: '提款',
@@ -98,6 +99,7 @@
       {
         label: '帳戶錢包管理',
         icon: 'i-lucide-users',
+        to: '/user/wallet',
       },
       // {
       //   label: 'test',

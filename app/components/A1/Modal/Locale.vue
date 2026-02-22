@@ -5,7 +5,7 @@
     :ui="{
       overlay: 'bg-black/55 backdrop-blur-sm',
       content:
-        'bg-[#0b1720]/85 ring-1 ring-white/10 backdrop-blur-xl rounded-3xl shadow-[0_30px_90px_-50px_rgba(0,0,0,0.9)]',
+        'bg-slate-950/85 ring-1 ring-white/10 backdrop-blur-xl rounded-3xl shadow-[0_30px_90px_-50px_rgba(0,0,0,0.9)]',
       header: 'px-5 py-4 border-b border-white/10',
       body: 'px-5 py-5',
     }">

@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative overflow-hidden rounded-[16px] bg-[#0f1f2a]/55 ring-1 ring-white/10 backdrop-blur shadow-[0_14px_50px_-26px_rgba(0,0,0,0.65)]">
+    class="relative overflow-hidden rounded-[16px] bg-slate-900/55 ring-1 ring-white/10 backdrop-blur shadow-[0_14px_50px_-26px_rgba(0,0,0,0.65)]">
     <UEmpty
       :title="title"
       :description="description"
@@ -26,7 +26,7 @@
           </UAvatarGroup>
           <div
             v-else
-            class="mt-1 grid place-items-center h-14 w-14 rounded-2xl bg-[#0f1f2a]/60 ring-1 ring-white/10 shadow-[0_12px_40px_-26px_rgba(0,0,0,0.8)]">
+            class="mt-1 grid place-items-center h-14 w-14 rounded-2xl bg-slate-900/60 ring-1 ring-white/10 shadow-[0_12px_40px_-26px_rgba(0,0,0,0.8)]">
             <span :class="[leadingIcon]" class="text-[28px] text-white/85" />
           </div>
           <div class="mt-3 text-white/45 text-[12px] tracking-wide">
@@ -45,14 +45,14 @@
             :ui="{
               root: 'group transition-transform duration-200 hover:-translate-y-0.5',
               container:
-                'relative overflow-hidden rounded-[8px] bg-[#0f1f2a]/55 ring-1 ring-white/10 backdrop-blur ' +
+                'relative overflow-hidden rounded-[8px] bg-slate-900/55 ring-1 ring-white/10 backdrop-blur ' +
                 'shadow-[0_14px_50px_-28px_rgba(0,0,0,0.65)] sm:p-4 p-3',
             }">
             <div
               class="pointer-events-none absolute inset-0 opacity-[0.22] bg-linear-to-r from-transparent via-white/12 to-transparent -translate-x-[60%] group-hover:translate-x-[60%] transition-transform duration-700" />
             <div class="relative flex items-center gap-3">
               <div
-                class="h-10 w-10 rounded-[8px] bg-[#0f1f2a]/60 ring-1 ring-white/10 grid place-items-center">
+                class="h-10 w-10 rounded-[8px] bg-slate-900/60 ring-1 ring-white/10 grid place-items-center">
                 <Icon :name="item.icon" />
               </div>
               <div class="min-w-0">
@@ -105,7 +105,7 @@
   }>();
 
   const avatarUi = {
-    root: 'ring-1 ring-white/10 bg-[#0f1f2a]/60 backdrop-blur',
+    root: 'ring-1 ring-white/10 bg-slate-900/60 backdrop-blur',
     image: 'opacity-95',
   };
 

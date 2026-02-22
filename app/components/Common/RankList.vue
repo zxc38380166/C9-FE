@@ -30,7 +30,7 @@
           v-for="item in renderList"
           :key="item.__loopKey"
           :ref="setRowRef as VNodeRef"
-          class="grid items-center bg-[#223a45] rounded-xl px-4 py-4 text-white grid-cols-[1fr_auto] md:grid-cols-[1.3fr_1fr_1fr_1fr_1fr_1fr]">
+          class="grid items-center bg-[#232f42] rounded-xl px-4 py-4 text-white grid-cols-[1fr_auto] md:grid-cols-[1.3fr_1fr_1fr_1fr_1fr_1fr]">
           <!-- Game (always) -->
           <div class="flex items-center gap-3 font-semibold min-w-0">
             <i :class="item.gameIcon" class="text-xl shrink-0" />

@@ -1,7 +1,7 @@
 <template>
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
     <section
-      class="relative w-full overflow-hidden rounded-2xl bg-[#0b1e2b] px-7 py-8 text-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
+      class="relative w-full overflow-hidden rounded-2xl bg-slate-950 px-7 py-8 text-white shadow-[0_12px_40px_rgba(0,0,0,0.25)]">
       <div class="pointer-events-none absolute inset-0">
         <div class="absolute -left-24 -top-24 size-105 rounded-full bg-white/8 blur-[2px]" />
         <div class="absolute left-10 top-10 size-130 rounded-full bg-white/6 blur-[1px]" />
@@ -89,7 +89,7 @@
         :to="`/${item.key}`"
         class="group text-left focus:outline-none">
         <div
-          class="relative overflow-hidden h-full rounded-2xl bg-[#253844]/90 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-200 group-hover:-translate-y-0.5">
+          class="relative overflow-hidden h-full rounded-2xl bg-slate-800/90 shadow-[0_10px_30px_rgba(0,0,0,0.35)] transition-transform duration-200 group-hover:-translate-y-0.5">
           <div
             class="pointer-events-none absolute inset-x-0 top-0 z-10 rounded-t-2xl border-2"
             :style="{

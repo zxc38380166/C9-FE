@@ -18,7 +18,7 @@
           base: [
             'w-full h-[50px]',
             'rounded-[10px]',
-            'bg-[#0f1f2a]/70 ring-1 ring-white/10 backdrop-blur',
+            'bg-slate-900/70 ring-1 ring-white/10 backdrop-blur',
             'px-4 cursor-pointer',
             'text-white/70',
             'hover:bg-white/[0.06] hover:text-white',
@@ -33,7 +33,7 @@
         v-model="activeTab"
         :ui="{
           root: 'w-full items-start',
-          list: 'rounded-[10px] max-w-[900px] w-full bg-[#0f1f2a]/70 ring-1 ring-white/10 backdrop-blur',
+          list: 'rounded-[10px] max-w-[900px] w-full bg-slate-900/70 ring-1 ring-white/10 backdrop-blur',
           trigger: 'cursor-pointer h-10 text-white/70 hover:bg-white/[0.06] hover:text-white h-10',
           leadingIcon: 'text-[16px] opacity-90',
           content: 'mt-2',

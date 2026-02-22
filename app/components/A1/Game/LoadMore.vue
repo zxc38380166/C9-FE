@@ -6,7 +6,7 @@
       variant="ghost"
       :class="[
         `
-            group cursor-pointer relative overflow-hidden rounded-[10px] bg-[#0f1f2a]/70 ring-1 ring-white/10 backdrop-blur 
+            group cursor-pointer relative overflow-hidden rounded-[10px] bg-slate-900/70 ring-1 ring-white/10 backdrop-blur 
             px-6 h-12.5 min-w-55 text-white/80 hover:text-white hover:bg-white/6 transition-colors duration-200 
             shadow-[0_14px_50px_-26px_rgba(0,0,0,0.65)] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#00df72]/35
         `,

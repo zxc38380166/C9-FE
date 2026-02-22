@@ -174,7 +174,7 @@
       </UPageCard>
       <div
         v-if="store.getUserDetail.loginLogs"
-        class="w-full space-y-4 pb-4 bg-[#0f172b] rounded-lg">
+        class="w-full space-y-4 pb-4 bg-slate-900 rounded-lg">
         <div class="flex justify-between px-4 py-3.5 border-b border-accented">
           <div class="text-[20px] px-2 font-bold">登入位置 (最近20筆)</div>
           <UInput

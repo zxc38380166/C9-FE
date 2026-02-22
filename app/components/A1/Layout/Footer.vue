@@ -2,11 +2,11 @@
   <div>
     <UFooterColumns
       :columns="columns"
-      :ui="{ root: 'bg-[#0f172b] p-14 ring-1 ring-white/10 xl:grid-cols-2' }">
+      :ui="{ root: 'bg-slate-900 p-14 ring-1 ring-white/10 xl:grid-cols-2' }">
     </UFooterColumns>
     <UPageLogos
       :ui="{
-        root: 'bg-[#0f172b] pb-16 grid place-items-center',
+        root: 'bg-slate-900 pb-16 grid place-items-center',
         logos: 'max-w-[350px] lg:max-w-[500px] gap-5',
         title:
           'max-w-[350px] lg:max-w-[500px] whitespace-pre-line text-center text-[12px] text-white/60',

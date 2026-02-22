@@ -1,13 +1,13 @@
 <template>
   <section>
     <div
-      class="relative overflow-hidden rounded-[16px] bg-[#0f1f2a]/70 ring-1 ring-white/10 backdrop-blur shadow-[0_14px_50px_-26px_rgba(0,0,0,0.65)]">
+      class="relative overflow-hidden rounded-[16px] bg-slate-900/70 ring-1 ring-white/10 backdrop-blur shadow-[0_14px_50px_-26px_rgba(0,0,0,0.65)]">
       <div
         class="pointer-events-none absolute -bottom-16 left-10 h-36 w-105 rounded-full bg-white/4 blur-3xl" />
       <div class="relative px-4 sm:px-5 py-4">
         <div class="flex items-center gap-3">
           <div
-            class="h-9 w-9 rounded-xl bg-[#0f1f2a]/60 ring-1 ring-white/10 grid place-items-center">
+            class="h-9 w-9 rounded-xl bg-slate-900/60 ring-1 ring-white/10 grid place-items-center">
             <span class="i-material-symbols:dashboard text-[20px] text-white/80" />
           </div>
           <div class="space-y-0.5">
@@ -21,11 +21,11 @@
           <div
             v-for="(p, idx) in providers"
             :key="p.name"
-            class="relative overflow-hidden rounded-2xl bg-[#0f1f2a]/50 ring-1 ring-white/10 backdrop-blur shadow-[0_14px_50px_-28px_rgba(0,0,0,0.65)] px-3 py-3">
+            class="relative overflow-hidden rounded-2xl bg-slate-900/50 ring-1 ring-white/10 backdrop-blur shadow-[0_14px_50px_-28px_rgba(0,0,0,0.65)] px-3 py-3">
             <div
               class="pointer-events-none absolute inset-0 opacity-[0.25] bg-linear-to-r from-transparent via-white/16 to-transparent -translate-x-[60%] animate-pulse" />
             <div
-              class="relative grid place-items-center rounded-xl bg-[#0f1f2a]/55 ring-1 ring-white/10 h-13">
+              class="relative grid place-items-center rounded-xl bg-slate-900/55 ring-1 ring-white/10 h-13">
               <NuxtImg
                 :src="p.logo"
                 :alt="p.name"

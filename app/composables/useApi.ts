@@ -18,5 +18,9 @@ export default function () {
       enableGoogleAuth: (payload?: any) => useHttp('/api/auth/enable-google-auth', { method: HTTP_METHOD.POST, body: payload }),
       editPassword: (payload?: any) => useHttp('/api/auth/edit-password', { method: HTTP_METHOD.POST, body: payload }),
       loginGoogle: (payload?: any) => useHttp('/api/auth/login-google', { method: HTTP_METHOD.POST, body: payload }),
+      getExchangeRate: (payload?: any) => useHttp('/api/deposit/exchange-rate', { method: HTTP_METHOD.GET, body: payload }),
+      getBankCards: (payload?: any) => useHttp('/api/wallet/bank-card/list', { method: HTTP_METHOD.GET, body: payload }),
+      addBankCard: (payload: any) => useHttp('/api/wallet/bank-card/add', { method: HTTP_METHOD.POST, body: payload, json: false }),
+      deleteBankCard: (id: number) => useHttp(`/api/wallet/bank-card/${id}`, { method: HTTP_METHOD.DELETE }),
     };
   }

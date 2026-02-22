@@ -11,7 +11,7 @@
       variant="solid"
       size="xl"
       aria-label="Settings"
-      class="bg-linear-to-b from-[#77cbac] to-[#1a6b52] text-[15px] font-bold cursor-pointer text-white hover:bg-[#2f4553] active:bg-[#2f4553]"
+      class="bg-linear-to-b from-[#77cbac] to-[#1a6b52] text-[15px] font-bold cursor-pointer text-white hover:bg-slate-700 active:bg-slate-700"
       label="註冊" />
     <template #body>
       <UStepper
@@ -22,8 +22,8 @@
         :ui="{
           root: 'pb-5',
           indicator: '!text-[white]',
-          trigger: `bg-linear-to-b from-[#2f4553] to-[#2f4553] rounded-[50%] 
-             group-data-[state=active]:!from-[#77cbac] group-data-[state=active]:!to-[#1a6b52] text-white 
+          trigger: `bg-linear-to-b from-slate-700 to-slate-700 rounded-[50%]
+             group-data-[state=active]:!from-[#77cbac] group-data-[state=active]:!to-[#1a6b52] text-white
              group-data-[state=completed]:!from-[#77cbac] group-data-[state=completed]:!to-[#1a6b52]`,
           icon: '!text-[white]',
         }" />
