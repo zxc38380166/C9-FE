@@ -10,26 +10,39 @@
             <div @click="router.push('/')" class="cursor-pointer">LOGO</div>
           </template>
           <template #right>
-            <UUser
-              v-if="isLogin"
-              :name="store.getUserDetail?.account"
-              description="Software Engineer"
-              :avatar="{ src: 'https://github.com/benjamincanac.png', class: 'size-[40px]' }"
-              :ui="{ name: 'text-[16px] text-center font-bold', root: 'gap-3' }"
-              :chip="{ color: 'primary', position: 'top-right' }">
-              <template #description>
-                <UDropdownMenu
-                  :items="userActionItems"
-                  :ui="{ viewport: 'w-[300px]', itemWrapper: 'text-[16px] font-bold' }">
-                  <UButton
-                    label="儀表板"
-                    icon="i-lucide-menu"
-                    color="neutral"
-                    size="xs"
-                    variant="outline" />
-                </UDropdownMenu>
-              </template>
-            </UUser>
+            <div v-if="isLogin" class="flex items-center gap-3">
+              <UUser
+                :name="store.getUserDetail?.account"
+                :avatar="{ src: 'https://github.com/benjamincanac.png', class: 'size-[40px]' }"
+                :ui="{ name: 'text-[16px] text-center font-bold', root: 'gap-3' }"
+                :chip="{ color: 'primary', position: 'top-right' }">
+                <template #description>
+                  <div class="flex items-center gap-1">
+                    <span class="text-[13px] text-amber-400 font-semibold">
+                      $ {{ store.getUserDetail?.balance ?? 0 }}
+                    </span>
+                    <UButton
+                      size="xs"
+                      variant="ghost"
+                      color="neutral"
+                      icon="i-lucide-refresh-cw"
+                      class="cursor-pointer"
+                      :loading="refreshingBalance"
+                      @click="onRefreshBalance" />
+                  </div>
+                </template>
+              </UUser>
+              <UDropdownMenu
+                :items="userActionItems"
+                :ui="{ viewport: 'w-[300px]', itemWrapper: 'text-[16px] font-bold' }">
+                <UButton
+                  label="儀表板"
+                  icon="i-lucide-menu"
+                  color="neutral"
+                  size="xs"
+                  variant="outline" />
+              </UDropdownMenu>
+            </div>
             <template v-else>
               <A1ModalRegister />
               <A1ModalLogin />
@@ -50,7 +63,17 @@
 <script setup lang="ts">
   const store = useStore();
   const router = useRouter();
-  const { isLogin, logout } = useAuth();
+  const { isLogin, logout, refreshUserData } = useAuth();
+
+  const refreshingBalance = ref(false);
+  const onRefreshBalance = async () => {
+    refreshingBalance.value = true;
+    try {
+      await refreshUserData();
+    } finally {
+      refreshingBalance.value = false;
+    }
+  };
 
   const userActionItems = ref([
     [
@@ -94,7 +117,8 @@
       },
       {
         label: '交易紀錄',
-        icon: 'i-lucide-users',
+        icon: 'i-lucide-receipt-text',
+        to: '/user/transaction',
       },
       {
         label: '帳戶錢包管理',

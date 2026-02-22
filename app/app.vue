@@ -15,12 +15,6 @@
   const { isLogin } = useAuth();
   const { GAME_TYPE_VALUE_ENUM, isChildGameType } = useGame();
 
-  // onMounted(async () => {
-  //   useApi()
-  //     .getEnumsCsr({})
-  //     .then((res) => {});
-  // });
-
   try {
     const defaultPromise = [
       useApi().getGameProviderSsr({}), //
