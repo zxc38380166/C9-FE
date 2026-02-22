@@ -75,12 +75,10 @@
     useApi()
       .editPassword(payload.data)
       .then((res) => {
-        const { code, message } = res;
+        const { code } = res;
         if (code === 200) {
           toast.add({ title: '通知', description: '變更成功, 下次登入時將使用您的新密碼' });
           onSuccess();
-        } else {
-          toast.add({ title: '通知', description: message });
         }
       })
       .finally(() => {

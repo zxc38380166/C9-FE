@@ -83,7 +83,7 @@
     loading.value = true;
     const actionMap: Record<string, Function> = {
       async email() {
-        const { code, message } = await useApi().checkVerifyEmail({
+        const { code } = await useApi().checkVerifyEmail({
           email: info,
           code: payload.data.otp.join(''),
         });
@@ -92,8 +92,6 @@
           toast.add({ title: '通知', description: '綁定成功' });
           await refreshUserData();
           onSuccess();
-        } else {
-          toast.add({ title: '通知', description: message });
         }
 
         loading.value = false;

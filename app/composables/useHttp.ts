@@ -41,6 +41,10 @@ export interface UseHttpOptions<T = any> {
   redirectCookieKey?: string;
   // 401 要導到哪（預設 '/'）
   redirectTo?: string;
+  /** code !== 200 時是否顯示 toast（預設 true） */
+  errorToast?: boolean;
+  /** 自訂錯誤文案，優先於 ERROR_CODES 映射；string 覆蓋全部，Record<code, msg> 按 code 覆蓋 */
+  errorMessage?: string | Record<string, string>;
 }
 
 /* ----------------------------- utils ----------------------------- */
@@ -175,6 +179,8 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     autoRedirectOn401 = true,
     redirectCookieKey = 'redirectTo',
     redirectTo = '/',
+    errorToast = true,
+    errorMessage,
   } = options;
 
   const hostname = getHostnameSsrSafe();
@@ -237,6 +243,37 @@ export async function useHttp<T = any>(url: string, options: UseHttpOptions<T> =
     }
 
     const data = await res.json();
+
+    // --- 錯誤碼攔截：用 ERROR_CODES 映射可讀錯誤訊息 + toast ---
+    if (data?.code && data.code !== 200) {
+      const code = String(data.code);
+
+      // 1. 先用 ERROR_CODES 映射
+      if (data.path) {
+        try {
+          const store = useStore();
+          const errorCodes = store.getEnums?.ERROR_CODES;
+          if (errorCodes) {
+            const mapped = errorCodes[data.path]?.[code]
+              || errorCodes[data.path.replace(/\/[^/]+$/, '/:id')]?.[code];
+            if (mapped) data.message = mapped;
+          }
+        } catch {}
+      }
+
+      // 2. 自訂文案覆蓋（string 全覆蓋，Record 按 code 覆蓋）
+      if (errorMessage) {
+        if (typeof errorMessage === 'string') {
+          data.message = errorMessage;
+        } else if (errorMessage[code]) {
+          data.message = errorMessage[code];
+        }
+      }
+
+      if (errorToast && import.meta.client && data.message) {
+        useToast().add({ title: '錯誤', description: data.message, color: 'error' });
+      }
+    }
 
     if (middlewares?.after) return middlewares.after(data, ctx);
     return data as T;

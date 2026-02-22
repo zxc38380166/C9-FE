@@ -36,6 +36,7 @@ export type ChildGameMap = typeof childGame;
 export type ChildGameKey = keyof ChildGameMap;
 export type ChildGameValue = ChildGameMap[ChildGameKey];
 export type ChildGameItem = ChildGameValue[number];
+export type GameItem = Partial<ProviderItem> & Partial<ChildGameItem>;
 export type GameTypeKey = keyof typeof GAME_TYPE_VALUE_ENUM;
 
 export type GameListResult = {
@@ -89,12 +90,12 @@ export function useGame() {
     return result;
   };
 
-  const getGameMappingImg = (item: ProviderItem & ChildGameItem) => {
+  const getGameMappingImg = (item: GameItem) => {
     const productId = item?.productId;
     const code = item.game_code ?? item.gameCode;
     const replaceUs = [''];
     const cacheGameCode: string[] = [];
-    const isCache = cacheGameCode.includes(item?.gameCode);
+    const isCache = item?.gameCode ? cacheGameCode.includes(item.gameCode) : false;
     const typePath = productId ? 'gameChild' : 'gameCover';
     const filePath = isCache ? `${code}_clone` : code || '';
     const langPath = replaceUs.includes(i18n.locale.value) ? 'en-US' : i18n.locale.value;

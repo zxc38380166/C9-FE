@@ -195,8 +195,6 @@
           toast.add({ title: '通知', description: '註冊成功' });
           await setToken(res.result.token);
           await refreshUserData();
-        } else {
-          toast.add({ title: '通知', description: res.message });
         }
       });
   };

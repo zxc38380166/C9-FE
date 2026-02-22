@@ -17,7 +17,7 @@
   type Action = 'prev' | 'next';
 
   const { items } = defineProps<{
-    items: Array<ProviderItem & ChildGameItem>;
+    items: GameItem[];
   }>();
 
   const { getGameMappingImg } = useGame();

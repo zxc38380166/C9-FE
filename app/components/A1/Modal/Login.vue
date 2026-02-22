@@ -88,8 +88,6 @@
           toast.add({ title: '通知', description: '登入成功' });
           await setToken(res.result.token);
           await refreshUserData();
-        } else {
-          toast.add({ title: '通知', description: res.message });
         }
       });
   };

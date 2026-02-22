@@ -1,6 +1,58 @@
 {
-  "common": {
-    "ok": "OK",
-    "cancel": "Cancel"
-  }
+  "locale": "English",
+  "game.gameLobby": "Game Lobby",
+  "game.live": "Live",
+  "game.slot": "Slots",
+  "game.chess": "Chess",
+  "game.lottery": "Lottery",
+  "game.esports": "Esports",
+  "game.crypto": "Crypto",
+  "game.sports": "Sports",
+  "game.fish": "Fishing",
+  "game.gameProvider": "Game Provider",
+  "vendor.wantong": "Wantong Payment",
+
+  "error.auth.register.accountExists": "Account already exists",
+  "error.auth.login.invalidCredentials": "Invalid account or password",
+  "error.auth.checkVerifyEmail.2001": "Verification code not sent yet",
+  "error.auth.checkVerifyEmail.2002": "Invalid verification code",
+  "error.auth.enableGoogleAuth.2001": "Google Auth Secret not generated yet",
+  "error.auth.enableGoogleAuth.2002": "Invalid TOTP verification code",
+  "error.auth.editPassword.2001": "Current password is incorrect",
+  "error.auth.editPassword.2002": "Old password and new password do not match",
+  "error.auth.getLoginConfig.2001": "Google OAuth not configured",
+  "error.auth.loginGoogle.2001": "GOOGLE_CLIENT_ID not configured",
+  "error.auth.loginGoogle.2002": "GOOGLE_CLIENT_ID verification failed",
+  "error.auth.loginGoogle.2003": "Google Payload encryption failed",
+  "error.auth.loginGoogle.2004": "Google Payload parsing failed",
+  "error.auth.loginGoogle.2005": "Session expired, please login again",
+  "error.auth.loginGoogle.2006": "Google Code verification error",
+  "error.auth.loginGoogle.2007": "Google API response error",
+  "error.auth.loginGoogle.2008": "Google Ticket parsing failed",
+  "error.auth.loginGoogle.2009": "Google Ticket Payload parsing failed",
+
+  "error.vendor.getChannels.2001": "User not assigned to a payment group",
+  "error.vendor.getChannels.2002": "Payment group does not exist or is disabled",
+  "error.vendor.getChannels.2003": "Payment channel does not exist or does not belong to this group",
+
+  "error.wantong.getChannel.2001": "No available Wantong payment channel found",
+  "error.wantong.addAtm.2002": "Failed to create ATM order",
+  "error.wantong.addAtm.2003": "ATM order request error",
+  "error.wantong.addCard.2002": "Failed to create credit card order",
+  "error.wantong.addCard.2003": "Credit card order request error",
+
+  "error.deposit.getExchangeRate.2001": "Invalid currency format",
+  "error.deposit.getExchangeRate.2002": "Exchange rate parsing failed",
+  "error.deposit.deposit.2003": "Unsupported payment channel type",
+  "error.deposit.deposit.2004": "Unsupported payment method",
+  "error.deposit.deposit.2005": "Exchange rate conversion failed",
+
+  "error.bankCard.add.2001": "Please upload ID card front",
+  "error.bankCard.add.2002": "Please upload ID card back",
+  "error.bankCard.add.2003": "Please upload passbook cover",
+  "error.bankCard.add.2004": "This bank card already exists",
+  "error.bankCard.delete.2001": "Bank card not found",
+
+  "error.creditCard.add.2001": "This credit card is already linked",
+  "error.creditCard.delete.2001": "Credit card not found"
 }

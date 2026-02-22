@@ -1,6 +1,58 @@
 {
-  "common": {
-    "ok": "确定",
-    "cancel": "取消"
-  }
+  "locale": "简体中文",
+  "game.gameLobby": "游戏大厅",
+  "game.live": "真人",
+  "game.slot": "电子",
+  "game.chess": "棋牌",
+  "game.lottery": "彩票",
+  "game.esports": "电竞",
+  "game.crypto": "加密货币",
+  "game.sports": "体育",
+  "game.fish": "捕鱼",
+  "game.gameProvider": "游戏商",
+  "vendor.wantong": "万通支付",
+
+  "error.auth.register.accountExists": "账号已存在",
+  "error.auth.login.invalidCredentials": "账号或密码错误",
+  "error.auth.checkVerifyEmail.2001": "尚未发送验证码",
+  "error.auth.checkVerifyEmail.2002": "验证码错误",
+  "error.auth.enableGoogleAuth.2001": "尚未生成 Google Auth Secret",
+  "error.auth.enableGoogleAuth.2002": "TOTP 验证码错误",
+  "error.auth.editPassword.2001": "当前密码错误",
+  "error.auth.editPassword.2002": "旧密码与新密码不一致",
+  "error.auth.getLoginConfig.2001": "Google OAuth 未设置",
+  "error.auth.loginGoogle.2001": "尚未设置 GOOGLE_CLIENT_ID",
+  "error.auth.loginGoogle.2002": "GOOGLE_CLIENT_ID 验证失败",
+  "error.auth.loginGoogle.2003": "Google Payload 加密失败",
+  "error.auth.loginGoogle.2004": "Google Payload 解析失败",
+  "error.auth.loginGoogle.2005": "本次操作时效已过期，请重新登录",
+  "error.auth.loginGoogle.2006": "Google Code 验证错误",
+  "error.auth.loginGoogle.2007": "Google API 响应过程错误",
+  "error.auth.loginGoogle.2008": "Google Ticket 解析失败",
+  "error.auth.loginGoogle.2009": "Google Ticket Payload 解析失败",
+
+  "error.vendor.getChannels.2001": "用户未分配金流群组",
+  "error.vendor.getChannels.2002": "金流群组不存在或已停用",
+  "error.vendor.getChannels.2003": "金流通道不存在或不属于此群组",
+
+  "error.wantong.getChannel.2001": "查无可用的万通金流通道",
+  "error.wantong.addAtm.2002": "建立 ATM 订单失败",
+  "error.wantong.addAtm.2003": "ATM 订单请求异常",
+  "error.wantong.addCard.2002": "建立信用卡订单失败",
+  "error.wantong.addCard.2003": "信用卡订单请求异常",
+
+  "error.deposit.getExchangeRate.2001": "币别格式错误",
+  "error.deposit.getExchangeRate.2002": "汇率解析失败",
+  "error.deposit.deposit.2003": "不支持的金流通道类型",
+  "error.deposit.deposit.2004": "不支持的支付方式",
+  "error.deposit.deposit.2005": "汇率转换失败，无法取得有效汇率",
+
+  "error.bankCard.add.2001": "请上传身份证正面",
+  "error.bankCard.add.2002": "请上传身份证反面",
+  "error.bankCard.add.2003": "请上传银行存折封面",
+  "error.bankCard.add.2004": "此银行卡已存在",
+  "error.bankCard.delete.2001": "查无此银行卡",
+
+  "error.creditCard.add.2001": "此信用卡已绑定",
+  "error.creditCard.delete.2001": "查无此信用卡"
 }

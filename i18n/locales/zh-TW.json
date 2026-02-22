@@ -9,5 +9,50 @@
   "game.crypto": "加密貨幣",
   "game.sports": "體育",
   "game.fish": "捕魚",
-  "game.gameProvider": "遊戲商"
+  "game.gameProvider": "遊戲商",
+  "vendor.wantong": "萬通支付",
+
+  "error.auth.register.accountExists": "帳號已存在",
+  "error.auth.login.invalidCredentials": "帳號或密碼錯誤",
+  "error.auth.checkVerifyEmail.2001": "尚未發送驗證碼",
+  "error.auth.checkVerifyEmail.2002": "驗證碼錯誤",
+  "error.auth.enableGoogleAuth.2001": "尚未產生 Google Auth Secret",
+  "error.auth.enableGoogleAuth.2002": "TOTP 驗證碼錯誤",
+  "error.auth.editPassword.2001": "當前密碼錯誤",
+  "error.auth.editPassword.2002": "舊密碼與新密碼不符合",
+  "error.auth.getLoginConfig.2001": "Google OAuth 未設定",
+  "error.auth.loginGoogle.2001": "尚未設置 GOOGLE_CLIENT_ID",
+  "error.auth.loginGoogle.2002": "GOOGLE_CLIENT_ID 驗證失敗",
+  "error.auth.loginGoogle.2003": "Google Payload 加密失敗",
+  "error.auth.loginGoogle.2004": "Google Payload 解析失敗",
+  "error.auth.loginGoogle.2005": "本次操作時效已過期，請重新登入",
+  "error.auth.loginGoogle.2006": "Google Code 驗證錯誤",
+  "error.auth.loginGoogle.2007": "Google API 響應過程錯誤",
+  "error.auth.loginGoogle.2008": "Google Ticket 解析失敗",
+  "error.auth.loginGoogle.2009": "Google Ticket Payload 解析失敗",
+
+  "error.vendor.getChannels.2001": "用戶未分配金流群組",
+  "error.vendor.getChannels.2002": "金流群組不存在或已停用",
+  "error.vendor.getChannels.2003": "金流通道不存在或不屬於此群組",
+
+  "error.wantong.getChannel.2001": "查無可用的萬通金流通道",
+  "error.wantong.addAtm.2002": "建立 ATM 訂單失敗",
+  "error.wantong.addAtm.2003": "ATM 訂單請求異常",
+  "error.wantong.addCard.2002": "建立信用卡訂單失敗",
+  "error.wantong.addCard.2003": "信用卡訂單請求異常",
+
+  "error.deposit.getExchangeRate.2001": "幣別格式錯誤",
+  "error.deposit.getExchangeRate.2002": "匯率解析失敗",
+  "error.deposit.deposit.2003": "不支援的金流通道類型",
+  "error.deposit.deposit.2004": "不支援的支付方式",
+  "error.deposit.deposit.2005": "匯率轉換失敗，無法取得有效匯率",
+
+  "error.bankCard.add.2001": "請上傳身分證正面",
+  "error.bankCard.add.2002": "請上傳身分證反面",
+  "error.bankCard.add.2003": "請上傳銀行存摺封面",
+  "error.bankCard.add.2004": "此銀行卡已存在",
+  "error.bankCard.delete.2001": "查無此銀行卡",
+
+  "error.creditCard.add.2001": "此信用卡已綁定",
+  "error.creditCard.delete.2001": "查無此信用卡"
 }

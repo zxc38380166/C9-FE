@@ -223,7 +223,6 @@
   const UTableRef = useTemplateRef('UTableRef');
 
   const store = useStore();
-  const toast = useToast();
   const overlay = useOverlay();
 
   const schema = z.object({
@@ -303,21 +302,19 @@
     if (!UFormRef.value) return Promise.resolve();
     return UFormRef.value.validate({ name: action }).then(async (values) => {
       if (action === 'email') {
-        const { code, message } = await useApi().sendVerifyEmail({ email: values.email });
+        const { code } = await useApi().sendVerifyEmail({ email: values.email });
 
         if (code === 200) {
           vertifyPayload.info = values.email;
           vertifyPayload.actionType = 'email';
           vertifyPayload.onSuccess = () => modals.vertifyUserInfo.close();
           modals.vertifyUserInfo.open();
-        } else {
-          toast.add({ title: '通知', description: message });
         }
         return;
       }
 
       if (action === 'mobile') {
-        const { code, message } = await useApi().sendVerifyMobile({
+        const { code } = await useApi().sendVerifyMobile({
           mobile: values.mobile,
           country: values.country,
         });
@@ -327,8 +324,6 @@
           vertifyPayload.actionType = 'mobile';
           vertifyPayload.onSuccess = () => modals.vertifyUserInfo.close();
           modals.vertifyUserInfo.open();
-        } else {
-          toast.add({ title: '通知', description: message });
         }
         return;
       }

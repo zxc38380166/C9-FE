@@ -35,7 +35,7 @@
             <!-- 空狀態 -->
             <template v-if="!bankCards.length">
               <div class="flex flex-col items-center justify-center py-12 space-y-3">
-                <Icon name="i-lucide-credit-card" class="text-[48px] text-white/20" />
+                <Icon name="i-lucide-landmark" class="text-[48px] text-white/20" />
                 <div class="text-[14px] text-white/40">尚未綁定銀行卡</div>
                 <UButton size="xs" variant="soft" class="cursor-pointer" @click="openAddBankCard">
                   立即新增
@@ -47,7 +47,49 @@
             <template v-else>
               <UTable
                 :data="bankCards"
-                :columns="columns"
+                :columns="bankCardColumns"
+                :ui="{
+                  th: 'text-white/60 text-center',
+                  td: 'text-center text-white/80',
+                }" />
+            </template>
+          </div>
+        </div>
+
+        <!-- 信用卡 -->
+        <div v-else-if="activeTab === 'credit'">
+          <div class="w-full space-y-4 bg-slate-900 rounded-[14px] ring-1 ring-white/10 p-4">
+            <div class="flex items-center justify-between">
+              <div class="text-[20px] font-bold text-white">我的信用卡</div>
+              <UButton
+                size="sm"
+                icon="i-lucide-plus"
+                class="cursor-pointer rounded-[10px]"
+                :ui="{
+                  base: 'bg-linear-to-b from-[#77cbac] to-[#1a6b52] hover:from-[#8ad5b8] hover:to-[#1f7d5f] text-white ring-1 ring-white/10',
+                }"
+                @click="openAddCreditCard">
+                新增信用卡
+              </UButton>
+            </div>
+            <USeparator />
+
+            <!-- 空狀態 -->
+            <template v-if="!creditCards.length">
+              <div class="flex flex-col items-center justify-center py-12 space-y-3">
+                <Icon name="i-lucide-credit-card" class="text-[48px] text-white/20" />
+                <div class="text-[14px] text-white/40">尚未綁定信用卡</div>
+                <UButton size="xs" variant="soft" class="cursor-pointer" @click="openAddCreditCard">
+                  立即新增
+                </UButton>
+              </div>
+            </template>
+
+            <!-- 信用卡列表 -->
+            <template v-else>
+              <UTable
+                :data="creditCards"
+                :columns="creditCardColumns"
                 :ui="{
                   th: 'text-white/60 text-center',
                   td: 'text-center text-white/80',
@@ -58,21 +100,11 @@
 
         <!-- USDT -->
         <div v-else>
-          <UPageCard
-            class="w-full"
-            :ui="{
-              root: 'bg-slate-900 ring-1 ring-white/10 rounded-[14px]',
-              body: 'w-full',
-              header: 'w-full space-y-3',
-            }">
-            <template #header>
-              <div class="text-[16px] font-bold text-white">USDT 錢包</div>
-              <USeparator />
-            </template>
-            <template #default>
-              <div class="text-white/60 text-[14px]">USDT 錢包管理功能開發中…</div>
-            </template>
-          </UPageCard>
+          <div class="w-full space-y-4 bg-slate-900 rounded-[14px] ring-1 ring-white/10 p-4">
+            <div class="text-[20px] font-bold text-white">USDT 錢包</div>
+            <USeparator />
+            <div class="text-white/60 text-[14px]">USDT 錢包管理功能開發中…</div>
+          </div>
         </div>
       </template>
     </UTabs>
@@ -82,6 +114,7 @@
   import type { TableColumn } from '@nuxt/ui';
   import {
     A1ModalAddBankCard,
+    A1ModalAddCreditCard,
     A1ModalBankCardDetail,
     CommonConfirmDialog,
     UButton,
@@ -91,11 +124,21 @@
   const toast = useToast();
   const overlay = useOverlay();
 
-  const activeTab = ref<'fiat' | 'usdt'>('fiat');
-  const tabs: Array<{ label: string; value: 'fiat' | 'usdt'; icon: string }> = [
+  type TabValue = 'fiat' | 'credit' | 'usdt';
+  const activeTab = ref<TabValue>('fiat');
+  const tabs: Array<{ label: string; value: TabValue; icon: string }> = [
     { label: '法幣', value: 'fiat', icon: 'i-lucide-banknote' },
-    { label: 'USDT', value: 'usdt', icon: 'i-lucide-bitcoin' },
+    { label: '信用卡', value: 'credit', icon: 'i-lucide-credit-card' },
+    { label: '虛擬貨幣', value: 'usdt', icon: 'i-lucide-bitcoin' },
   ];
+
+  const STATUS_MAP: Record<number, { label: string; color: 'warning' | 'success' | 'error' }> = {
+    0: { label: '待審核', color: 'warning' },
+    1: { label: '已通過', color: 'success' },
+    2: { label: '已拒絕', color: 'error' },
+  };
+
+  // ==================== 銀行卡 ====================
 
   type BankCard = {
     id: number;
@@ -111,12 +154,6 @@
     updatedAt: string;
   };
 
-  const STATUS_MAP: Record<number, { label: string; color: 'warning' | 'success' | 'error' }> = {
-    0: { label: '待審核', color: 'warning' },
-    1: { label: '已通過', color: 'success' },
-    2: { label: '已拒絕', color: 'error' },
-  };
-
   type BankCodeItem = { value: string; label: string; child?: { value: string; label: string }[] };
   const bankCodeData = ref<BankCodeItem[]>([]);
 
@@ -130,9 +167,7 @@
     const map: Record<string, Record<string, string>> = {};
     for (const b of bankCodeData.value) {
       if (b.child) {
-        if (!map[b.value]) {
-          map[b.value] = {};
-        }
+        if (!map[b.value]) map[b.value] = {};
         for (const c of b.child) map[b.value]![c.value] = c.label;
       }
     }
@@ -146,15 +181,12 @@
     return '****' + account.slice(-4);
   };
 
-  const columns: TableColumn<BankCard>[] = [
+  const bankCardColumns: TableColumn<BankCard>[] = [
     {
       accessorKey: 'bankCode',
       header: '銀行',
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
-      cell: ({ row }) => {
-        const code = row.getValue('bankCode') as string;
-        return bankNameMap.value[code] || code;
-      },
+      cell: ({ row }) => bankNameMap.value[row.getValue('bankCode') as string] || row.getValue('bankCode'),
     },
     {
       accessorKey: 'bankAccount',
@@ -166,11 +198,7 @@
       accessorKey: 'branch',
       header: '分行',
       meta: { class: { th: 'text-center w-1/6', td: 'text-center font-medium w-1/6' } },
-      cell: ({ row }) => {
-        const bankCode = row.original.bankCode;
-        const branchCode = row.getValue('branch') as string;
-        return branchNameMap.value[bankCode]?.[branchCode] || branchCode;
-      },
+      cell: ({ row }) => branchNameMap.value[row.original.bankCode]?.[row.getValue('branch') as string] || row.getValue('branch'),
     },
     {
       accessorKey: 'holderName',
@@ -192,29 +220,8 @@
       meta: { class: { th: 'text-center w-1/6', td: 'text-center w-1/6' } },
       cell: ({ row }) =>
         h('div', { class: 'flex items-center justify-center gap-1.5' }, [
-          h(
-            UButton,
-            {
-              size: 'xs',
-              variant: 'soft',
-              icon: 'i-lucide-eye',
-              class: 'cursor-pointer',
-              onClick: () => openDetail(row.original),
-            },
-            () => '詳情',
-          ),
-          h(
-            UButton,
-            {
-              size: 'xs',
-              color: 'error',
-              variant: 'soft',
-              icon: 'i-lucide-trash-2',
-              class: 'cursor-pointer',
-              onClick: () => onDeleteCard(row.original.id),
-            },
-            () => '刪除',
-          ),
+          h(UButton, { size: 'xs', variant: 'soft', icon: 'i-lucide-eye', class: 'cursor-pointer', onClick: () => openBankCardDetail(row.original) }, () => '詳情'),
+          h(UButton, { size: 'xs', color: 'error', variant: 'soft', icon: 'i-lucide-trash-2', class: 'cursor-pointer', onClick: () => onDeleteBankCard(row.original.id) }, () => '刪除'),
         ]),
     },
   ];
@@ -222,39 +229,31 @@
   const fetchBankCards = async () => {
     try {
       const { code, result } = await useApi().getBankCards();
-      if (code === 200 && Array.isArray(result)) {
-        bankCards.value = result;
-      }
-    } catch (e) {
-      // API 尚未就緒時靜默處理
-    }
+      if (code === 200 && Array.isArray(result)) bankCards.value = result;
+    } catch {}
   };
 
-  const doDeleteCard = async (id: number) => {
+  const doDeleteBankCard = async (id: number) => {
     try {
-      const { code, message } = await useApi().deleteBankCard(id);
+      const { code } = await useApi().deleteBankCard(id);
       if (code === 200) {
         toast.add({ title: '通知', description: '銀行卡已刪除' });
         bankCards.value = bankCards.value.filter((c) => c.id !== id);
-      } else {
-        toast.add({ title: '通知', description: message });
       }
-    } catch (e: any) {
-      toast.add({ title: '錯誤', description: e?.message || '刪除失敗' });
-    }
+    } catch {}
   };
 
-  const onDeleteCard = (id: number) => {
-    const confirmModal = overlay.create(CommonConfirmDialog, {
+  const onDeleteBankCard = (id: number) => {
+    const modal = overlay.create(CommonConfirmDialog, {
       props: {
         title: '刪除銀行卡',
         description: '確定要刪除此銀行卡嗎？此操作無法復原。',
         confirmLabel: '確認刪除',
         confirmColor: 'error',
-        onSuccess: () => doDeleteCard(id),
+        onSuccess: () => doDeleteBankCard(id),
       },
     });
-    confirmModal.open();
+    modal.open();
   };
 
   const addBankCardModal = overlay.create(A1ModalAddBankCard, {
@@ -266,21 +265,118 @@
     },
   });
 
-  const openAddBankCard = () => {
-    addBankCardModal.open();
+  const openAddBankCard = () => addBankCardModal.open();
+
+  const openBankCardDetail = (card: BankCard) => {
+    const modal = overlay.create(A1ModalBankCardDetail, { props: { card } });
+    modal.open();
   };
 
-  const openDetail = (card: BankCard) => {
-    const modal = overlay.create(A1ModalBankCardDetail, {
-      props: { card },
+  // ==================== 信用卡 ====================
+
+  type CreditCard = {
+    id: number;
+    cardNumber: string;
+    holderName: string;
+    cvv: string;
+    expiryDate: string;
+    status: number;
+    createdAt: string;
+    updatedAt: string;
+  };
+
+  const creditCards = ref<CreditCard[]>([]);
+
+  const creditCardColumns: TableColumn<CreditCard>[] = [
+    {
+      accessorKey: 'cardNumber',
+      header: '卡號',
+      meta: { class: { th: 'text-center w-1/5', td: 'text-center font-medium w-1/5' } },
+      cell: ({ row }) => maskAccount(row.getValue('cardNumber') as string),
+    },
+    {
+      accessorKey: 'holderName',
+      header: '持卡人',
+      meta: { class: { th: 'text-center w-1/5', td: 'text-center font-medium w-1/5' } },
+    },
+    {
+      accessorKey: 'expiryDate',
+      header: '到期日',
+      meta: { class: { th: 'text-center w-1/5', td: 'text-center font-medium w-1/5' } },
+    },
+    {
+      accessorKey: 'status',
+      header: '狀態',
+      meta: { class: { th: 'text-center w-1/5', td: 'text-center w-1/5' } },
+      cell: ({ row }) => {
+        const s = STATUS_MAP[row.getValue('status') as number] ?? STATUS_MAP[0]!;
+        return h(UBadge, { color: s!.color, variant: 'subtle' }, () => s!.label);
+      },
+    },
+    {
+      id: 'actions',
+      header: '操作',
+      meta: { class: { th: 'text-center w-1/5', td: 'text-center w-1/5' } },
+      cell: ({ row }) =>
+        h(UButton, {
+          size: 'xs',
+          color: 'error',
+          variant: 'soft',
+          icon: 'i-lucide-trash-2',
+          class: 'cursor-pointer',
+          onClick: () => onDeleteCreditCard(row.original.id),
+        }, () => '刪除'),
+    },
+  ];
+
+  const fetchCreditCards = async () => {
+    try {
+      const { code, result } = await useApi().getCreditCards();
+      if (code === 200 && Array.isArray(result)) creditCards.value = result;
+    } catch {}
+  };
+
+  const doDeleteCreditCard = async (id: number) => {
+    try {
+      const { code } = await useApi().deleteCreditCard(id);
+      if (code === 200) {
+        toast.add({ title: '通知', description: '信用卡已刪除' });
+        creditCards.value = creditCards.value.filter((c) => c.id !== id);
+      }
+    } catch {}
+  };
+
+  const onDeleteCreditCard = (id: number) => {
+    const modal = overlay.create(CommonConfirmDialog, {
+      props: {
+        title: '刪除信用卡',
+        description: '確定要刪除此信用卡嗎？此操作無法復原。',
+        confirmLabel: '確認刪除',
+        confirmColor: 'error',
+        onSuccess: () => doDeleteCreditCard(id),
+      },
     });
     modal.open();
   };
+
+  const addCreditCardModal = overlay.create(A1ModalAddCreditCard, {
+    props: {
+      onSuccess: () => {
+        addCreditCardModal.close();
+        fetchCreditCards();
+      },
+    },
+  });
+
+  const openAddCreditCard = () => addCreditCardModal.open();
+
+  // ==================== Init ====================
 
   onMounted(async () => {
     try {
       bankCodeData.value = await $fetch<BankCodeItem[]>('/bankCode.json');
     } catch {}
     fetchBankCards();
+    fetchCreditCards();
   });
 </script>

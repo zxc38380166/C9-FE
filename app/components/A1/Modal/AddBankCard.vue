@@ -67,7 +67,7 @@
             @dragover.prevent
             @drop.prevent="onDrop($event, 'idCardFront')">
             <template v-if="previews.idCardFront">
-              <img :src="previews.idCardFront" class="max-h-[100px] rounded-lg object-contain" />
+              <img :src="previews.idCardFront" class="max-h-25 rounded-lg object-contain" />
               <span class="mt-1 text-[12px] text-white/50">點擊重新選擇</span>
             </template>
             <template v-else>
@@ -91,7 +91,7 @@
             @dragover.prevent
             @drop.prevent="onDrop($event, 'idCardBack')">
             <template v-if="previews.idCardBack">
-              <img :src="previews.idCardBack" class="max-h-[100px] rounded-lg object-contain" />
+              <img :src="previews.idCardBack" class="max-h-25 rounded-lg object-contain" />
               <span class="mt-1 text-[12px] text-white/50">點擊重新選擇</span>
             </template>
             <template v-else>
@@ -182,10 +182,7 @@
 
   const schema = z.object({
     bankCode: z.string().min(1, '請選擇銀行'),
-    bankAccount: z
-      .string()
-      .regex(/^\d+$/, '銀行帳號只能輸入數字')
-      .min(8, '帳號至少 8 碼'),
+    bankAccount: z.string().regex(/^\d+$/, '銀行帳號只能輸入數字').min(8, '帳號至少 8 碼'),
     branch: z.string().min(1, '請輸入分行名稱'),
     holderName: z.string().min(2, '請輸入持卡人姓名'),
     idCardFront: z.instanceof(File, { message: '請上傳身分證正面' }),
@@ -205,9 +202,12 @@
     passbookCover: undefined,
   });
 
-  watch(() => state.bankCode, () => {
-    state.branch = undefined;
-  });
+  watch(
+    () => state.bankCode,
+    () => {
+      state.branch = undefined;
+    },
+  );
 
   const previews = reactive<Record<string, string>>({
     idCardFront: '',
@@ -261,16 +261,12 @@
       formData.append('idCardBack', event.data.idCardBack);
       formData.append('passbookCover', event.data.passbookCover);
 
-      const { code, message } = await useApi().addBankCard(formData);
+      const { code } = await useApi().addBankCard(formData);
       if (code === 200) {
         toast.add({ title: '通知', description: '銀行卡新增成功' });
         onSuccess();
-      } else {
-        toast.add({ title: '通知', description: message });
       }
-    } catch (e: any) {
-      toast.add({ title: '錯誤', description: e?.message || '新增失敗' });
-    } finally {
+    } catch {} finally {
       loading.value = false;
     }
   };

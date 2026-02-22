@@ -75,14 +75,8 @@
         toast.add({ title: '通知', description: '啟用成功' });
         await refreshUserData();
         onSuccess();
-      } else {
-        toast.add({ title: '通知', description: res.message });
       }
-    } catch (err: any) {
-      toast.add({
-        title: '通知',
-        description: err?.data?.message || err?.message || '系統錯誤，請稍後再試',
-      });
+    } catch {
     } finally {
       loading.value = false;
     }
